@@ -6,7 +6,9 @@ import math
 class Objetos:
     def __init__(self):
         self.lua = Lua()
-        self.angle = 0.0  # Inicialização do ângulo de rotação
+        self.angle_x = 0.0  # Inicialização do ângulo de rotação no eixo X
+        self.angle_y = 0.0  # Inicialização do ângulo de rotação no eixo Y
+        self.angle_z = 0.0  # Inicialização do ângulo de rotação no eixo Z
 
         # Buffers para a lua
         self.vao = glGenVertexArrays(1)
@@ -41,17 +43,46 @@ class Objetos:
         glDrawArrays(GL_TRIANGLE_STRIP, 0, len(self.lua.vertices))
 
     def rotate_lua(self, speed=0.01):
-        self.angle += speed
-        cos_angle = math.cos(self.angle)
-        sin_angle = math.sin(self.angle)
+        # Incrementar os ângulos de rotação
+        self.angle_x += speed
+        self.angle_y += speed / 2  # Velocidade de rotação diferente para Y
+        self.angle_z += speed / 3  # Velocidade de rotação diferente para Z
 
-        # Matriz de rotação
-        rotation_matrix = np.array([
-            [cos_angle, -sin_angle, 0.0, 0.0],
-            [sin_angle, cos_angle,  0.0, 0.0],
-            [0.0,       0.0,        1.0, 0.0],
-            [0.0,       0.0,        0.0, 1.0]
+        # Cálculos de seno e cosseno para cada eixo
+        cos_x = math.cos(self.angle_x)
+        sin_x = math.sin(self.angle_x)
+        cos_y = math.cos(self.angle_y)
+        sin_y = math.sin(self.angle_y)
+        cos_z = math.cos(self.angle_z)
+        sin_z = math.sin(self.angle_z)
+
+        # Matriz de rotação no eixo X
+        rotation_x = np.array([
+            [1.0,  0.0,    0.0,   0.0],
+            [0.0,  cos_x, -sin_x,  0.0],
+            [0.0,  sin_x,  cos_x,  0.0],
+            [0.0,  0.0,    0.0,   1.0]
         ], dtype=np.float32)
 
+        # Matriz de rotação no eixo Y
+        rotation_y = np.array([
+            [cos_y,  0.0,  sin_y,  0.0],
+            [0.0,    1.0,   0.0,   0.0],
+            [-sin_y, 0.0,  cos_y,  0.0],
+            [0.0,    0.0,   0.0,   1.0]
+        ], dtype=np.float32)
+
+        # Matriz de rotação no eixo Z
+        rotation_z = np.array([
+            [cos_z, -sin_z, 0.0,   0.0],
+            [sin_z,  cos_z, 0.0,   0.0],
+            [0.0,     0.0,  1.0,   0.0],
+            [0.0,     0.0,  0.0,   1.0]
+        ], dtype=np.float32)
+
+        # Carregar e multiplicar as matrizes de rotação (ordem: Z, Y, X)
         glMatrixMode(GL_MODELVIEW)
-        glLoadMatrixf(rotation_matrix)
+        glLoadIdentity()
+        glMultMatrixf(rotation_z)
+        glMultMatrixf(rotation_y)
+        glMultMatrixf(rotation_x)
