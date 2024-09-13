@@ -5,16 +5,20 @@ import numpy as np
 import math
 import random
 
+
+PI = 3.141592 
+
+
 def janela():
 
   glfw.init()
   glfw.window_hint(glfw.VISIBLE, glfw.FALSE);
-  window = glfw.create_window(800, 800, "Cena", None, None)
+  window = glfw.create_window(700, 700, "Esfera", None, None)
   glfw.make_context_current(window)
   glfw.show_window(window)
-
-  # Habilitar teste de profundidade
-  glEnable(GL_DEPTH_TEST)
+  #Isso garante que o OpenGL renderize objetos 3D corretamente, levando em consideração 
+  #a profundidade dos vértices e ocultando superfícies que deveriam estar atrás de outras.
+  glEnable(GL_DEPTH_TEST) ### importante para 3D
 
   return window
 
@@ -72,8 +76,7 @@ def programa():
 
   return program
 
-
-def passar_para_gpu(vertices):
+def passar_para_gpu(program, vertices):
   # Request a buffer slot from GPU
   buffer = glGenBuffers(1)
   # Make this buffer the default one
@@ -92,4 +95,3 @@ def passar_para_gpu(vertices):
   loc = glGetAttribLocation(program, "position")
   glEnableVertexAttribArray(loc)
   glVertexAttribPointer(loc, 3, GL_FLOAT, False, stride, offset)
-  
