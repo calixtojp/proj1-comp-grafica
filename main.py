@@ -12,8 +12,9 @@ def main():
   window = janela()
   program = programa()
 
-
   cilindro = Cirilo(0.9, 0.1)
+
+  cilindro2 = Cirilo(0.4, 0.2)
 
   passar_para_gpu(program, cilindro.vertices)
 
@@ -22,11 +23,6 @@ def main():
   # pra poder alterar ela no laço da janela. N sei oq significa.
 
   loc_color = glGetUniformLocation(program, "color")
-
-  #ângulo de rotação do objeto. Inicialmente é zero, mas vai sendo decrementada 
-  # a cada iteração para gerar o movimento de rotação.
-  global d
-  d = 0.0
 
   while not glfw.window_should_close(window):
 
@@ -43,6 +39,7 @@ def main():
             glPolygonMode(GL_FRONT_AND_BACK,GL_FILL)
     
     cilindro.desenhar(program, loc_color)
+    cilindro2.desenhar(program, loc_color)
     
     glfw.swap_buffers(window)
 
