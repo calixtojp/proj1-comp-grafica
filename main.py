@@ -26,12 +26,10 @@ def main():
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         # Rotacionar a lua
-        # objetos.rotate_lua()
-        objetos.rotate()
+        objetos.rotate_lua()
 
         # Desenhar a lua
-        # objetos.draw_lua()
-        objetos.draw()
+        objetos.draw_lua()
 
         glfw.swap_buffers(window)
         glfw.poll_events()
