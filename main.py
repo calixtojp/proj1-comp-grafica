@@ -14,9 +14,34 @@ def main():
 
   cilindro = Cirilo(0.9, 0.1)
 
-  cilindro2 = Cirilo(0.4, 0.2)
+  cilindro2 = Cirilo(0.4, 0.7)
 
-  passar_para_gpu(program, cilindro.vertices)
+  vertices = np.concatenate((cilindro2.vertices['position'], cilindro.vertices['position']))
+
+  print(len(cilindro.vertices))
+  print(cilindro.vertices)
+
+
+  pos = 2520
+
+
+  print("--------------------------------------------")
+  print(len(cilindro2.vertices))
+  print(cilindro2.vertices)
+
+  print("--------------------------------------------")
+
+  total_vertices = len(vertices)
+  merged_vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
+  merged_vertices['position'] = vertices
+
+
+  print(len(merged_vertices))
+  print(merged_vertices)
+  print("--------------------------------------------")
+
+
+  passar_para_gpu(program, merged_vertices)
 
   # Não sei oq exatamente isso faz, mas no notebook do professor, 
   # tá falando q pega a localização da variável de cor (uniform) do Fragment Shader
@@ -33,13 +58,13 @@ def main():
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glClearColor(1.0, 1.0, 1.0, 1.0)
     
-    if False:
+    if True:
             glPolygonMode(GL_FRONT_AND_BACK,GL_LINE)
     else:
             glPolygonMode(GL_FRONT_AND_BACK,GL_FILL)
     
-    cilindro.desenhar(program, loc_color)
-    cilindro2.desenhar(program, loc_color)
+    cilindro2.desenhar(program, loc_color, 0)
+    cilindro.desenhar(program, loc_color, 2520)
     
     glfw.swap_buffers(window)
 

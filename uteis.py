@@ -91,3 +91,19 @@ def passar_para_gpu(program, vertices):
   loc = glGetAttribLocation(program, "position")
   glEnableVertexAttribArray(loc)
   glVertexAttribPointer(loc, 3, GL_FLOAT, False, stride, offset)
+
+def merge_vertices(vertices):
+
+  print(vertices)
+  # Collect the 'position' arrays from each object
+  positions = [obj['position'] for obj in vertices]
+  
+  # Concatenate all the 'position' arrays
+  merged_positions = np.concatenate(positions)
+  
+  # Create a new NumPy structured array for the merged vertices
+  total_vertices = len(merged_positions)
+  merged_vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
+  merged_vertices['position'] = merged_positions
+  
+  return merged_vertices

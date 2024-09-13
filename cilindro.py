@@ -93,7 +93,7 @@ class Cirilo:
     c = m_c.reshape(1,16)
     return c
 
-  def desenhar(self, program, loc_color):
+  def desenhar(self, program, loc_color, pos):
     ### apenas para visualizarmos o cilindro rotacionando
     self.d -= 0.01 # modifica o angulo de rotacao em cada iteracao
     cos_d = math.cos(self.d)
@@ -131,4 +131,4 @@ class Cirilo:
 
       # Essa parte aqui faz o desenho 
       glUniform4f(loc_color, R, G, B, 1.0)
-      glDrawArrays(GL_TRIANGLES, triangle, 3)     
+      glDrawArrays(GL_TRIANGLES, triangle+pos, 3)     
