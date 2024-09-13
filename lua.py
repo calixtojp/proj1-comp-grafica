@@ -1,124 +1,40 @@
-from OpenGL.GL import *
 import numpy as np
-import math
+import random
+from OpenGL.GL import *
 
 class Lua:
-    def __init__(self, radius=0.05, num_segments=12):
+    def __init__(self, radius=0.5, subdivisions=20):
         self.radius = radius
-        self.num_segments = num_segments
-
-        # Ângulos de rotação
-        self.angle_x = 0.0
-        self.angle_y = 0.0
-        self.angle_z = 0.0
-
-        # Buffers
-        self.vao = glGenVertexArrays(1)
-        self.vbo = glGenBuffers(1)
-        self.cbo = glGenBuffers(1)
-
-        # Gera os vértices e as cores aleatórias da esfera
-        self.vertices, self.colors = self.generate_sphere()
-        
-        # Configura a esfera
-        self.setup_lua()
+        self.subdivisions = subdivisions
+        self.vertices = []
+        self.colors = []
+        self.generate_sphere()
 
     def generate_sphere(self):
-        vertices = []
-        colors = []
-        for i in range(self.num_segments):
-            theta1 = i * (2 * np.pi / self.num_segments)
-            theta2 = (i + 1) * (2 * np.pi / self.num_segments)
+        # Gera vértices para uma esfera usando subdivisões em uma malha triangular
+        for i in range(self.subdivisions):
+            lat0 = np.pi * (-0.5 + float(i) / self.subdivisions)
+            z0 = np.sin(lat0)
+            zr0 = np.cos(lat0)
 
-            for j in range(self.num_segments):
-                phi1 = j * (np.pi / self.num_segments)
-                phi2 = (j + 1) * (np.pi / self.num_segments)
+            lat1 = np.pi * (-0.5 + float(i + 1) / self.subdivisions)
+            z1 = np.sin(lat1)
+            zr1 = np.cos(lat1)
 
-                # Ponto 1
-                x1 = self.radius * math.sin(phi1) * math.cos(theta1)
-                y1 = self.radius * math.cos(phi1)
-                z1 = self.radius * math.sin(phi1) * math.sin(theta1)
-                vertices.append([x1, y1, z1])
+            for j in range(self.subdivisions):
+                lng = 2 * np.pi * float(j) / self.subdivisions
+                x = np.cos(lng)
+                y = np.sin(lng)
 
-                # Ponto 2
-                x2 = self.radius * math.sin(phi2) * math.cos(theta1)
-                y2 = self.radius * math.cos(phi2)
-                z2 = self.radius * math.sin(phi2) * math.sin(theta1)
-                vertices.append([x2, y2, z2])
+                self.vertices.append((x * zr0 * self.radius, y * zr0 * self.radius, z0 * self.radius))
+                self.vertices.append((x * zr1 * self.radius, y * zr1 * self.radius, z1 * self.radius))
 
-                # Ponto 3
-                x3 = self.radius * math.sin(phi2) * math.cos(theta2)
-                y3 = self.radius * math.cos(phi2)
-                z3 = self.radius * math.sin(phi2) * math.sin(theta2)
-                vertices.append([x3, y3, z3])
+                # Gerando cores aleatórias para os triângulos
+                self.colors.append((random.random(), random.random(), random.random(), 1.0))
+                self.colors.append((random.random(), random.random(), random.random(), 1.0))
 
-                # Cores aleatórias para cada triângulo
-                colors.append(np.random.rand(4))
-                colors.append(np.random.rand(4))
-                colors.append(np.random.rand(4))
+    def get_vertices(self):
+        return np.array(self.vertices, dtype=np.float32)
 
-        vertices = np.array(vertices, dtype=np.float32)
-        colors = np.array(colors, dtype=np.float32)
-        return vertices, colors
-
-    def setup_lua(self):
-        glBindVertexArray(self.vao)
-
-        # Carregar vértices
-        glBindBuffer(GL_ARRAY_BUFFER, self.vbo)
-        glBufferData(GL_ARRAY_BUFFER, self.vertices.nbytes, self.vertices, GL_STATIC_DRAW)
-        glEnableClientState(GL_VERTEX_ARRAY)
-        glVertexPointer(3, GL_FLOAT, 0, None)
-
-        # Carregar cores
-        glBindBuffer(GL_ARRAY_BUFFER, self.cbo)
-        glBufferData(GL_ARRAY_BUFFER, self.colors.nbytes, self.colors, GL_STATIC_DRAW)
-        glEnableClientState(GL_COLOR_ARRAY)
-        glColorPointer(4, GL_FLOAT, 0, None)
-
-    def draw(self):
-        glBindVertexArray(self.vao)
-        glDrawArrays(GL_TRIANGLES, 0, len(self.vertices))
-
-    def rotate(self, speed_x=0.01, speed_y=0.01, speed_z=0.01):
-        # Incrementar os ângulos de rotação
-        self.angle_x += speed_x
-        self.angle_y += speed_y
-        self.angle_z += speed_z
-
-        # Matriz de rotação no eixo X
-        cos_x = math.cos(self.angle_x)
-        sin_x = math.sin(self.angle_x)
-        rotation_x = np.array([
-            [1.0,  0.0,    0.0,   0.0],
-            [0.0,  cos_x, -sin_x,  0.0],
-            [0.0,  sin_x,  cos_x,  0.0],
-            [0.0,  0.0,    0.0,   1.0]
-        ], dtype=np.float32)
-
-        # Matriz de rotação no eixo Y
-        cos_y = math.cos(self.angle_y)
-        sin_y = math.sin(self.angle_y)
-        rotation_y = np.array([
-            [cos_y,  0.0,  sin_y,  0.0],
-            [0.0,    1.0,   0.0,   0.0],
-            [-sin_y, 0.0,  cos_y,  0.0],
-            [0.0,    0.0,   0.0,   1.0]
-        ], dtype=np.float32)
-
-        # Matriz de rotação no eixo Z
-        cos_z = math.cos(self.angle_z)
-        sin_z = math.sin(self.angle_z)
-        rotation_z = np.array([
-            [cos_z, -sin_z, 0.0,   0.0],
-            [sin_z,  cos_z, 0.0,   0.0],
-            [0.0,     0.0,  1.0,   0.0],
-            [0.0,     0.0,  0.0,   1.0]
-        ], dtype=np.float32)
-
-        # Multiplicando as rotações
-        glMatrixMode(GL_MODELVIEW)
-        glLoadIdentity()
-        glMultMatrixf(rotation_x)
-        glMultMatrixf(rotation_y)
-        glMultMatrixf(rotation_z)
+    def get_colors(self):
+        return np.array(self.colors, dtype=np.float32)

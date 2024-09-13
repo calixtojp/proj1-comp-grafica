@@ -40,13 +40,11 @@ def main():
         print("gl clear")
 
         # Rotacionar a lua
-        # objetos.rotate_lua()
-        objetos.rotate()
+        objetos.rotate_lua()
         print("rotate")
 
         # Desenhar a lua
-        # objetos.draw_lua()
-        objetos.draw()
+        objetos.draw_lua()
         print("draw")
 
         glfw.swap_buffers(window)
