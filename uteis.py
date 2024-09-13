@@ -5,10 +5,6 @@ import numpy as np
 import math
 import random
 
-
-PI = 3.141592 
-
-
 def janela():
 
   glfw.init()
