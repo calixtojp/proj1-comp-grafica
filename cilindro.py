@@ -124,11 +124,11 @@ class Cirilo:
 
     
     for triangle in range(0,len(self.vertices),3):  
-      random.seed( triangle )
+      random.seed(triangle)
       R = random.random()
       G = random.random()
       B = random.random()  
 
       # Essa parte aqui faz o desenho 
-      glUniform4f(loc_color, R, G, B, 1.0)
+      glUniform4f(loc_color, 1, 0, 1, 0.2)
       glDrawArrays(GL_TRIANGLES, triangle+pos, 3)     
