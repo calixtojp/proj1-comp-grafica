@@ -9,17 +9,35 @@ class Chao:
     self.t_x = 0
     self.t_y = -0.5
 
-    # preparando espaço para 4 vértices usando 3 coordenadas (x,y,z)
-    self.vertices = np.zeros(4, [("position", np.float32, 3)])
+    # preparando espaço para N vértices usando 3 coordenadas (x,y,z)
+    self.N = 268
+    self.vertices = np.zeros(self.N, [("position", np.float32, 3)])
+
+    n_gramas = int((self.N - 4)/4)
+
+    
+
+    grama = []
+    x = -1
+    for i in range(n_gramas):
+      x += 0.03
+      grama.append((x,        +0.35, 0))
+      grama.append((x + 0.01, +0.35, 0))
+      grama.append((x,        +0.55, 0))
+      grama.append((x + 0.01, +0.55, 0))
 
     # preenchendo as coordenadas de cada vértice
-    self.vertices['position'] = [
-      # Face 1 do Cubo (vértices do quadrado)
-      (-1, -0.5, +0.2),
-      (+1, -0.5, +0.2),
-      (-1, +0.5, +0.2),
-      (+1, +0.5, +0.2),
-  ]
+    chao = [
+      #Chao em si
+      (-1, -0.5, 0),
+      (+1, -0.5, 0),
+      (-1, +0.5, 0),
+      (+1, +0.5, 0),
+    ]
+
+    self.vertices['position'] = np.array(grama + chao, np.float32)
+    self.r_len = len(self.vertices['position'])
+
 
   def multiplica_matriz(self,a,b):
     m_a = a.reshape(4,4)
@@ -66,5 +84,8 @@ class Chao:
       glUniformMatrix4fv(loc, 1, GL_TRUE, mat_transform)
       
       
+      glUniform4f(loc_color, 0, 1, 0, 1)  
+      glDrawArrays(GL_TRIANGLE_STRIP, pos, self.N-4)
+
       glUniform4f(loc_color, 0.49, 0.33, 0.10, 1)  ### brown 
-      glDrawArrays(GL_TRIANGLE_STRIP, 0+pos, 4)
+      glDrawArrays(GL_TRIANGLE_STRIP, pos+self.N-4, 4)

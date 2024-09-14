@@ -22,7 +22,6 @@ def main():
 
   chao = Chao()
 
-
   #concatenando todos os vértices dos objetos a fim de passá-los para a gpu
   vertices = np.concatenate((cilindro2.vertices['position'], cilindro.vertices['position']))
   vertices = np.concatenate((vertices, chao.vertices['position']))
@@ -63,8 +62,8 @@ def main():
     else:
       glPolygonMode(GL_FRONT_AND_BACK,GL_FILL)
     
-    cilindro2.desenhar(program, loc_color, 0)
-    cilindro.desenhar(program, loc_color, 2520)
+    # cilindro2.desenhar(program, loc_color, 0)
+    # cilindro.desenhar(program, loc_color, 2520)
     chao.desenhar(program, loc_color, 5040)
     
     glfw.swap_buffers(window)
