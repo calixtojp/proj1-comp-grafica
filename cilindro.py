@@ -34,7 +34,7 @@ class Cirilo:
 
   def cria_cilindro(self):
     # vamos gerar um conjunto de vertices representantes poligonos
-    # para a superficie da esfera.
+    # para a superficie do cilindro.
     # cada poligono eh representado por dois triangulos
 
     vertices_list = []
