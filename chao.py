@@ -66,5 +66,5 @@ class Chao:
       glUniformMatrix4fv(loc, 1, GL_TRUE, mat_transform)
       
       
-      glUniform4f(loc_color, 1, 0, 0, 1.0) ### vermelho    
+      glUniform4f(loc_color, 0.49, 0.33, 0.10, 1)  ### brown 
       glDrawArrays(GL_TRIANGLE_STRIP, 0+pos, 4)

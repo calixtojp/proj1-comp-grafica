@@ -58,7 +58,7 @@ def main():
     
 
     #Switch entre visualização normal e de malha poligonal
-    if True:
+    if False:
       glPolygonMode(GL_FRONT_AND_BACK,GL_LINE)
     else:
       glPolygonMode(GL_FRONT_AND_BACK,GL_FILL)
