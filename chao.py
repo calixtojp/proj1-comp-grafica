@@ -58,9 +58,9 @@ class Chao:
     glUniformMatrix4fv(loc, 1, GL_TRUE, mat_transform)
     
     #Grama    
-    glUniform4f(loc_color, 0, 1, 0, 1)  
+    glUniform4f(loc_color, 0.3, 0.44, 0.26, 1)  
     glDrawArrays(GL_TRIANGLE_STRIP, pos, self.tam-4)
 
     #Terra
-    glUniform4f(loc_color, 0.49, 0.33, 0.10, 1)  
+    glUniform4f(loc_color, 0.78, 0.6, 0.35, 1)  
     glDrawArrays(GL_TRIANGLE_STRIP, pos+self.tam-4, 4)

@@ -7,6 +7,7 @@ import random
 import uteis as ut
 from chao import Chao
 from cacto import Cacto
+from homem import Homem
 
 def main():
    
@@ -18,10 +19,11 @@ def main():
   #criando os objetos
   chao = Chao()
   cacto = Cacto()
-
+  homem = Homem()
 
   #concatenando todos os vértices dos objetos a fim de passá-los para a gpu
   vertices = np.concatenate((chao.vertices['position'], cacto.vertices['position']))
+  vertices = np.concatenate((vertices, homem.vertices['position']))
 
   total_vertices = len(vertices)
   merged_vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
@@ -47,7 +49,7 @@ def main():
     # Limpa a tela para preparar o próximo quadro.
     # O fundo é definido como branco (1.0, 1.0, 1.0, 1.0).
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-    glClearColor(0.22, 0.38, 0.45, 1.0)
+    glClearColor(0.44, 0.6, 0.7, 1.0)
     
 
     #Switch entre visualização normal e de malha poligonal
@@ -55,9 +57,16 @@ def main():
       glPolygonMode(GL_FRONT_AND_BACK,GL_LINE)
     else:
       glPolygonMode(GL_FRONT_AND_BACK,GL_FILL)
-    
-    chao.desenhar(program, loc_color, 0)
-    cacto.desenhar(program, loc_color, chao.tam)
+
+
+    pos_gpu = 0
+    chao.desenhar(program, loc_color, pos_gpu)
+    pos_gpu += chao.tam
+    cacto.desenhar(program, loc_color, pos_gpu)
+    pos_gpu += cacto.tam
+    homem.desenhar(program, loc_color, pos_gpu)
+    pos_gpu += homem.tam
+
     
     glfw.swap_buffers(window)
 

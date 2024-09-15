@@ -149,9 +149,11 @@ def get_matriz_escala(sx, sy, sz):
 
 malha = False
 escala_cacto = 1
+homem_x = 0
+homem_y = 0
 
 def key_event(window,key,scancode,action,mods):
-    global malha, escala_cacto
+    global malha, escala_cacto, homem_x, homem_y
 
     if key == 77 and action == glfw.PRESS:
       malha = not malha
@@ -161,5 +163,17 @@ def key_event(window,key,scancode,action,mods):
 
     if key == 90 and action == glfw.REPEAT:
       escala_cacto -= 0.01
+
+    if key == 262 and action == glfw.REPEAT:
+      homem_x += 0.01
+
+    if key == 263 and action == glfw.REPEAT:
+      homem_x -= 0.01
+
+    if key == 265 and action == glfw.REPEAT:
+      homem_y += 0.01
+
+    if key == 264 and action == glfw.REPEAT:
+      homem_y -= 0.01
         
     

@@ -50,7 +50,7 @@ class Cacto:
     #----------------------Desenhando o tronco central do cacto----------------------------#
 
     mat_rotation_x = ut.get_matriz_rotacao_x(0)
-    mat_rotation_y = ut.get_matriz_rotacao_y(1.5)
+    mat_rotation_y = ut.get_matriz_rotacao_y(2)
     mat_rotation_z = ut.get_matriz_rotacao_z(math.pi / 2)
     mat_translation = ut.get_matriz_translacao(0.5*ut.escala_cacto, -0.7*ut.escala_cacto, 0)
 
@@ -70,7 +70,7 @@ class Cacto:
 
     #----------------------Desenhando o tronco vertical a direita do cacto----------------------------#
     mat_rotation_x = ut.get_matriz_rotacao_x(0)
-    mat_rotation_y = ut.get_matriz_rotacao_y(1.5)
+    mat_rotation_y = ut.get_matriz_rotacao_y(2)
     mat_rotation_z = ut.get_matriz_rotacao_z(math.pi / 2)
     mat_translation = ut.get_matriz_translacao(0.7*ut.escala_cacto, -0.42*ut.escala_cacto, 0)
 
@@ -92,7 +92,7 @@ class Cacto:
 
     #----------------------Desenhando o tronco vertical a esquerda do cacto----------------------------#
     mat_rotation_x = ut.get_matriz_rotacao_x(0)
-    mat_rotation_y = ut.get_matriz_rotacao_y(1.5)
+    mat_rotation_y = ut.get_matriz_rotacao_y(2)
     mat_rotation_z = ut.get_matriz_rotacao_z(math.pi / 2)
     mat_translation = ut.get_matriz_translacao(0.3*ut.escala_cacto, -0.5*ut.escala_cacto, 0)
 
@@ -114,9 +114,9 @@ class Cacto:
 
     #----------------------Desenhando o tronco horizontal a esquerda do cacto----------------------------#
     mat_rotation_x = ut.get_matriz_rotacao_x(0)
-    mat_rotation_y = ut.get_matriz_rotacao_y(1.5)
+    mat_rotation_y = ut.get_matriz_rotacao_y(2)
     mat_rotation_z = ut.get_matriz_rotacao_z(0)
-    mat_translation = ut.get_matriz_translacao(0.25*ut.escala_cacto, -0.50*ut.escala_cacto, 0)
+    mat_translation = ut.get_matriz_translacao(0.26*ut.escala_cacto, -0.50*ut.escala_cacto, 0)
 
     mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
     mat_transform = self.multiplica_matriz(mat_rotation_z, mat_transform)
@@ -136,7 +136,7 @@ class Cacto:
 
     #----------------------Desenhando o tronco horizontal à esquerda do cacto----------------------------#
     mat_rotation_x = ut.get_matriz_rotacao_x(0)
-    mat_rotation_y = ut.get_matriz_rotacao_y(1.5)
+    mat_rotation_y = ut.get_matriz_rotacao_y(2)
     mat_rotation_z = ut.get_matriz_rotacao_z(0)
     mat_translation = ut.get_matriz_translacao(0.60*ut.escala_cacto, -0.45*ut.escala_cacto, 0)
 
