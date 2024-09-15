@@ -4,50 +4,41 @@ import OpenGL.GL.shaders
 import numpy as np
 import math
 import random
-from uteis import *
-from cilindro import Cirilo
+import uteis as ut
 from chao import Chao
-from esfera import Esfera
+from cacto import Cacto
+from homem import Homem
 
 def main():
    
 
   #Iniciando algumas configurações, da janela e do programa
-  window = janela()
-  program = programa()
+  window = ut.janela()
+  program = ut.programa()
 
   #criando os objetos
-  cilindro = Cirilo(0.9, 0.1)
-
-  # cilindro2 = Cirilo(0.4, 0.7)
-
-  # chao = Chao()
-
-  bola = Esfera(0.5)
+  chao = Chao()
+  cacto = Cacto()
+  homem = Homem()
 
   #concatenando todos os vértices dos objetos a fim de passá-los para a gpu
-  vertices = np.concatenate((bola.vertices['position'], cilindro.vertices['position']))
-  # vertices = np.concatenate((vertices, chao.vertices['position']))
-  # vertices = np.concatenate((vertices, bola.vertices['position']))
+  vertices = np.concatenate((chao.vertices['position'], cacto.vertices['position']))
+  vertices = np.concatenate((vertices, homem.vertices['position']))
 
   total_vertices = len(vertices)
   merged_vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
   merged_vertices['position'] = vertices
 
 
-  #ISSO AQUI É O QUE VAI INDICAR A POSICAO INICIAL DE CADA UM
-  print(f"cilindro 1 :{len(cilindro.vertices)}")
-  # print(f"cilindro 2 :{len(cilindro2.vertices)}")
-  # print(f"chao :{len(chao.vertices)}")
-  print(f"bola :{len(bola.vertices)}")
-  # print(f"total :{len(merged_vertices)}")
-
-
   #passando todos os vértices pra gpu
-  passar_para_gpu(program, merged_vertices)
+  ut.passar_para_gpu(program, merged_vertices)
 
   #pegando a variável de cor do programa criado
   loc_color = glGetUniformLocation(program, "color")
+
+  #configurando o teclado
+  glfw.set_key_callback(window,ut.key_event)
+
 
 
   #Loop principal que efetivamente mostra a janela
@@ -58,17 +49,24 @@ def main():
     # Limpa a tela para preparar o próximo quadro.
     # O fundo é definido como branco (1.0, 1.0, 1.0, 1.0).
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-    glClearColor(1.0, 1.0, 1.0, 1.0)
+    glClearColor(0.44, 0.6, 0.7, 1.0)
     
 
     #Switch entre visualização normal e de malha poligonal
-    if False:
+    if ut.malha:
       glPolygonMode(GL_FRONT_AND_BACK,GL_LINE)
     else:
       glPolygonMode(GL_FRONT_AND_BACK,GL_FILL)
-    
-    bola.desenhar(program, loc_color, 0)
-    cilindro.desenhar(program, loc_color, 6144)
+
+
+    pos_gpu = 0
+    chao.desenhar(program, loc_color, pos_gpu)
+    pos_gpu += chao.tam
+    cacto.desenhar(program, loc_color, pos_gpu)
+    pos_gpu += cacto.tam
+    homem.desenhar(program, loc_color, pos_gpu)
+    pos_gpu += homem.tam
+
     
     glfw.swap_buffers(window)
 

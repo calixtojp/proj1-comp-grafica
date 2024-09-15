@@ -92,18 +92,88 @@ def passar_para_gpu(program, vertices):
   glEnableVertexAttribArray(loc)
   glVertexAttribPointer(loc, 3, GL_FLOAT, False, stride, offset)
 
-def merge_vertices(vertices):
+def get_matriz_rotacao_x(angulo):
+  cos_x = math.cos(angulo)
+  sin_x = math.sin(angulo)
 
-  print(vertices)
-  # Collect the 'position' arrays from each object
-  positions = [obj['position'] for obj in vertices]
+  mat_rot_x = np.array([    1.0,   0.0,    0.0, 0.0, 
+                            0.0, cos_x, -sin_x, 0.0, 
+                            0.0, sin_x,  cos_x, 0.0, 
+                            0.0,   0.0,    0.0, 1.0], np.float32)
   
-  # Concatenate all the 'position' arrays
-  merged_positions = np.concatenate(positions)
+  return mat_rot_x
+
+def get_matriz_rotacao_y(angulo):
+  cos_y = math.cos(angulo)
+  sin_y = math.sin(angulo)
+
+  mat_rot_y = np.array([    cos_y,  0.0, sin_y, 0.0, 
+                            0.0,    1.0,   0.0, 0.0, 
+                           -sin_y, 0.0, cos_y, 0.0, 
+                            0.0,    0.0,   0.0, 1.0], np.float32)
+
+  return mat_rot_y
+
+def get_matriz_rotacao_z(angulo):
+  cos_z = math.cos(angulo)
+  sin_z = math.sin(angulo)
+
+  mat_rot_z = np.array([    cos_z, -sin_z, 0.0, 0.0, 
+                            sin_z,  cos_z, 0.0, 0.0, 
+                            0.0,      0.0, 1.0, 0.0, 
+                            0.0,      0.0, 0.0, 1.0], np.float32)
   
-  # Create a new NumPy structured array for the merged vertices
-  total_vertices = len(merged_positions)
-  merged_vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
-  merged_vertices['position'] = merged_positions
+  return mat_rot_z
+
+def get_matriz_translacao(tx,ty,tz):
+  mat_translacao = np.array([     1.0,   0.0,    0.0, tx, 
+                                  0.0,   1.0,    0.0, ty, 
+                                  0.0,   0.0,    1.0, tz, 
+                                  0.0,   0.0,    0.0, 1.0], np.float32)
   
-  return merged_vertices
+  return mat_translacao
+
+def get_matriz_escala(sx, sy, sz):
+    
+  mat_escala = np.array([       sx,   0.0,    0.0, 0.0, 
+                                0.0,   sy,    0.0, 0.0, 
+                                0.0,   0.0,   sz,  0.0, 
+                                0.0,   0.0,   0.0, 1.0], np.float32)
+
+  return mat_escala    
+
+
+
+#https://www.glfw.org/docs/3.3/group__keys.html
+
+
+malha = False
+escala_cacto = 1
+homem_x = 0
+homem_y = 0
+
+def key_event(window,key,scancode,action,mods):
+    global malha, escala_cacto, homem_x, homem_y
+
+    if key == 77 and action == glfw.PRESS:
+      malha = not malha
+    
+    if key == 88 and action == glfw.REPEAT:
+      escala_cacto += 0.01
+
+    if key == 90 and action == glfw.REPEAT:
+      escala_cacto -= 0.01
+
+    if key == 262 and action == glfw.REPEAT:
+      homem_x += 0.01
+
+    if key == 263 and action == glfw.REPEAT:
+      homem_x -= 0.01
+
+    if key == 265 and action == glfw.REPEAT:
+      homem_y += 0.01
+
+    if key == 264 and action == glfw.REPEAT:
+      homem_y -= 0.01
+        
+    
