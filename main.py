@@ -28,12 +28,6 @@ def main():
   merged_vertices['position'] = vertices
 
 
-  #ISSO AQUI É O QUE VAI INDICAR A POSICAO INICIAL DE CADA UM
-  print(len(cacto.vertices))
-  print(len(chao.vertices))
-  print(len(merged_vertices))
-
-
   #passando todos os vértices pra gpu
   passar_para_gpu(program, merged_vertices)
 
