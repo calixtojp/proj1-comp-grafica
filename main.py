@@ -5,8 +5,8 @@ import numpy as np
 import math
 import random
 from uteis import *
-from cilindro import Cirilo
 from chao import Chao
+from cacto import Cacto
 
 def main():
    
@@ -16,15 +16,12 @@ def main():
   program = programa()
 
   #criando os objetos
-  cilindro = Cirilo(0.9, 0.1)
-
-  cilindro2 = Cirilo(0.4, 0.7)
-
   chao = Chao()
+  cacto = Cacto()
+
 
   #concatenando todos os vértices dos objetos a fim de passá-los para a gpu
-  vertices = np.concatenate((cilindro2.vertices['position'], cilindro.vertices['position']))
-  vertices = np.concatenate((vertices, chao.vertices['position']))
+  vertices = np.concatenate((chao.vertices['position'], cacto.vertices['position']))
 
   total_vertices = len(vertices)
   merged_vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
@@ -32,8 +29,7 @@ def main():
 
 
   #ISSO AQUI É O QUE VAI INDICAR A POSICAO INICIAL DE CADA UM
-  print(len(cilindro.vertices))
-  print(len(cilindro2.vertices))
+  print(len(cacto.vertices))
   print(len(chao.vertices))
   print(len(merged_vertices))
 
@@ -53,7 +49,7 @@ def main():
     # Limpa a tela para preparar o próximo quadro.
     # O fundo é definido como branco (1.0, 1.0, 1.0, 1.0).
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-    glClearColor(1.0, 1.0, 1.0, 1.0)
+    glClearColor(0.22, 0.38, 0.45, 1.0)
     
 
     #Switch entre visualização normal e de malha poligonal
@@ -62,9 +58,8 @@ def main():
     else:
       glPolygonMode(GL_FRONT_AND_BACK,GL_FILL)
     
-    # cilindro2.desenhar(program, loc_color, 0)
-    # cilindro.desenhar(program, loc_color, 2520)
-    chao.desenhar(program, loc_color, 5040)
+    chao.desenhar(program, loc_color, 0)
+    cacto.desenhar(program, loc_color, chao.tam)
     
     glfw.swap_buffers(window)
 

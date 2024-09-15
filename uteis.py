@@ -107,3 +107,44 @@ def merge_vertices(vertices):
   merged_vertices['position'] = merged_positions
   
   return merged_vertices
+
+def get_matriz_rotacao_x(angulo):
+  cos_x = math.cos(angulo)
+  sin_x = math.sin(angulo)
+
+  mat_rot_x = np.array([    1.0,   0.0,    0.0, 0.0, 
+                            0.0, cos_x, -sin_x, 0.0, 
+                            0.0, sin_x,  cos_x, 0.0, 
+                            0.0,   0.0,    0.0, 1.0], np.float32)
+  
+  return mat_rot_x
+
+def get_matriz_rotacao_y(angulo):
+  cos_y = math.cos(angulo)
+  sin_y = math.sin(angulo)
+
+  mat_rot_y = np.array([    cos_y,  0.0, sin_y, 0.0, 
+                            0.0,    1.0,   0.0, 0.0, 
+                           -sin_y, 0.0, cos_y, 0.0, 
+                            0.0,    0.0,   0.0, 1.0], np.float32)
+
+  return mat_rot_y
+
+def get_matriz_rotacao_z(angulo):
+  cos_z = math.cos(angulo)
+  sin_z = math.sin(angulo)
+
+  mat_rot_z = np.array([    cos_z, -sin_z, 0.0, 0.0, 
+                            sin_z,  cos_z, 0.0, 0.0, 
+                            0.0,      0.0, 1.0, 0.0, 
+                            0.0,      0.0, 0.0, 1.0], np.float32)
+  
+  return mat_rot_z
+
+def get_matriz_translacao(tx,ty,tz):
+  mat_translacao = np.array([    1.0,   0.0,    0.0, tx, 
+                                  0.0,   1.0,    0.0, ty, 
+                                  0.0,   0.0,    1.0, tz, 
+                                  0.0,   0.0,    0.0, 1.0], np.float32)
+  
+  return mat_translacao
