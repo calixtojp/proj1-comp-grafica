@@ -4,7 +4,7 @@ import OpenGL.GL.shaders
 import numpy as np
 import math
 import random
-from uteis import *
+import uteis as ut
 from chao import Chao
 from cacto import Cacto
 
@@ -12,8 +12,8 @@ def main():
    
 
   #Iniciando algumas configurações, da janela e do programa
-  window = janela()
-  program = programa()
+  window = ut.janela()
+  program = ut.programa()
 
   #criando os objetos
   chao = Chao()
@@ -29,10 +29,14 @@ def main():
 
 
   #passando todos os vértices pra gpu
-  passar_para_gpu(program, merged_vertices)
+  ut.passar_para_gpu(program, merged_vertices)
 
   #pegando a variável de cor do programa criado
   loc_color = glGetUniformLocation(program, "color")
+
+  #configurando o teclado
+  glfw.set_key_callback(window,ut.key_event)
+
 
 
   #Loop principal que efetivamente mostra a janela
@@ -47,7 +51,7 @@ def main():
     
 
     #Switch entre visualização normal e de malha poligonal
-    if False:
+    if ut.malha:
       glPolygonMode(GL_FRONT_AND_BACK,GL_LINE)
     else:
       glPolygonMode(GL_FRONT_AND_BACK,GL_FILL)

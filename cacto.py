@@ -3,7 +3,7 @@ import random
 from OpenGL.GL import *
 import math
 from cilindro import Cilindro
-from uteis import *
+import uteis as ut
 
 class Cacto:  
   def __init__(self):
@@ -43,15 +43,20 @@ class Cacto:
 
   def desenhar(self, program, loc_color, pos):
 
+    #matriz de escala para o cacto todo
+    mat_escala = ut.get_matriz_escala(ut.escala_cacto, ut.escala_cacto, ut.escala_cacto)
+
+
     #----------------------Desenhando o tronco central do cacto----------------------------#
 
-    mat_rotation_x = get_matriz_rotacao_x(0)
-    mat_rotation_y = get_matriz_rotacao_y(1.5)
-    mat_rotation_z = get_matriz_rotacao_z(math.pi / 2)
-    mat_translation = get_matriz_translacao(0.5, -0.7, 0)
+    mat_rotation_x = ut.get_matriz_rotacao_x(0)
+    mat_rotation_y = ut.get_matriz_rotacao_y(1.5)
+    mat_rotation_z = ut.get_matriz_rotacao_z(math.pi / 2)
+    mat_translation = ut.get_matriz_translacao(0.5*ut.escala_cacto, -0.7*ut.escala_cacto, 0)
 
     mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
     mat_transform = self.multiplica_matriz(mat_rotation_z, mat_transform)
+    mat_transform = self.multiplica_matriz(mat_escala, mat_transform)
     mat_transform = self.multiplica_matriz(mat_translation, mat_transform)
 
     # a matriz de transformação é passada para o shader
@@ -64,13 +69,14 @@ class Cacto:
     glDrawArrays(GL_TRIANGLES, pos, self.c_tam) 
 
     #----------------------Desenhando o tronco vertical a direita do cacto----------------------------#
-    mat_rotation_x = get_matriz_rotacao_x(0)
-    mat_rotation_y = get_matriz_rotacao_y(1.5)
-    mat_rotation_z = get_matriz_rotacao_z(math.pi / 2)
-    mat_translation = get_matriz_translacao(0.7, -0.42, 0)
+    mat_rotation_x = ut.get_matriz_rotacao_x(0)
+    mat_rotation_y = ut.get_matriz_rotacao_y(1.5)
+    mat_rotation_z = ut.get_matriz_rotacao_z(math.pi / 2)
+    mat_translation = ut.get_matriz_translacao(0.7*ut.escala_cacto, -0.42*ut.escala_cacto, 0)
 
     mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
     mat_transform = self.multiplica_matriz(mat_rotation_z, mat_transform)
+    mat_transform = self.multiplica_matriz(mat_escala, mat_transform)
     mat_transform = self.multiplica_matriz(mat_translation, mat_transform)
 
     # a matriz de transformação é passada para o shader, que aplicará 
@@ -85,13 +91,14 @@ class Cacto:
     glDrawArrays(GL_TRIANGLES, pos+(self.c_tam*1), self.c_tam)
 
     #----------------------Desenhando o tronco vertical a esquerda do cacto----------------------------#
-    mat_rotation_x = get_matriz_rotacao_x(0)
-    mat_rotation_y = get_matriz_rotacao_y(1.5)
-    mat_rotation_z = get_matriz_rotacao_z(math.pi / 2)
-    mat_translation = get_matriz_translacao(0.3, -0.5, 0)
+    mat_rotation_x = ut.get_matriz_rotacao_x(0)
+    mat_rotation_y = ut.get_matriz_rotacao_y(1.5)
+    mat_rotation_z = ut.get_matriz_rotacao_z(math.pi / 2)
+    mat_translation = ut.get_matriz_translacao(0.3*ut.escala_cacto, -0.5*ut.escala_cacto, 0)
 
     mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
     mat_transform = self.multiplica_matriz(mat_rotation_z, mat_transform)
+    mat_transform = self.multiplica_matriz(mat_escala, mat_transform)
     mat_transform = self.multiplica_matriz(mat_translation, mat_transform)
 
     # a matriz de transformação é passada para o shader, que aplicará 
@@ -106,13 +113,14 @@ class Cacto:
     glDrawArrays(GL_TRIANGLES, pos+(self.c_tam*2), self.c_tam)             
 
     #----------------------Desenhando o tronco horizontal a esquerda do cacto----------------------------#
-    mat_rotation_x = get_matriz_rotacao_x(0)
-    mat_rotation_y = get_matriz_rotacao_y(1.5)
-    mat_rotation_z = get_matriz_rotacao_z(0)
-    mat_translation = get_matriz_translacao(0.25, -0.50, 0)
+    mat_rotation_x = ut.get_matriz_rotacao_x(0)
+    mat_rotation_y = ut.get_matriz_rotacao_y(1.5)
+    mat_rotation_z = ut.get_matriz_rotacao_z(0)
+    mat_translation = ut.get_matriz_translacao(0.25*ut.escala_cacto, -0.50*ut.escala_cacto, 0)
 
     mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
     mat_transform = self.multiplica_matriz(mat_rotation_z, mat_transform)
+    mat_transform = self.multiplica_matriz(mat_escala, mat_transform)
     mat_transform = self.multiplica_matriz(mat_translation, mat_transform)
 
     # a matriz de transformação é passada para o shader, que aplicará 
@@ -126,21 +134,21 @@ class Cacto:
     #Desenhando
     glDrawArrays(GL_TRIANGLES, pos+(self.c_tam*3), self.c_tam)    
 
-    #----------------------Desenhando o tronco horizontal a esquerda do cacto----------------------------#
-    mat_rotation_x = get_matriz_rotacao_x(0)
-    mat_rotation_y = get_matriz_rotacao_y(1.5)
-    mat_rotation_z = get_matriz_rotacao_z(0)
-    mat_translation = get_matriz_translacao(0.60, -0.45, 0)
+    #----------------------Desenhando o tronco horizontal à esquerda do cacto----------------------------#
+    mat_rotation_x = ut.get_matriz_rotacao_x(0)
+    mat_rotation_y = ut.get_matriz_rotacao_y(1.5)
+    mat_rotation_z = ut.get_matriz_rotacao_z(0)
+    mat_translation = ut.get_matriz_translacao(0.60*ut.escala_cacto, -0.45*ut.escala_cacto, 0)
 
     mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
     mat_transform = self.multiplica_matriz(mat_rotation_z, mat_transform)
+    mat_transform = self.multiplica_matriz(mat_escala, mat_transform)
     mat_transform = self.multiplica_matriz(mat_translation, mat_transform)
 
     # a matriz de transformação é passada para o shader, que aplicará 
     # essa rotação a todos os vértices do objeto.
     loc = glGetUniformLocation(program, "mat_transformation")
     glUniformMatrix4fv(loc, 1, GL_TRUE, mat_transform)
-
 
     #Pintando
     glUniform4f(loc_color, 0.2, 0.4, 0.16, 1)

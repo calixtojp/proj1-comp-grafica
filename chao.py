@@ -23,20 +23,21 @@ class Chao:
     x = -1
 
     for i in range(n_gramas):
-    # preenchendo as coordenadas de cada vértice 
-    # automaticamente e acordo com o padrao da grama
+      # preenchendo as coordenadas de cada vértice 
+      # automaticamente e acordo com o padrao da grama
       x += 0.03
       grama.append((x,        +0.35, 0))
       grama.append((x + 0.01, +0.35, 0))
       grama.append((x,        +0.55, 0))
       grama.append((x + 0.01, +0.55, 0))
 
+    #-------------SETANDO OS VERTICES-------------#
     # preparando espaço de tamanho 'tam' para vértices usando 3 coordenadas (x,y,z)
     self.tam = tam_terra + n_gramas*4
 
     self.vertices = np.zeros(self.tam, [("position", np.float32, 3)])
     self.vertices['position'] = np.array(grama + terra, np.float32)
-    
+
     self.r_len = len(self.vertices['position'])
 
 

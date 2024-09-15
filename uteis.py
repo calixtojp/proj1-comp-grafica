@@ -92,22 +92,6 @@ def passar_para_gpu(program, vertices):
   glEnableVertexAttribArray(loc)
   glVertexAttribPointer(loc, 3, GL_FLOAT, False, stride, offset)
 
-def merge_vertices(vertices):
-
-  print(vertices)
-  # Collect the 'position' arrays from each object
-  positions = [obj['position'] for obj in vertices]
-  
-  # Concatenate all the 'position' arrays
-  merged_positions = np.concatenate(positions)
-  
-  # Create a new NumPy structured array for the merged vertices
-  total_vertices = len(merged_positions)
-  merged_vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
-  merged_vertices['position'] = merged_positions
-  
-  return merged_vertices
-
 def get_matriz_rotacao_x(angulo):
   cos_x = math.cos(angulo)
   sin_x = math.sin(angulo)
@@ -142,9 +126,40 @@ def get_matriz_rotacao_z(angulo):
   return mat_rot_z
 
 def get_matriz_translacao(tx,ty,tz):
-  mat_translacao = np.array([    1.0,   0.0,    0.0, tx, 
+  mat_translacao = np.array([     1.0,   0.0,    0.0, tx, 
                                   0.0,   1.0,    0.0, ty, 
                                   0.0,   0.0,    1.0, tz, 
                                   0.0,   0.0,    0.0, 1.0], np.float32)
   
   return mat_translacao
+
+def get_matriz_escala(sx, sy, sz):
+    
+  mat_escala = np.array([       sx,   0.0,    0.0, 0.0, 
+                                0.0,   sy,    0.0, 0.0, 
+                                0.0,   0.0,   sz,  0.0, 
+                                0.0,   0.0,   0.0, 1.0], np.float32)
+
+  return mat_escala    
+
+
+
+#https://www.glfw.org/docs/3.3/group__keys.html
+
+
+malha = False
+escala_cacto = 1
+
+def key_event(window,key,scancode,action,mods):
+    global malha, escala_cacto
+
+    if key == 77 and action == glfw.PRESS:
+      malha = not malha
+    
+    if key == 88 and action == glfw.REPEAT:
+      escala_cacto += 0.01
+
+    if key == 90 and action == glfw.REPEAT:
+      escala_cacto -= 0.01
+        
+    
