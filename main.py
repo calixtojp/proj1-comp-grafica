@@ -39,8 +39,6 @@ def main():
   #configurando o teclado
   glfw.set_key_callback(window,ut.key_event)
 
-
-
   #Loop principal que efetivamente mostra a janela
   while not glfw.window_should_close(window):
 

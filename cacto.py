@@ -13,8 +13,6 @@ class Cacto:
     self.cilindro4 = Cilindro(0.15,   0.03)
     self.cilindro5 = Cilindro(0.15,   0.03)
 
-    
-
     #v = cilindro1.vertices['position']
     v = np.concatenate((self.cilindro1.vertices['position'], self.cilindro2.vertices['position']))
     v = np.concatenate((v, self.cilindro3.vertices['position']))
@@ -30,9 +28,6 @@ class Cacto:
 
     #tamanho total em gpu
     self.tam = self.c_tam*5
-
-
-
 
   def multiplica_matriz(self,a,b):
     m_a = a.reshape(4,4)

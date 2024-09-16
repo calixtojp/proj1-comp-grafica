@@ -40,14 +40,6 @@ class Chao:
 
     self.r_len = len(self.vertices['position'])
 
-
-  def multiplica_matriz(self,a,b):
-    m_a = a.reshape(4,4)
-    m_b = b.reshape(4,4)
-    m_c = np.dot(m_a,m_b)
-    c = m_c.reshape(1,16)
-    return c
-
   def desenhar(self, program, loc_color, pos):
         
     mat_translacao = get_matriz_translacao(0, -0.5, 0)
