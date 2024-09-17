@@ -12,6 +12,7 @@ homem_x = 0
 homem_y = 0
 nave_x = homem_x
 nave_y = homem_y
+rotacao_nave = 0
 
 def janela():
 
@@ -157,7 +158,7 @@ def get_matriz_escala(sx, sy, sz):
 
 
 def key_event(window,key,scancode,action,mods):
-    global malha, escala_cacto, homem_x, homem_y
+    global malha, escala_cacto, homem_x, homem_y, rotacao_nave
 
     if key == 80 and action == glfw.PRESS:
       malha = not malha
@@ -179,5 +180,7 @@ def key_event(window,key,scancode,action,mods):
 
     if key == 264 and action == glfw.REPEAT:
       homem_y -= 0.01
-        
+
+    if key == 65 and action == glfw.REPEAT:
+      rotacao_nave += 0.001
     

@@ -24,9 +24,9 @@ def main():
   print("Vou criar a nave")
   nave = Nave(0.6)
 
-  quantidade_esferas = 20
+  qntd_nuvens = 20
   intervalo_raios = (0.04, 0.19)
-  nuvem = Nuvem(quantidade_esferas, intervalo_raios, 1.2)
+  nuvem = Nuvem(qntd_nuvens, intervalo_raios, 1)
 
   #concatenando todos os vértices dos objetos a fim de passá-los para a gpu
   vertices = np.concatenate((chao.vertices['position'], cacto.vertices['position']))
@@ -49,6 +49,7 @@ def main():
   glfw.set_key_callback(window,ut.key_event)
 
   #Loop principal que efetivamente mostra a janela
+  rotacao = 0.001
   while not glfw.window_should_close(window):
 
     glfw.poll_events() #Leitura de eventos da janela
@@ -73,8 +74,9 @@ def main():
     pos_gpu += cacto.tam
     homem.desenhar(program, loc_color, pos_gpu)
     pos_gpu += homem.tam
-    nave.desenhar(program, loc_color, pos_gpu)
+    nave.desenhar(program, loc_color, pos_gpu, rotacao)
     pos_gpu += nave.tam
+    rotacao += 0.005
     nuvem.desenhar(program, loc_color, pos_gpu)
     pos_gpu += nuvem.tam
     
