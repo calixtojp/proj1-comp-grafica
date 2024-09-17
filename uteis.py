@@ -157,7 +157,7 @@ def get_matriz_escala(sx, sy, sz):
 def key_event(window,key,scancode,action,mods):
     global malha, escala_cacto, homem_x, homem_y
 
-    if key == 77 and action == glfw.PRESS:
+    if key == 80 and action == glfw.PRESS:
       malha = not malha
     
     if key == 88 and action == glfw.REPEAT:
