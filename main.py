@@ -9,10 +9,10 @@ from chao import Chao
 from cacto import Cacto
 from homem import Homem
 from nave import Nave
+from nuvem import Nuvem
 
 def main():
-   
-
+  
   #Iniciando algumas configurações, da janela e do programa
   window = ut.janela()
   program = ut.programa()
@@ -22,12 +22,17 @@ def main():
   cacto = Cacto()
   homem = Homem()
   print("Vou criar a nave")
-  nave = Nave()
+  nave = Nave(0.6)
+
+  quantidade_esferas = 20
+  intervalo_raios = (0.04, 0.19)
+  nuvem = Nuvem(quantidade_esferas, intervalo_raios, 1.2)
 
   #concatenando todos os vértices dos objetos a fim de passá-los para a gpu
   vertices = np.concatenate((chao.vertices['position'], cacto.vertices['position']))
   vertices = np.concatenate((vertices, homem.vertices['position']))
   vertices = np.concatenate((vertices, nave.vertices['position']))
+  vertices = np.concatenate((vertices, nuvem.vertices['position']))
 
   total_vertices = len(vertices)
   merged_vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
@@ -62,15 +67,16 @@ def main():
 
 
     pos_gpu = 0
-    # chao.desenhar(program, loc_color, pos_gpu)
+    chao.desenhar(program, loc_color, pos_gpu)
     pos_gpu += chao.tam
-    # cacto.desenhar(program, loc_color, pos_gpu)
+    cacto.desenhar(program, loc_color, pos_gpu)
     pos_gpu += cacto.tam
-    # homem.desenhar(program, loc_color, pos_gpu)
+    homem.desenhar(program, loc_color, pos_gpu)
     pos_gpu += homem.tam
     nave.desenhar(program, loc_color, pos_gpu)
     pos_gpu += nave.tam
-
+    nuvem.desenhar(program, loc_color, pos_gpu)
+    pos_gpu += nuvem.tam
     
     glfw.swap_buffers(window)
 

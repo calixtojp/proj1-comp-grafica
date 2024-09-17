@@ -9,22 +9,39 @@ import uteis as ut
 PI = 3.141592 
 
 class Nave:
-  def __init__(self):
+  def __init__(self, tamanho):
 
-    # self.raio_esfera_central = 0.1
-    # self.raio_cilindro_central = 0.3
-    # self.raio_cilindro_externo = 0.7
-    # self.altura_cilindro_central = 0.2
-    # self.altura_cilindro_externo = 0.2
+    self.raio_esfera_central = 0.1
+    self.raio_cilindro_central = 0.5
+    self.raio_cilindro_externo = 0.9
+    self.altura_cilindro_central = 0.15
+    self.altura_cilindro_externo = 0.1
 
-    self.esfera_central = esfera.Esfera(0.3)#vermelho
-    self.cilindro_central = cilindro.Cilindro(0.15, 0.5)#azul
-    self.cilindro_externo = cilindro.Cilindro(0.1, 0.9)#verde
+    #vermelho
+    self.esfera_central = esfera.Esfera(0.3*tamanho)
+
+    #azul
+    self.cilindro_central = cilindro.Cilindro(
+      self.altura_cilindro_central*tamanho,
+      self.raio_cilindro_central*tamanho)
+    
+    #verde
+    self.cilindro_externo = cilindro.Cilindro(
+      self.altura_cilindro_externo*tamanho,
+      self.raio_cilindro_externo*tamanho)
+    
+    # #amarelo
+    # self.qtd_esferas_contorno = 4
+    # self.esferas_contorno = []
+    # for i in range(self.qtd_esferas_contorno):
+    #   self.esferas_contorno.append(esfera.Esfera((self.raio_cilindro_externo-self.raio_cilindro_central)*(1/6)*tamanho))
 
     # v = np.concatenate((self.cilindro_central.vertices['position'], self.cilindro_externo.vertices['position']))
 
     v = np.concatenate((self.esfera_central.vertices['position'], self.cilindro_central.vertices['position']))
     v = np.concatenate((v, self.cilindro_externo.vertices['position']))
+    # for i in range(self.qtd_esferas_contorno):
+    #   v = np.concatenate((v, self.esferas_contorno[i].vertices['position']))
 
     total_vertices = len(v)
     self.vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
@@ -49,6 +66,16 @@ class Nave:
   def desenhar(self, program, loc_color, pos):
     pos_atual = pos
 
+    pos_esfera_central_x = -0.5
+    pos_esfera_central_y = 0.5
+    pos_esfera_central_z = 0
+
+    angulo_cilindros_y = math.pi / 1.8
+    angulo_cilindros_x = 0
+    angulo_cilindros_z = math.pi / 2
+
+
+
     #----------------------Desenhando a esfera central----------------------------#
     # Criação das matrizes de rotação (se necessário)
     mat_rotation_x = ut.get_matriz_rotacao_x(0)
@@ -56,7 +83,7 @@ class Nave:
     mat_rotation_z = ut.get_matriz_rotacao_z(0)
 
     # Translação
-    mat_translation = ut.get_matriz_translacao(0, 0, 0)
+    mat_translation = ut.get_matriz_translacao(-0.5, 0.54, 0)
 
     # Aplicando transformações
     mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
@@ -68,20 +95,23 @@ class Nave:
     glUniformMatrix4fv(loc, 1, GL_TRUE, mat_transform)
 
     # Pintando a esfera de vermelho
-    glUniform4f(loc_color, 1.0, 0.0, 0.0, 1.0)  # vermelho
+    glUniform4f(loc_color, 1, 0.0, 0.0, 1.0)  # vermelho
 
     # Desenhando a esfera usando GL_TRIANGLES
     glDrawArrays(GL_TRIANGLES, pos_atual, len(self.esfera_central.vertices))
 
     pos_atual += len(self.esfera_central.vertices)  # Atualizando a posição atual da GPU
+
+
     #----------------------Desenhando o cilindro interno/central----------------------------#
+
     #rotações
-    mat_rotation_x = ut.get_matriz_rotacao_x(0)
-    mat_rotation_y = ut.get_matriz_rotacao_y(2)
-    mat_rotation_z = ut.get_matriz_rotacao_z(math.pi / 2)
+    mat_rotation_x = ut.get_matriz_rotacao_x(angulo_cilindros_x)
+    mat_rotation_y = ut.get_matriz_rotacao_y(angulo_cilindros_y)
+    mat_rotation_z = ut.get_matriz_rotacao_z(angulo_cilindros_z)
 
     #translação
-    mat_translation = ut.get_matriz_translacao(0, 0, 0)
+    mat_translation = ut.get_matriz_translacao(-0.5, 0.5, 0)
 
     #aplicando transformações
     mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
@@ -99,14 +129,15 @@ class Nave:
     glDrawArrays(GL_TRIANGLES, pos_atual, len(self.cilindro_central.vertices))
     pos_atual += len(self.cilindro_central.vertices) #atualizando a posição atual da GPU
 
+
     #----------------------Desenhando o cilindro externo----------------------------#
     #rotações
-    mat_rotation_x = ut.get_matriz_rotacao_x(0)
-    mat_rotation_y = ut.get_matriz_rotacao_y(2)
-    mat_rotation_z = ut.get_matriz_rotacao_z(math.pi / 2)
+    mat_rotation_x = ut.get_matriz_rotacao_x(angulo_cilindros_x)
+    mat_rotation_y = ut.get_matriz_rotacao_y(angulo_cilindros_y)
+    mat_rotation_z = ut.get_matriz_rotacao_z(angulo_cilindros_z)
 
     #translação
-    mat_translation = ut.get_matriz_translacao(0, 0, 0)
+    mat_translation = ut.get_matriz_translacao(-0.5, 0.5, 0)
 
     #aplicando transformações
     mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
@@ -123,3 +154,30 @@ class Nave:
     #desenhando
     glDrawArrays(GL_TRIANGLES, pos_atual, len(self.cilindro_externo.vertices))
     pos_atual += len(self.cilindro_externo.vertices) #atualizando a posição atual da GPU
+
+
+    #----------------------Desenhando esferas do contorno--------------#
+    # # Criação das matrizes de rotação (se necessário)
+    # mat_rotation_x = ut.get_matriz_rotacao_x(0)
+    # mat_rotation_y = ut.get_matriz_rotacao_y(0)
+    # mat_rotation_z = ut.get_matriz_rotacao_z(0)
+
+    # # Translação
+    # mat_translation = ut.get_matriz_translacao(-0.5, 0.54, 0)
+
+    # # Aplicando transformações
+    # mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
+    # mat_transform = self.multiplica_matriz(mat_rotation_z, mat_transform)
+    # mat_transform = self.multiplica_matriz(mat_translation, mat_transform)
+
+    # # A matriz de transformação é passada para o shader
+    # loc = glGetUniformLocation(program, "mat_transformation")
+    # glUniformMatrix4fv(loc, 1, GL_TRUE, mat_transform)
+
+    # # Pintando a esfera de vermelho
+    # glUniform4f(loc_color, 1, 0.0, 0.0, 1.0)  # vermelho
+
+    # # Desenhando a esfera usando GL_TRIANGLES
+    # glDrawArrays(GL_TRIANGLES, pos_atual, len(self.esfera_central.vertices))
+
+    # pos_atual += len(self.esfera_central.vertices)  # Atualizando a posição atual da GPU

@@ -1,4 +1,4 @@
-from lua import Lua
+from nuvem import Lua
 from OpenGL.GL import *
 import numpy as np
 import math

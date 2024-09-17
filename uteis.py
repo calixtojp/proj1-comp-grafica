@@ -10,6 +10,8 @@ malha = False
 escala_cacto = 1
 homem_x = 0
 homem_y = 0
+nave_x = homem_x
+nave_y = homem_y
 
 def janela():
 
