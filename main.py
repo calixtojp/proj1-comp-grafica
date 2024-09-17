@@ -8,6 +8,7 @@ import uteis as ut
 from chao import Chao
 from cacto import Cacto
 from homem import Homem
+from nave import Nave
 
 def main():
    
@@ -20,10 +21,13 @@ def main():
   chao = Chao()
   cacto = Cacto()
   homem = Homem()
+  print("Vou criar a nave")
+  nave = Nave()
 
   #concatenando todos os vértices dos objetos a fim de passá-los para a gpu
   vertices = np.concatenate((chao.vertices['position'], cacto.vertices['position']))
   vertices = np.concatenate((vertices, homem.vertices['position']))
+  vertices = np.concatenate((vertices, nave.vertices['position']))
 
   total_vertices = len(vertices)
   merged_vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
@@ -38,8 +42,6 @@ def main():
 
   #configurando o teclado
   glfw.set_key_callback(window,ut.key_event)
-
-
 
   #Loop principal que efetivamente mostra a janela
   while not glfw.window_should_close(window):
@@ -60,12 +62,14 @@ def main():
 
 
     pos_gpu = 0
-    chao.desenhar(program, loc_color, pos_gpu)
+    # chao.desenhar(program, loc_color, pos_gpu)
     pos_gpu += chao.tam
-    cacto.desenhar(program, loc_color, pos_gpu)
+    # cacto.desenhar(program, loc_color, pos_gpu)
     pos_gpu += cacto.tam
-    homem.desenhar(program, loc_color, pos_gpu)
+    # homem.desenhar(program, loc_color, pos_gpu)
     pos_gpu += homem.tam
+    nave.desenhar(program, loc_color, pos_gpu)
+    pos_gpu += nave.tam
 
     
     glfw.swap_buffers(window)

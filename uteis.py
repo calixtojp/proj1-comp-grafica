@@ -5,6 +5,12 @@ import numpy as np
 import math
 import random
 
+
+malha = False
+escala_cacto = 1
+homem_x = 0
+homem_y = 0
+
 def janela():
 
   glfw.init()
@@ -147,10 +153,6 @@ def get_matriz_escala(sx, sy, sz):
 #https://www.glfw.org/docs/3.3/group__keys.html
 
 
-malha = False
-escala_cacto = 1
-homem_x = 0
-homem_y = 0
 
 def key_event(window,key,scancode,action,mods):
     global malha, escala_cacto, homem_x, homem_y
