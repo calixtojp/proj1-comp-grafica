@@ -6,6 +6,7 @@ import math
 PI = 3.141592 
 
 class Cilindro:
+  #Cria um cilindro a partir de uma altura h e um raio r
   def __init__(self, h, r):
 
     self.h = h
@@ -23,8 +24,9 @@ class Cilindro:
 
     self.d = 0
 
-  #Entrada: angulo de t, altura h, raio r
+  # Entrada: angulo de t, altura h, raio r
   # Saida: coordenadas no cilindro
+  # Trata a conversão de coordenadas polares para cartesianas
   def CoordCilindro(self, t, h, r):
     x = r * math.cos(t)
     y = r * math.sin(t)
@@ -33,13 +35,12 @@ class Cilindro:
 
 
   def cria_cilindro(self):
-    # vamos gerar um conjunto de vertices representantes poligonos
-    # para a superficie do cilindro.
-    # cada poligono eh representado por dois triangulos
+    # vamos gerar um conjunto de vertices representantes polígonos
+    # para a superfície do cilindro.
+    # cada poligono é representado por dois triângulos
 
     vertices_list = []
-    for j in range(0,self.num_stacks): # para cada stack (latitude)
-        
+    for j in range(0,self.num_stacks): # para cada stack (latitude)   
       for i in range(0,self.num_sectors): # para cada sector (longitude) 
           
         u = i * self.sector_step # angulo setor
@@ -72,15 +73,16 @@ class Cilindro:
         vertices_list.append(p2)
         
         if v == 0:
-            vertices_list.append(p0)
-            vertices_list.append(p2)
-            vertices_list.append(self.CoordCilindro(0, v, 0))
+          vertices_list.append(p0)
+          vertices_list.append(p2)
+          vertices_list.append(self.CoordCilindro(0, v, 0))
         if vn == self.h:
-            #faz um triangulo a partir do mesmo angulo u, mas com as alturas em h = vn
-            vertices_list.append(p1)
-            vertices_list.append(p3)
-            vertices_list.append(self.CoordCilindro(0, vn, 0))
+          #faz um triangulo a partir do mesmo angulo u, mas com as alturas em h = vn
+          vertices_list.append(p1)
+          vertices_list.append(p3)
+          vertices_list.append(self.CoordCilindro(0, vn, 0))
 
+    #coloca todos os vértices em um único vetor
     total_vertices = len(vertices_list)
     self.vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
     self.vertices['position'] = np.array(vertices_list)

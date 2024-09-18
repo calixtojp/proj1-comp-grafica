@@ -7,6 +7,7 @@ import uteis as ut
 
 class Homem:  
   def __init__(self):
+    #Define os cilindros que compõem o homem
     self.cilindro1 = Cilindro(0.25,   0.1)
     self.cilindro2 = Cilindro(0.3,   0.04)
     self.cilindro3 = Cilindro(0.3,   0.04)
@@ -14,6 +15,8 @@ class Homem:
     self.cilindro5 = Cilindro(0.25,   0.03)
     self.cilindro6 = Cilindro(0.1,   0.08)
 
+    
+    #concatena em um vetor só
     v = np.concatenate((self.cilindro1.vertices['position'], self.cilindro2.vertices['position']))
     v = np.concatenate((v, self.cilindro3.vertices['position']))
     v = np.concatenate((v, self.cilindro4.vertices['position']))
@@ -39,6 +42,8 @@ class Homem:
     return c
 
   def desenhar(self, program, loc_color, pos):
+    # Coordena os cilindros para formar o desenho de um homem 
+    # e trata as transformações e eventos do teclado
 
 
     #----------------------Desenhando o tronco do homem----------------------------#

@@ -10,6 +10,7 @@ PI = 3.141592
 
 class Nave:
   def __init__(self, tamanho):
+    #Definindo os objetos que compõe a nava
 
     self.raio_esfera_central = 0.1
     self.raio_cilindro_central = 0.5
@@ -29,10 +30,13 @@ class Nave:
     
     self.qtd_cilindros_abducao = 10
     self.cilindros_abducao = []
-    #primeiro criado o mais de dentro e dps o mais de fora
+
+    #primeiro cria o cilindro interno e depois o externo
     for i in range(self.qtd_cilindros_abducao):
       self.cilindros_abducao.append(cilindro.Cilindro(1.38, (self.raio_esfera_central*(0.3))+(i*0.015)))
 
+
+    #concatena os objetos
     v = np.concatenate((self.esfera_central.vertices['position'], self.cilindro_central.vertices['position']))
     v = np.concatenate((v, self.cilindro_externo.vertices['position']))
     for i in range(self.qtd_cilindros_abducao):
@@ -42,6 +46,7 @@ class Nave:
     self.vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
     self.vertices['position'] = v
 
+    #calcula o tamanho total da nave
     self.tam = len(self.esfera_central.vertices) + len(self.cilindro_central.vertices) + len(self.cilindro_externo.vertices)
 
 
@@ -54,6 +59,8 @@ class Nave:
   
 
   def desenhar(self, program, loc_color, pos):
+    #Coordena as partes da nave para desenhar a nave em si
+    
     pos_atual = pos
 
     pos_esfera_central_x = -0.5
@@ -137,13 +144,13 @@ class Nave:
     glUniformMatrix4fv(loc, 1, GL_TRUE, mat_transform)
 
     #pintando
-    glUniform4f(loc_color, 0.17, 0.17, 0.17, 1)#preto
+    glUniform4f(loc_color, 0.17, 0.17, 0.17, 1) #preto
 
     #desenhando
     glDrawArrays(GL_TRIANGLES, pos_atual, len(self.cilindro_externo.vertices))
     pos_atual += len(self.cilindro_externo.vertices) #atualizando a posição atual da GPU
 
-    #----------------------Desenhando Cilindro abdução--------------# 153 255 153 | 0.6 1 0.6
+    #----------------------Desenhando Cilindro abdução--------------# 
     transparencia_inicial = 0.7
     passo = transparencia_inicial / (self.qtd_cilindros_abducao)
     for cilindro_at in range(self.qtd_cilindros_abducao):#desenhar os cilindros

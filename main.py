@@ -63,7 +63,7 @@ def main():
     else:
       glPolygonMode(GL_FRONT_AND_BACK,GL_FILL)
 
-
+    #desenha os objetos de acordo com suas posições iniciais na GPU
     pos_gpu = 0
     chao.desenhar(program, loc_color, pos_gpu)
     pos_gpu += chao.tam
@@ -76,6 +76,7 @@ def main():
     nuvem.desenhar(program, loc_color, pos_gpu)
     pos_gpu += nuvem.tam
     
+    #Termina o programa
     glfw.swap_buffers(window)
 
   glfw.terminate()

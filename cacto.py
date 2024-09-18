@@ -7,13 +7,14 @@ import uteis as ut
 
 class Cacto:  
   def __init__(self):
+    #Cria os 5 cilindros que compõem o cacto
     self.cilindro1 = Cilindro(0.5,   0.1)
     self.cilindro2 = Cilindro(0.2,   0.05)
     self.cilindro3 = Cilindro(0.2,   0.05)
     self.cilindro4 = Cilindro(0.15,   0.03)
     self.cilindro5 = Cilindro(0.15,   0.03)
 
-    #v = cilindro1.vertices['position']
+    #concatena os vértices de cada cilindro em um vetor só
     v = np.concatenate((self.cilindro1.vertices['position'], self.cilindro2.vertices['position']))
     v = np.concatenate((v, self.cilindro3.vertices['position']))
     v = np.concatenate((v, self.cilindro4.vertices['position']))
@@ -37,6 +38,7 @@ class Cacto:
     return c
 
   def desenhar(self, program, loc_color, pos):
+    #função que trata de coordenar os 5 cilindros do cacto para formar o cacto de fato
 
     #matriz de escala para o cacto todo
     mat_escala = ut.get_matriz_escala(ut.escala_cacto, ut.escala_cacto, ut.escala_cacto)

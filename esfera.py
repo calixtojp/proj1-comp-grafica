@@ -6,6 +6,7 @@ import math
 PI = 3.141592
 
 class Esfera:
+    #Cria uma esfera a partir de um tamanho de raio qualquer r
     def __init__(self, r):
         self.r = r
         self.num_sectors = 32
@@ -20,22 +21,6 @@ class Esfera:
         self.tam = len(self.vertices)
 
         self.d = 0
-
-
-    #Entrada: angulo de t, altura h, raio r
-    # Saida: coordenadas no cilindro
-    def CoordCilindro(self, t, h, r):
-        x = r * math.cos(t)
-        y = r * math.sin(t)
-        z = h
-        return (x,y,z)
-
-    def multiplica_matriz(self,a,b):
-        m_a = a.reshape(4,4)
-        m_b = b.reshape(4,4)
-        m_c = np.dot(m_a,m_b)
-        c = m_c.reshape(1,16)
-        return c
 
     def cria_esfera(self):
         vertices_list = []
@@ -78,6 +63,7 @@ class Esfera:
                 vertices_list.append((x2, y2, z2))
                 vertices_list.append((x2_next, y2_next, z2))
 
+        #coloca todos os vértices em um único vetor
         total_vertices = len(vertices_list)
         self.vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
         self.vertices['position'] = np.array(vertices_list)
