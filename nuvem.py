@@ -25,7 +25,7 @@ class Nuvem:
             if len(self.posicoes) > 0:  # Para as esferas subsequentes
 
                 P_x += random.uniform(R_anterior*espalhamento*(-1), R_anterior*espalhamento*(1))
-                P_y += random.uniform(R_anterior*espalhamento*(-0.5), R_anterior*espalhamento*(0.5))
+                P_y += random.uniform(R_anterior*espalhamento*(-0.3), R_anterior*espalhamento*(0.3))
                 # P_z += random.uniform(lim_inferior, lim_superior)
 
             self.posicoes.append((P_x, P_y, P_z))

@@ -20,9 +20,9 @@ def main():
   homem = Homem()
   nave = Nave(0.6)
 
-  qntd_nuvens = 20
-  intervalo_raios = (0.04, 0.19)
-  nuvem = Nuvem(qntd_nuvens, intervalo_raios, 1)
+  qntd_nuvens = 13
+  intervalo_raios = (0.1, 0.21)
+  nuvem = Nuvem(qntd_nuvens, intervalo_raios, 1.3)
 
   #concatenando todos os vértices dos objetos a fim de passá-los para a gpu
   vertices = np.concatenate((chao.vertices['position'], cacto.vertices['position']))

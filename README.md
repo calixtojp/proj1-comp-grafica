@@ -7,11 +7,13 @@
 ## Cena
 A cena desenvolvida é a de um disco voador abduzindo um homem no deserto. Os objetos da cena são: nuvem, chão com grama, cacto, homem e o disco voador.
 
-A interatividade da cena é a seguinte: 
-- Aperte 'a' para rotacionar o disco voador no sentido horário e 's' para rotacionar no anti-horário.
-- Aperte 'z' para diminuir o tamanho do cacto e 'x' para aumentar.
-- Utilize as setas do teclado para movimentar o homem, para cima, baixo, esquerda e direita de acordo com as respectivas setas.
-- Aperte 'p' para ativar/desativar a visualização em malha
+A interatividade da cena é acontece quando se aperta os botões: 
+- **'a'**: para **rotacionar** o disco voador no sentido **horário** 
+- **'s'**: para **rotacionar** no **anti-horário**.
+- **'z'**: para **diminuir** o tamanho do cacto e 
+- **'x'**: para **aumentar**.
+- **setas do teclado**: para **movimentar** o homem, para **cima**, **baixo**, **esquerda** e **direita** de acordo com as respectivas setas.
+- **'p'**: para ativar/desativar a **visualização em malha**
  
 ## Dependências:
 
