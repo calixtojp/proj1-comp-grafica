@@ -25,4 +25,5 @@ A interatividade da cena é acontece quando se aperta os botões:
 ## Como rodar:
 - !python3 main.py
 
-
+## Estrutura do código
+![Estrutura do código](https://github.com/calixtojp/proj1-comp-grafica/blob/main/estrutura.jpg)
