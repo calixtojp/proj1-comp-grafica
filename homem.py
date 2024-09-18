@@ -14,7 +14,6 @@ class Homem:
     self.cilindro5 = Cilindro(0.25,   0.03)
     self.cilindro6 = Cilindro(0.1,   0.08)
 
-    #v = self.cilindro1.vertices['position']
     v = np.concatenate((self.cilindro1.vertices['position'], self.cilindro2.vertices['position']))
     v = np.concatenate((v, self.cilindro3.vertices['position']))
     v = np.concatenate((v, self.cilindro4.vertices['position']))
@@ -43,7 +42,6 @@ class Homem:
 
 
     #----------------------Desenhando o tronco do homem----------------------------#
-
     mat_rotation_x = ut.get_matriz_rotacao_x(0)
     mat_rotation_y = ut.get_matriz_rotacao_y(2)
     mat_rotation_z = ut.get_matriz_rotacao_z(math.pi / 2)
@@ -62,8 +60,8 @@ class Homem:
     #Desenhando
     glDrawArrays(GL_TRIANGLES, pos, self.c_tam) 
 
-    #----------------------Desenhando a perna esquerda do homem----------------------------#
 
+    #----------------------Desenhando a perna esquerda do homem----------------------------#
     mat_rotation_x = ut.get_matriz_rotacao_x(0)
     mat_rotation_y = ut.get_matriz_rotacao_y(1.6)
     mat_rotation_z = ut.get_matriz_rotacao_z(math.pi / 2)
@@ -82,8 +80,8 @@ class Homem:
     #Desenhando
     glDrawArrays(GL_TRIANGLES, pos+(self.c_tam*1), self.c_tam) 
 
-    #----------------------Desenhando a perna direita do homem----------------------------#
 
+    #----------------------Desenhando a perna direita do homem----------------------------#
     mat_rotation_x = ut.get_matriz_rotacao_x(0)
     mat_rotation_y = ut.get_matriz_rotacao_y(1.6)
     mat_rotation_z = ut.get_matriz_rotacao_z(math.pi / 2)
@@ -102,8 +100,8 @@ class Homem:
     #Desenhando
     glDrawArrays(GL_TRIANGLES, pos+(self.c_tam*2), self.c_tam) 
 
-    #----------------------Desenhando o braco direito do homem----------------------------#
 
+    #----------------------Desenhando o braco direito do homem----------------------------#
     mat_rotation_x = ut.get_matriz_rotacao_x(0)
     mat_rotation_y = ut.get_matriz_rotacao_y(2)
     mat_rotation_z = ut.get_matriz_rotacao_z(-0.5)
@@ -122,8 +120,8 @@ class Homem:
     #Desenhando
     glDrawArrays(GL_TRIANGLES, pos+(self.c_tam*3), self.c_tam) 
 
-    #----------------------Desenhando o braco esquerdo do homem----------------------------#
 
+    #----------------------Desenhando o braco esquerdo do homem----------------------------#
     mat_rotation_x = ut.get_matriz_rotacao_x(0)
     mat_rotation_y = ut.get_matriz_rotacao_y(1.7)
     mat_rotation_z = ut.get_matriz_rotacao_z(0.5)
@@ -142,8 +140,8 @@ class Homem:
     #Desenhando
     glDrawArrays(GL_TRIANGLES, pos+(self.c_tam*4), self.c_tam) 
 
-     #----------------------Desenhando a cabeca do homem----------------------------#
 
+     #----------------------Desenhando a cabeca do homem----------------------------#
     mat_rotation_x = ut.get_matriz_rotacao_x(0)
     mat_rotation_y = ut.get_matriz_rotacao_y(1.9)
     mat_rotation_z = ut.get_matriz_rotacao_z(math.pi / 2)

@@ -15,7 +15,6 @@ nave_y = homem_y
 rotacao_nave = 0
 
 def janela():
-
   glfw.init()
   glfw.window_hint(glfw.VISIBLE, glfw.FALSE);
   window = glfw.create_window(700, 700, "Esfera", None, None)
@@ -26,7 +25,6 @@ def janela():
   glEnable(GL_DEPTH_TEST) ### importante para 3D
 
   return window
-
 
 def programa():
   vertex_code = """
@@ -78,7 +76,6 @@ def programa():
     
   # Make program the default program
   glUseProgram(program)
-
   return program
 
 def passar_para_gpu(program, vertices):
@@ -86,7 +83,6 @@ def passar_para_gpu(program, vertices):
   buffer = glGenBuffers(1)
   # Make this buffer the default one
   glBindBuffer(GL_ARRAY_BUFFER, buffer)
-
 
   # Upload data
   glBufferData(GL_ARRAY_BUFFER, vertices.nbytes, vertices, GL_DYNAMIC_DRAW)
@@ -143,7 +139,6 @@ def get_matriz_translacao(tx,ty,tz):
   return mat_translacao
 
 def get_matriz_escala(sx, sy, sz):
-    
   mat_escala = np.array([       sx,   0.0,    0.0, 0.0, 
                                 0.0,   sy,    0.0, 0.0, 
                                 0.0,   0.0,   sz,  0.0, 
@@ -152,35 +147,33 @@ def get_matriz_escala(sx, sy, sz):
   return mat_escala    
 
 
-
-#https://www.glfw.org/docs/3.3/group__keys.html
-
-
-
 def key_event(window,key,scancode,action,mods):
     global malha, escala_cacto, homem_x, homem_y, rotacao_nave
 
-    if key == 80 and action == glfw.PRESS:
+    if key == 80 and action == glfw.PRESS: # tecla P
       malha = not malha
     
-    if key == 88 and action == glfw.REPEAT:
+    if key == 88 and action == glfw.REPEAT: # tecla X
       escala_cacto += 0.01
 
-    if key == 90 and action == glfw.REPEAT:
+    if key == 90 and action == glfw.REPEAT: # tecla Z
       escala_cacto -= 0.01
 
-    if key == 262 and action == glfw.REPEAT:
+    if key == 262 and action == glfw.REPEAT: # tecla seta direita
       homem_x += 0.01
 
-    if key == 263 and action == glfw.REPEAT:
+    if key == 263 and action == glfw.REPEAT: # tecla seta esquerda 
       homem_x -= 0.01
 
-    if key == 265 and action == glfw.REPEAT:
+    if key == 265 and action == glfw.REPEAT: # tecla seta cima
       homem_y += 0.01
 
-    if key == 264 and action == glfw.REPEAT:
+    if key == 264 and action == glfw.REPEAT: # tecla seta baixo
       homem_y -= 0.01
 
-    if key == 65 and action == glfw.REPEAT:
-      rotacao_nave += 0.001
+    if key == 65 and action == glfw.REPEAT: # tecla A
+      rotacao_nave += 0.01
+
+    if key == 83 and action == glfw.REPEAT: # tecla S
+      rotacao_nave -= 0.01
     

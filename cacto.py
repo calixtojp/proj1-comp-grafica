@@ -43,7 +43,6 @@ class Cacto:
 
 
     #----------------------Desenhando o tronco central do cacto----------------------------#
-
     mat_rotation_x = ut.get_matriz_rotacao_x(0)
     mat_rotation_y = ut.get_matriz_rotacao_y(2)
     mat_rotation_z = ut.get_matriz_rotacao_z(math.pi / 2)
@@ -63,6 +62,7 @@ class Cacto:
     #Desenhando
     glDrawArrays(GL_TRIANGLES, pos, self.c_tam) 
 
+
     #----------------------Desenhando o tronco vertical a direita do cacto----------------------------#
     mat_rotation_x = ut.get_matriz_rotacao_x(0)
     mat_rotation_y = ut.get_matriz_rotacao_y(2)
@@ -79,11 +79,11 @@ class Cacto:
     loc = glGetUniformLocation(program, "mat_transformation")
     glUniformMatrix4fv(loc, 1, GL_TRUE, mat_transform)
 
-
     #Pintando
     glUniform4f(loc_color, 0.2, 0.4, 0.16, 1)
     #Desenhando
     glDrawArrays(GL_TRIANGLES, pos+(self.c_tam*1), self.c_tam)
+
 
     #----------------------Desenhando o tronco vertical a esquerda do cacto----------------------------#
     mat_rotation_x = ut.get_matriz_rotacao_x(0)
@@ -101,11 +101,11 @@ class Cacto:
     loc = glGetUniformLocation(program, "mat_transformation")
     glUniformMatrix4fv(loc, 1, GL_TRUE, mat_transform)
 
-
     #Pintando
     glUniform4f(loc_color, 0.2, 0.4, 0.16, 1)
     #Desenhando
     glDrawArrays(GL_TRIANGLES, pos+(self.c_tam*2), self.c_tam)             
+
 
     #----------------------Desenhando o tronco horizontal a esquerda do cacto----------------------------#
     mat_rotation_x = ut.get_matriz_rotacao_x(0)
@@ -123,11 +123,11 @@ class Cacto:
     loc = glGetUniformLocation(program, "mat_transformation")
     glUniformMatrix4fv(loc, 1, GL_TRUE, mat_transform)
 
-
     #Pintando
     glUniform4f(loc_color, 0.2, 0.4, 0.16, 1)
     #Desenhando
     glDrawArrays(GL_TRIANGLES, pos+(self.c_tam*3), self.c_tam)    
+
 
     #----------------------Desenhando o tronco horizontal à esquerda do cacto----------------------------#
     mat_rotation_x = ut.get_matriz_rotacao_x(0)
