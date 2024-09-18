@@ -161,6 +161,15 @@ def get_matriz_escala(sx, sy, sz):
 
   return mat_escala    
 
+def multiplica_matriz(a,b):
+    #multiplica matrizes 4x4
+
+    m_a = a.reshape(4,4)
+    m_b = b.reshape(4,4)
+    m_c = np.dot(m_a,m_b)
+    c = m_c.reshape(1,16)
+    return c
+
 
 def key_event(window,key,scancode,action,mods):
     #Trata de interações da cena com o teclado

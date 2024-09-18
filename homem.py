@@ -33,14 +33,6 @@ class Homem:
     #tamanho total em gpu
     self.tam = self.c_tam*6
 
-
-  def multiplica_matriz(self,a,b):
-    m_a = a.reshape(4,4)
-    m_b = b.reshape(4,4)
-    m_c = np.dot(m_a,m_b)
-    c = m_c.reshape(1,16)
-    return c
-
   def desenhar(self, program, loc_color, pos):
     # Coordena os cilindros para formar o desenho de um homem 
     # e trata as transformações e eventos do teclado
@@ -52,9 +44,9 @@ class Homem:
     mat_rotation_z = ut.get_matriz_rotacao_z(math.pi / 2)
     mat_translation = ut.get_matriz_translacao(-0.5+ut.homem_x, -0.6+ut.homem_y, 0)
 
-    mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
-    mat_transform = self.multiplica_matriz(mat_rotation_z, mat_transform)
-    mat_transform = self.multiplica_matriz(mat_translation, mat_transform)
+    mat_transform = ut.multiplica_matriz(mat_rotation_x, mat_rotation_y)
+    mat_transform = ut.multiplica_matriz(mat_rotation_z, mat_transform)
+    mat_transform = ut.multiplica_matriz(mat_translation, mat_transform)
 
     # a matriz de transformação é passada para o shader
     loc = glGetUniformLocation(program, "mat_transformation")
@@ -72,9 +64,9 @@ class Homem:
     mat_rotation_z = ut.get_matriz_rotacao_z(math.pi / 2)
     mat_translation = ut.get_matriz_translacao(-0.56+ut.homem_x, -0.9+ut.homem_y, 0)
 
-    mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
-    mat_transform = self.multiplica_matriz(mat_rotation_z, mat_transform)
-    mat_transform = self.multiplica_matriz(mat_translation, mat_transform)
+    mat_transform = ut.multiplica_matriz(mat_rotation_x, mat_rotation_y)
+    mat_transform = ut.multiplica_matriz(mat_rotation_z, mat_transform)
+    mat_transform = ut.multiplica_matriz(mat_translation, mat_transform)
 
     # a matriz de transformação é passada para o shader
     loc = glGetUniformLocation(program, "mat_transformation")
@@ -92,9 +84,9 @@ class Homem:
     mat_rotation_z = ut.get_matriz_rotacao_z(math.pi / 2)
     mat_translation = ut.get_matriz_translacao(-0.44+ut.homem_x, -0.9+ut.homem_y, 0)
 
-    mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
-    mat_transform = self.multiplica_matriz(mat_rotation_z, mat_transform)
-    mat_transform = self.multiplica_matriz(mat_translation, mat_transform)
+    mat_transform = ut.multiplica_matriz(mat_rotation_x, mat_rotation_y)
+    mat_transform = ut.multiplica_matriz(mat_rotation_z, mat_transform)
+    mat_transform = ut.multiplica_matriz(mat_translation, mat_transform)
 
     # a matriz de transformação é passada para o shader
     loc = glGetUniformLocation(program, "mat_transformation")
@@ -112,9 +104,9 @@ class Homem:
     mat_rotation_z = ut.get_matriz_rotacao_z(-0.5)
     mat_translation = ut.get_matriz_translacao(-0.41+ut.homem_x, -0.45+ut.homem_y, 0)
 
-    mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
-    mat_transform = self.multiplica_matriz(mat_rotation_z, mat_transform)
-    mat_transform = self.multiplica_matriz(mat_translation, mat_transform)
+    mat_transform = ut.multiplica_matriz(mat_rotation_x, mat_rotation_y)
+    mat_transform = ut.multiplica_matriz(mat_rotation_z, mat_transform)
+    mat_transform = ut.multiplica_matriz(mat_translation, mat_transform)
 
     # a matriz de transformação é passada para o shader
     loc = glGetUniformLocation(program, "mat_transformation")
@@ -132,9 +124,9 @@ class Homem:
     mat_rotation_z = ut.get_matriz_rotacao_z(0.5)
     mat_translation = ut.get_matriz_translacao(-0.81+ut.homem_x, -0.58+ut.homem_y, 0)
 
-    mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
-    mat_transform = self.multiplica_matriz(mat_rotation_z, mat_transform)
-    mat_transform = self.multiplica_matriz(mat_translation, mat_transform)
+    mat_transform = ut.multiplica_matriz(mat_rotation_x, mat_rotation_y)
+    mat_transform = ut.multiplica_matriz(mat_rotation_z, mat_transform)
+    mat_transform = ut.multiplica_matriz(mat_translation, mat_transform)
 
     # a matriz de transformação é passada para o shader
     loc = glGetUniformLocation(program, "mat_transformation")
@@ -152,9 +144,9 @@ class Homem:
     mat_rotation_z = ut.get_matriz_rotacao_z(math.pi / 2)
     mat_translation = ut.get_matriz_translacao(-0.5+ut.homem_x, -0.35+ut.homem_y, -0.7)
 
-    mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
-    mat_transform = self.multiplica_matriz(mat_rotation_z, mat_transform)
-    mat_transform = self.multiplica_matriz(mat_translation, mat_transform)
+    mat_transform = ut.multiplica_matriz(mat_rotation_x, mat_rotation_y)
+    mat_transform = ut.multiplica_matriz(mat_rotation_z, mat_transform)
+    mat_transform = ut.multiplica_matriz(mat_translation, mat_transform)
 
     # a matriz de transformação é passada para o shader
     loc = glGetUniformLocation(program, "mat_transformation")

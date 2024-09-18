@@ -10,7 +10,7 @@ PI = 3.141592
 
 class Nave:
   def __init__(self, tamanho):
-    #Definindo os objetos que compõe a nava
+    #Definindo os objetos que compõe a nave
 
     self.raio_esfera_central = 0.1
     self.raio_cilindro_central = 0.5
@@ -48,14 +48,6 @@ class Nave:
 
     #calcula o tamanho total da nave
     self.tam = len(self.esfera_central.vertices) + len(self.cilindro_central.vertices) + len(self.cilindro_externo.vertices)
-
-
-  def multiplica_matriz(self,a,b):
-    m_a = a.reshape(4,4)
-    m_b = b.reshape(4,4)
-    m_c = np.dot(m_a,m_b)
-    c = m_c.reshape(1,16)
-    return c
   
 
   def desenhar(self, program, loc_color, pos):
@@ -82,9 +74,9 @@ class Nave:
     mat_translation = ut.get_matriz_translacao(-0.5, 0.54, 0)
 
     # Aplicando transformações
-    mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
-    mat_transform = self.multiplica_matriz(mat_rotation_z, mat_transform)
-    mat_transform = self.multiplica_matriz(mat_translation, mat_transform)
+    mat_transform = ut.multiplica_matriz(mat_rotation_x, mat_rotation_y)
+    mat_transform = ut.multiplica_matriz(mat_rotation_z, mat_transform)
+    mat_transform = ut.multiplica_matriz(mat_translation, mat_transform)
 
     # A matriz de transformação é passada para o shader
     loc = glGetUniformLocation(program, "mat_transformation")
@@ -109,9 +101,9 @@ class Nave:
     mat_translation = ut.get_matriz_translacao(-0.5, 0.48, 0)
 
     #aplicando transformações
-    mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
-    mat_transform = self.multiplica_matriz(mat_rotation_z, mat_transform)
-    mat_transform = self.multiplica_matriz(mat_translation, mat_transform)
+    mat_transform = ut.multiplica_matriz(mat_rotation_x, mat_rotation_y)
+    mat_transform = ut.multiplica_matriz(mat_rotation_z, mat_transform)
+    mat_transform = ut.multiplica_matriz(mat_translation, mat_transform)
 
     # a matriz de transformação é passada para o shader
     loc = glGetUniformLocation(program, "mat_transformation")
@@ -135,9 +127,9 @@ class Nave:
     mat_translation = ut.get_matriz_translacao(-0.5, 0.5, 0)
 
     #aplicando transformações
-    mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
-    mat_transform = self.multiplica_matriz(mat_rotation_z, mat_transform)
-    mat_transform = self.multiplica_matriz(mat_translation, mat_transform)
+    mat_transform = ut.multiplica_matriz(mat_rotation_x, mat_rotation_y)
+    mat_transform = ut.multiplica_matriz(mat_rotation_z, mat_transform)
+    mat_transform = ut.multiplica_matriz(mat_translation, mat_transform)
 
     # a matriz de transformação é passada para o shader
     loc = glGetUniformLocation(program, "mat_transformation")
@@ -166,9 +158,9 @@ class Nave:
       mat_translation = ut.get_matriz_translacao(-0.5, -0.9, 0)
 
       #aplicando transformações
-      mat_transform = self.multiplica_matriz(mat_rotation_x, mat_rotation_y)
-      mat_transform = self.multiplica_matriz(mat_rotation_z, mat_transform)
-      mat_transform = self.multiplica_matriz(mat_translation, mat_transform)
+      mat_transform = ut.multiplica_matriz(mat_rotation_x, mat_rotation_y)
+      mat_transform = ut.multiplica_matriz(mat_rotation_z, mat_transform)
+      mat_transform = ut.multiplica_matriz(mat_translation, mat_transform)
 
       # a matriz de transformação é passada para o shader
       loc = glGetUniformLocation(program, "mat_transformation")

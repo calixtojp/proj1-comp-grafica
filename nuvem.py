@@ -46,13 +46,6 @@ class Nuvem:
         # Guardar o tamanho total dos vértices para facilitar o desenho
         self.tam = total_vertices
 
-    def multiplica_matriz(self, a, b):
-        m_a = a.reshape(4, 4)
-        m_b = b.reshape(4, 4)
-        m_c = np.dot(m_a, m_b)
-        c = m_c.reshape(1, 16)
-        return c
-
     def desenhar(self, program, loc_color, pos):
         pos_atual = pos
         offset = 0  # Índice para percorrer os vértices da nuvem
