@@ -72,5 +72,4 @@ class Teclado:
 
 
         
-    glfw.set_key_callback(window,key_event)
-    glfw.set_cursor_pos_callback(window, mouse_event)
+    

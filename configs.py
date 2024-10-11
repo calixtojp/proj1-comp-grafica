@@ -93,10 +93,6 @@ class Configuracoes:
 
     def passar_para_gpu(self, program, item, modo):
         #função que passa os objetos ou as texturas para a GPU a partir de um programa a depender do modo escolhido
-        print(f"MODOOOOOOO ========================= {modo}")
-        print(type(item))
-        print(item.shape)
-        print("-------------------------------------------------------------------")
 
         #configurações padrão para passar os vértices
         shader_var = "position"
