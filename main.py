@@ -2,11 +2,7 @@ import glfw
 from OpenGL.GL import *
 import numpy as np
 import uteis as ut
-from chao import Chao
-from cacto import Cacto
-from homem import Homem
-from nave import Nave
-from nuvem import Nuvem
+from arvore import Arvore
 
 def main():
   
@@ -15,33 +11,29 @@ def main():
   program = ut.programa()
 
   #criando os objetos
-  chao = Chao()
-  cacto = Cacto()
-  homem = Homem()
-  nave = Nave(0.6)
-
-  qntd_nuvens = 13
-  intervalo_raios = (0.1, 0.21)
-  nuvem = Nuvem(qntd_nuvens, intervalo_raios, 1.3)
+  arv = Arvore()
+  
 
   #concatenando todos os vértices dos objetos a fim de passá-los para a gpu
-  vertices = np.concatenate((chao.vertices['position'], cacto.vertices['position']))
-  vertices = np.concatenate((vertices, homem.vertices['position']))
-  vertices = np.concatenate((vertices, nave.vertices['position']))
-  vertices = np.concatenate((vertices, nuvem.vertices['position']))
-
+  vertices = arv.vertices_list
   total_vertices = len(vertices)
   merged_vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
   merged_vertices['position'] = vertices
 
+  texture = arv.textures_coord_list
+  total_texture = len(texture)
+  merged_texture = np.zeros(total_texture, [("position", np.float32, 2)])
+  merged_texture['position'] = texture
+
   #passando todos os vértices pra gpu
-  ut.passar_para_gpu(program, merged_vertices)
+  ut.passar_para_gpu(program, merged_vertices, "vertices")
+  ut.passar_para_gpu(program, texture, "textura")
 
   #pegando a variável de cor do programa criado
   loc_color = glGetUniformLocation(program, "color")
 
   #configurando o teclado
-  glfw.set_key_callback(window,ut.key_event)
+  #glfw.set_key_callback(window,ut.key_event)
 
   #Loop principal que efetivamente mostra a janela
   while not glfw.window_should_close(window):
@@ -58,24 +50,23 @@ def main():
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
     
     #Switch entre visualização normal e de malha poligonal
-    if ut.malha:
+    if False:
       glPolygonMode(GL_FRONT_AND_BACK,GL_LINE)
     else:
       glPolygonMode(GL_FRONT_AND_BACK,GL_FILL)
 
     #desenha os objetos de acordo com suas posições iniciais na GPU
-    pos_gpu = 0
-    chao.desenhar(program, loc_color, pos_gpu)
-    pos_gpu += chao.tam
-    cacto.desenhar(program, loc_color, pos_gpu)
-    pos_gpu += cacto.tam
-    homem.desenhar(program, loc_color, pos_gpu)
-    pos_gpu += homem.tam
-    nave.desenhar(program, loc_color, pos_gpu)
-    pos_gpu += nave.tam
-    nuvem.desenhar(program, loc_color, pos_gpu)
-    pos_gpu += nuvem.tam
-    
+    arv.desenha_arvore(program)
+
+    #matrizes view e projection
+    mat_view = ut.view()
+    loc_view = glGetUniformLocation(program, "view")
+    glUniformMatrix4fv(loc_view, 1, GL_TRUE, mat_view)
+
+    mat_projection = ut.projection()
+    loc_projection = glGetUniformLocation(program, "projection")
+    glUniformMatrix4fv(loc_projection, 1, GL_TRUE, mat_projection)    
+        
     #Termina o programa
     glfw.swap_buffers(window)
 

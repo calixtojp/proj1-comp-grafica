@@ -4,14 +4,7 @@ import OpenGL.GL.shaders
 import numpy as np
 import math
 import random
-
-malha = False
-escala_cacto = 1
-homem_x = 0
-homem_y = 0
-nave_x = homem_x
-nave_y = homem_y
-rotacao_nave = 0
+import glm
 
 
 def janela():
@@ -19,7 +12,7 @@ def janela():
 
   glfw.init()
   glfw.window_hint(glfw.VISIBLE, glfw.FALSE);
-  window = glfw.create_window(700, 700, "Projeto 1", None, None)
+  window = glfw.create_window(1600, 12200, "Projeto 2", None, None)
   glfw.make_context_current(window)
   glfw.show_window(window)
 
@@ -34,16 +27,27 @@ def programa():
 
   vertex_code = """
         attribute vec3 position;
-        uniform mat4 mat_transformation;
+        attribute vec2 texture_coord;
+        varying vec2 out_texture;
+                
+        uniform mat4 model;
+        uniform mat4 view;
+        uniform mat4 projection;        
+        
         void main(){
-            gl_Position = mat_transformation * vec4(position,1.0);
+            gl_Position = projection * view * model * vec4(position,1.0);
+            out_texture = vec2(texture_coord);
         }
         """
   
   fragment_code = """
         uniform vec4 color;
+        varying vec2 out_texture;
+        uniform sampler2D samplerTexture;
+        
         void main(){
-            gl_FragColor = color;
+            vec4 texture = texture2D(samplerTexture, out_texture);
+            gl_FragColor = texture;
         }
         """
   
@@ -83,8 +87,21 @@ def programa():
   glUseProgram(program)
   return program
 
-def passar_para_gpu(program, vertices):
-  #função que passa os os vérticese criados em CPU para a GPU a partir de um programa
+def passar_para_gpu(program, item, modo):
+  #função que passa os objetos ou as texturas para a GPU a partir de um programa a depender do modo escolhido
+  print(f"MODOOOOOOO ========================= {modo}")
+  print(type(item))
+  print(item.shape)
+  print("-------------------------------------------------------------------")
+
+  #configurações padrão para passar os vértices
+  shader_var = "position"
+  num = 2
+
+  #caso queiramos passar a textura, alteramos as config
+  if(modo=="textura"):
+    shader_var = "texture_coord"
+    num = 3
 
   # Pedindo um buffer para a GPU
   buffer = glGenBuffers(1)
@@ -93,17 +110,17 @@ def passar_para_gpu(program, vertices):
   glBindBuffer(GL_ARRAY_BUFFER, buffer)
 
   # Fazendo upload dos dados 
-  glBufferData(GL_ARRAY_BUFFER, vertices.nbytes, vertices, GL_DYNAMIC_DRAW)
-  glBindBuffer(GL_ARRAY_BUFFER, buffer)
+  glBufferData(GL_ARRAY_BUFFER, item.nbytes, item, GL_STATIC_DRAW)
 
-    # Calcula o espaçamento entre os dados de vértices no buffer
-  stride = vertices.strides[0]
+  # Calcula o espaçamento entre os dados de vértices no buffer
+  stride = item.strides[0]
   offset = ctypes.c_void_p(0)
 
-    # Conecta o atributo de posição do buffer com o shader
-  loc = glGetAttribLocation(program, "position")
+  # Conecta o atributo de posição do buffer com o shader
+  loc = glGetAttribLocation(program, shader_var)
   glEnableVertexAttribArray(loc)
-  glVertexAttribPointer(loc, 3, GL_FLOAT, False, stride, offset)
+  glVertexAttribPointer(loc, num, GL_FLOAT, False, stride, offset)
+
 
 def get_matriz_rotacao_x(angulo):
   #gera uma matriz de rotação em x a partir de um dado ângulo
@@ -170,36 +187,49 @@ def multiplica_matriz(a,b):
     c = m_c.reshape(1,16)
     return c
 
-
-def key_event(window,key,scancode,action,mods):
-    #Trata de interações da cena com o teclado
-
-    global malha, escala_cacto, homem_x, homem_y, rotacao_nave
-
-    if key == 80 and action == glfw.PRESS: # tecla P
-      malha = not malha
+def model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z):
     
-    if key == 88 and action == glfw.REPEAT: # tecla X
-      escala_cacto += 0.01
-
-    if key == 90 and action == glfw.REPEAT: # tecla Z
-      escala_cacto -= 0.01
-
-    if key == 262 and action == glfw.REPEAT: # tecla seta direita
-      homem_x += 0.01
-
-    if key == 263 and action == glfw.REPEAT: # tecla seta esquerda 
-      homem_x -= 0.01
-
-    if key == 265 and action == glfw.REPEAT: # tecla seta cima
-      homem_y += 0.01
-
-    if key == 264 and action == glfw.REPEAT: # tecla seta baixo
-      homem_y -= 0.01
-
-    if key == 65 and action == glfw.REPEAT: # tecla A
-      rotacao_nave += 0.02
-
-    if key == 83 and action == glfw.REPEAT: # tecla S
-      rotacao_nave -= 0.02
+    angle = math.radians(angle)
     
+    matrix_transform = glm.mat4(1.0) # instanciando uma matriz identidade
+
+    
+    # aplicando translacao
+    matrix_transform = glm.translate(matrix_transform, glm.vec3(t_x, t_y, t_z))    
+    
+    # aplicando rotacao
+    matrix_transform = glm.rotate(matrix_transform, angle, glm.vec3(r_x, r_y, r_z))
+    
+    # aplicando escala
+    matrix_transform = glm.scale(matrix_transform, glm.vec3(s_x, s_y, s_z))
+    
+    matrix_transform = np.array(matrix_transform).T # pegando a transposta da matriz (glm trabalha com ela invertida)
+    
+    return matrix_transform
+
+
+
+cameraPos   = glm.vec3(0.0,  0.0,  1.0);
+cameraFront = glm.vec3(0.0,  0.0, -1.0);
+cameraUp    = glm.vec3(0.0,  1.0,  0.0);
+
+inc_fov = 0
+inc_near = 0
+inc_far = 0
+inc_view_up = 0
+
+altura = 1600
+largura = 1200
+
+def view():
+    global cameraPos, cameraFront, cameraUp
+    mat_view = glm.lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+    mat_view = np.array(mat_view)
+    return mat_view
+
+def projection():
+    global altura, largura, inc_fov, inc_near, inc_far
+    # perspective parameters: fovy, aspect, near, far
+    mat_projection = glm.perspective(glm.radians(45.0), largura/altura, 0.1, 1000.0)
+    mat_projection = np.array(mat_projection)    
+    return mat_projection
