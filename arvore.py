@@ -5,10 +5,12 @@ import numpy as np
 import math
 import random
 import models as m
-import uteis as ut
+
 
 class Arvore:  
-    def __init__(self):
+    def __init__(self, matrix):
+        self.matrix = matrix
+
         modelo = m.load_model_from_file('arvore/arvore10.obj')
 
         self.vertices_list = []    
@@ -49,7 +51,7 @@ class Arvore:
         # escala
         s_x = 7.0; s_y = 7.0; s_z = 7.0
         
-        mat_model = ut.model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
+        mat_model = self.matrix.model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
         loc_model = glGetUniformLocation(program, "model")
         glUniformMatrix4fv(loc_model, 1, GL_FALSE, mat_model)
         

@@ -1,18 +1,22 @@
 import glfw
 from OpenGL.GL import *
 import numpy as np
-import uteis as ut
+from configs import Configuracoes
+from matrizes import Matrizes
 from arvore import Arvore
 
 def main():
+
+  #Instanciando as classes de apoio
+  c = Configuracoes(1600, 1200)
+  matrix = Matrizes(c)
   
   #Iniciando algumas configurações, da janela e do programa
-  window = ut.janela()
-  program = ut.programa()
+  window = c.janela()
+  program = c.programa()
 
   #criando os objetos
-  arv = Arvore()
-  
+  arv = Arvore(matrix)  
 
   #concatenando todos os vértices dos objetos a fim de passá-los para a gpu
   vertices = arv.vertices_list
@@ -26,8 +30,8 @@ def main():
   merged_texture['position'] = texture
 
   #passando todos os vértices pra gpu
-  ut.passar_para_gpu(program, merged_vertices, "vertices")
-  ut.passar_para_gpu(program, texture, "textura")
+  c.passar_para_gpu(program, merged_vertices, "vertices")
+  c.passar_para_gpu(program, texture, "textura")
 
   #pegando a variável de cor do programa criado
   loc_color = glGetUniformLocation(program, "color")
