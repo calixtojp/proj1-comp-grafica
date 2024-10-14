@@ -16,7 +16,6 @@ class Teclado:
         self.lastY =  self.matrix.c.altura/2
 
     def key_event(self, window,key,scancode,action,mods):
-        print(key)
         if key == 66:
             inc_view_up += 0.1
             #cameraUp    = glm.vec3(0.0+inc_view_up,  1.0+inc_view_up,  0.0+inc_view_up);
@@ -41,8 +40,8 @@ class Teclado:
         
         if key == 264 and (action==1 or action==2): # tecla Down
             self.matrix.cameraPos -= cameraSpeed * self.matrix.cameraUp
-            
-        if key == 80 and action==1 and self.polygonal_mode==True:
+
+        if key == 80 and action==1 and self.polygonal_mode==True: #tecla P
             self.polygonal_mode=False
         else:
             if key == 80 and action==1 and self.polygonal_mode==False:
@@ -53,9 +52,6 @@ class Teclado:
             self.lastX = xpos
             self.lastY = ypos
             self.firstMouse = False
-
-        print(self.lastX, "lastX")
-        print(self.lastY, "lastY")
 
         xoffset = xpos - self.lastX
         yoffset = self.lastY - ypos

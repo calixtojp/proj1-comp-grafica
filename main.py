@@ -7,11 +7,12 @@ from teclado import Teclado
 from models import Models
 from arvore import Arvore
 from caixa import Caixa
+from cacto import Cacto
 
 def main():
 
     #Instanciando as classes de apoio
-    c = Configuracoes(1000, 1200)
+    c = Configuracoes(1600, 1200)
     matrix = Matrizes(c)
     t = Teclado(matrix)
     m = Models()
@@ -23,17 +24,20 @@ def main():
     #criando os objetos
     arv = Arvore(matrix, m)
     cx = Caixa(matrix, m)
+    cac = Cacto(matrix, m)
 
 
     #concatenando todos os vértices dos objetos a fim de passá-los para a gpu
-    vertices = np.concatenate((arv.vertices_list, cx.vertices_list))
     # vertices = cx.vertices_list
+    vertices = np.concatenate((arv.vertices_list, cx.vertices_list))
+    vertices = np.concatenate((vertices, cac.vertices_list))
     total_vertices = len(vertices)
     merged_vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
     merged_vertices['position'] = vertices
 
-    texture = np.concatenate((arv.textures_coord_list, cx.textures_coord_list))
     # texture = cx.textures_coord_list
+    texture = np.concatenate((arv.textures_coord_list, cx.textures_coord_list))
+    texture = np.concatenate((texture, cac.textures_coord_list))
     total_texture = len(texture)
     merged_texture = np.zeros(total_texture, [("position", np.float32, 2)])
     merged_texture['position'] = texture
@@ -71,9 +75,11 @@ def main():
 
         #desenha os objetos de acordo com suas posições iniciais na GPU
         pos = 0
-        arv.desenha_arvore(program, pos)
+        arv.desenha(program, pos)
         pos += len(arv.vertices_list)
-        cx.desenha_montanha(program, pos)
+        cx.desenha(program, pos)
+        pos += len(cx.vertices_list)
+        cac.desenha(program, pos)
 
         #matrizes view e projection
         mat_view = matrix.view()
@@ -91,5 +97,4 @@ def main():
 
 
 if __name__ == "__main__":
-    print("aa")
     main()
