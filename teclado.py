@@ -22,19 +22,25 @@ class Teclado:
             #cameraUp    = glm.vec3(0.0+inc_view_up,  1.0+inc_view_up,  0.0+inc_view_up);
         if key == 78: inc_near += 0.1
         if key == 77: inc_far -= 5
-            
-        cameraSpeed = 0.2
+                
+        cameraSpeed = 0.3
         if key == 87 and (action==1 or action==2): # tecla W
             self.matrix.cameraPos += cameraSpeed * self.matrix.cameraFront
         
         if key == 83 and (action==1 or action==2): # tecla S
             self.matrix.cameraPos -= cameraSpeed * self.matrix.cameraFront
-        
+
         if key == 65 and (action==1 or action==2): # tecla A
             self.matrix.cameraPos -= glm.normalize(glm.cross(self.matrix.cameraFront, self.matrix.cameraUp)) * cameraSpeed
             
         if key == 68 and (action==1 or action==2): # tecla D
             self.matrix.cameraPos += glm.normalize(glm.cross(self.matrix.cameraFront, self.matrix.cameraUp)) * cameraSpeed
+
+        if key == 265 and (action==1 or action==2): # tecla Up
+            self.matrix.cameraPos += cameraSpeed * self.matrix.cameraUp
+        
+        if key == 264 and (action==1 or action==2): # tecla Down
+            self.matrix.cameraPos -= cameraSpeed * self.matrix.cameraUp
             
         if key == 80 and action==1 and self.polygonal_mode==True:
             self.polygonal_mode=False
@@ -56,7 +62,7 @@ class Teclado:
         self.lastX = xpos
         self.lastY = ypos
 
-        sensitivity = 0.3 
+        sensitivity = 0.1
         xoffset *= sensitivity
         yoffset *= sensitivity
 
