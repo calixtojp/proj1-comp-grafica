@@ -46,10 +46,10 @@ class Arvore:
         r_x = 0.0; r_y = 0.0; r_z = 1.0
         
         # translacao
-        t_x = -10.0; t_y = -1.0; t_z = 15.0
+        t_x = 0.0; t_y = -5.0; t_z = 0.0
         
         # escala
-        s_x = 7.0; s_y = 7.0; s_z = 7.0
+        s_x = 5.0; s_y = 5.0; s_z = 5.0
         
         mat_model = self.matrix.model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
         loc_model = glGetUniformLocation(program, "model")
@@ -67,4 +67,5 @@ class Arvore:
         glBindTexture(GL_TEXTURE_2D, 1)
         # desenha o modelo
         glDrawArrays(GL_TRIANGLES, 20262, 41172-20262) ## renderizando
+        
 

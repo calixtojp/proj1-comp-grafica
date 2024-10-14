@@ -48,6 +48,9 @@ class Teclado:
             self.lastY = ypos
             self.firstMouse = False
 
+        print(self.lastX, "lastX")
+        print(self.lastY, "lastY")
+
         xoffset = xpos - self.lastX
         yoffset = self.lastY - ypos
         self.lastX = xpos
@@ -68,7 +71,7 @@ class Teclado:
         front.x = math.cos(glm.radians(self.yaw)) * math.cos(glm.radians(self.pitch))
         front.y = math.sin(glm.radians(self.pitch))
         front.z = math.sin(glm.radians(self.yaw)) * math.cos(glm.radians(self.pitch))
-        cameraFront = glm.normalize(front)
+        self.matrix.cameraFront = glm.normalize(front)
 
 
         
