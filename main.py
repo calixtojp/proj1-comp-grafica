@@ -5,6 +5,7 @@ from configs import Configuracoes
 from matrizes import Matrizes
 from teclado import Teclado
 from arvore import Arvore
+from montanha import Montanha
 
 def main():
 
@@ -20,15 +21,16 @@ def main():
 
     #criando os objetos
     arv = Arvore(matrix)
+    mont = Montanha(matrix)
 
 
     #concatenando todos os vértices dos objetos a fim de passá-los para a gpu
-    vertices = arv.vertices_list
+    vertices = np.concatenate((arv.vertices_list, mont.vertices_list))
     total_vertices = len(vertices)
     merged_vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
     merged_vertices['position'] = vertices
 
-    texture = arv.textures_coord_list
+    texture = np.concatenate((arv.textures_coord_list, mont.textures_coord_list))
     total_texture = len(texture)
     merged_texture = np.zeros(total_texture, [("position", np.float32, 2)])
     merged_texture['position'] = texture
@@ -60,13 +62,16 @@ def main():
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         
         #Switch entre visualização normal e de malha poligonal
-        if False:
+        if t.polygonal_mode:
             glPolygonMode(GL_FRONT_AND_BACK,GL_LINE)
         else:
             glPolygonMode(GL_FRONT_AND_BACK,GL_FILL)
 
         #desenha os objetos de acordo com suas posições iniciais na GPU
-        arv.desenha_arvore(program)
+        pos = 0
+        arv.desenha_arvore(program, pos)
+        pos += len(arv.vertices_list)
+        mont.desenha_montanha(program, pos)
 
         #matrizes view e projection
         mat_view = matrix.view()

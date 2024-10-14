@@ -96,12 +96,12 @@ class Configuracoes:
 
         #configurações padrão para passar os vértices
         shader_var = "position"
-        num = 2
+        num = 3
 
         #caso queiramos passar a textura, alteramos as config
         if(modo=="textura"):
             shader_var = "texture_coord"
-            num = 3
+            num = 2
 
         # Pedindo um buffer para a GPU
         buffer = glGenBuffers(1)
