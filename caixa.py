@@ -4,35 +4,23 @@ import OpenGL.GL.shaders
 import numpy as np
 import math
 import random
-import models as m
 
-
-class Montanha:  
-    def __init__(self, matrix):
+class Caixa:  
+    def __init__(self, matrix, models):
         self.matrix = matrix
-
-        modelo = m.load_model_from_file('mountain/mount.blend1.obj')
-
-        print("modelo")
-        print(modelo.keys())
-        print(len(modelo['vertices']), len(modelo['texture']), len(modelo['faces']))
+        self.m = models
 
         self.vertices_list = []    
         self.textures_coord_list = []
 
-        ### inserindo vertices do modelo no vetor de vertices
-        print('Processando modelo mountain.obj. Vertice inicial:', len(self.vertices_list))
-        faces_visited = []
-        for face in modelo['faces']:
-            if face[2] not in faces_visited:
-                print(face[2],' vertice inicial =', len(self.vertices_list))
+        modelo = self.m.load_model_from_file('caixa/caixa.obj')
 
-                faces_visited.append(face[2])
+        ### inserindo vertices do modelo no vetor de vertices
+        for face in modelo['faces']:
             for vertice_id in face[0]:
-                self.vertices_list.append(modelo['vertices'][vertice_id-1])
+                self.vertices_list.append( modelo['vertices'][vertice_id-1] )
             for texture_id in face[1]:
-                self.textures_coord_list.append(modelo['texture'][texture_id-1])
-        print('Processando modelo mountain.obj. Vertice final:', len(self.vertices_list))
+                self.textures_coord_list.append( modelo['texture'][texture_id-1] )
 
         #Converter para numpy array p
         self.vertices_list = np.array(self.vertices_list, dtype=np.float32)
@@ -40,7 +28,7 @@ class Montanha:
 
 
         ### carregando textura equivalente e definindo um id (buffer): use um id por textura!
-        m.load_texture_from_file(2,'mountain/montanha.jpg')
+        self.m.load_texture_from_file(2,'caixa/caixa.jpg')
 
     def desenha_montanha(self,program, pos):
         # aplica a matriz model

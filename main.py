@@ -4,33 +4,36 @@ import numpy as np
 from configs import Configuracoes
 from matrizes import Matrizes
 from teclado import Teclado
+from models import Models
 from arvore import Arvore
-from montanha import Montanha
+from caixa import Caixa
 
 def main():
 
     #Instanciando as classes de apoio
-    print("calses")
-    c = Configuracoes(1600, 1200)
+    c = Configuracoes(1000, 1200)
     matrix = Matrizes(c)
     t = Teclado(matrix)
+    m = Models()
     
     #Iniciando algumas configurações, da janela e do programa
     window = c.janela()
     program = c.programa()
 
     #criando os objetos
-    arv = Arvore(matrix)
-    mont = Montanha(matrix)
+    arv = Arvore(matrix, m)
+    cx = Caixa(matrix, m)
 
 
     #concatenando todos os vértices dos objetos a fim de passá-los para a gpu
-    vertices = np.concatenate((arv.vertices_list, mont.vertices_list))
+    vertices = np.concatenate((arv.vertices_list, cx.vertices_list))
+    # vertices = cx.vertices_list
     total_vertices = len(vertices)
     merged_vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
     merged_vertices['position'] = vertices
 
-    texture = np.concatenate((arv.textures_coord_list, mont.textures_coord_list))
+    texture = np.concatenate((arv.textures_coord_list, cx.textures_coord_list))
+    # texture = cx.textures_coord_list
     total_texture = len(texture)
     merged_texture = np.zeros(total_texture, [("position", np.float32, 2)])
     merged_texture['position'] = texture
@@ -47,7 +50,6 @@ def main():
     glfw.set_cursor_pos_callback(window, t.mouse_event)
 
     #Loop principal que efetivamente mostra a janela
-    print("vo mostra")
     while not glfw.window_should_close(window):
 
         glfw.poll_events() #Leitura de eventos da janela
@@ -71,7 +73,7 @@ def main():
         pos = 0
         arv.desenha_arvore(program, pos)
         pos += len(arv.vertices_list)
-        mont.desenha_montanha(program, pos)
+        cx.desenha_montanha(program, pos)
 
         #matrizes view e projection
         mat_view = matrix.view()
