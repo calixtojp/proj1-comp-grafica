@@ -5,9 +5,7 @@ from configs import Configuracoes
 from matrizes import Matrizes
 from teclado import Teclado
 from models import Models
-from arvore import Arvore
-from caixa import Caixa
-from cacto import Cacto
+from objeto import Objeto
 
 def main():
 
@@ -22,10 +20,9 @@ def main():
     program = c.programa()
 
     #criando os objetos
-    arv = Arvore(matrix, m)
-    cx = Caixa(matrix, m)
-    cac = Cacto(matrix, m)
-
+    arv = Objeto(matrix, m, 'arvore/arvore10.obj', 'arvore/bark_0021.jpg', 0)
+    cx = Objeto(matrix, m, 'caixa/caixa.obj', 'caixa/caixa.jpg', 1)
+    cac = Objeto(matrix, m, 'cacto/cacto.obj', 'cacto/cacto.jpg', 2)
 
     #concatenando todos os vértices dos objetos a fim de passá-los para a gpu
     # vertices = cx.vertices_list
@@ -75,11 +72,11 @@ def main():
 
         #desenha os objetos de acordo com suas posições iniciais na GPU
         pos = 0
-        arv.desenha(program, pos)
+        arv.desenha(program, pos, 0, 0, 0, 1, 0, 0, 0, 2, 2, 2)
         pos += len(arv.vertices_list)
-        cx.desenha(program, pos)
+        cx.desenha(program, pos, 0, 0, 0, 1, 0, -5, 0, 5, 5, 5)
         pos += len(cx.vertices_list)
-        cac.desenha(program, pos)
+        cac.desenha(program, pos, -90, 1, 0, 0, 15, -5, 0, 0.1, 0.1, 0.1)
 
         #matrizes view e projection
         mat_view = matrix.view()
