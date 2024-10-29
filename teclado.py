@@ -74,9 +74,9 @@ class Teclado:
 
         #escala (tecla M para aumentar e N para diminuir)
         if key == 77 and (action==1 or action==2):
-            self.escala += 0.1
+            self.escala += 0.02
         if key == 78 and (action==1 or action==2):
-            self.escala -= 0.1
+            self.escala -= 0.02
 
         #rotação (tecla Z para aumentar e X para diminuir)
         if key == 90 and (action==1 or action==2):
