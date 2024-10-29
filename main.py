@@ -20,14 +20,16 @@ def main():
     program = c.programa()
 
     #criando os objetos
-    arv = Objeto(matrix, m, 'arvore/arvore10.obj', 'arvore/bark_0021.jpg', 0)
-    cx = Objeto(matrix, m, 'caixa/caixa.obj', 'caixa/caixa.jpg', 1)
+    arv = Objeto(matrix, m, 'vamove/aiqbun.obj', 'vamove/rocket1.png', 0)
+    cx = Objeto(matrix, m, 'vamove/joao.obj', 'vamove/min.png', 1)
     cac = Objeto(matrix, m, 'cacto/cacto.obj', 'cacto/cacto.jpg', 2)
+    nave = Objeto(matrix, m, 'caixa/vacone.obj', 'caixa/bone.jpeg', 3)
 
     #concatenando todos os vértices dos objetos a fim de passá-los para a gpu
     # vertices = cx.vertices_list
     vertices = np.concatenate((arv.vertices_list, cx.vertices_list))
     vertices = np.concatenate((vertices, cac.vertices_list))
+    vertices = np.concatenate((vertices, nave.vertices_list))
     total_vertices = len(vertices)
     merged_vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
     merged_vertices['position'] = vertices
@@ -35,6 +37,7 @@ def main():
     # texture = cx.textures_coord_list
     texture = np.concatenate((arv.textures_coord_list, cx.textures_coord_list))
     texture = np.concatenate((texture, cac.textures_coord_list))
+    texture = np.concatenate((texture, nave.textures_coord_list))
     total_texture = len(texture)
     merged_texture = np.zeros(total_texture, [("position", np.float32, 2)])
     merged_texture['position'] = texture
@@ -72,11 +75,13 @@ def main():
 
         #desenha os objetos de acordo com suas posições iniciais na GPU
         pos = 0
-        arv.desenha(program, pos, 0, 0, 0, 1, 0, 0, 0, 2, 2, 2)
+        arv.desenha(program, pos, 0, 0, 0, 1, 0, 0, 0, 10, 10, 10)
         pos += len(arv.vertices_list)
-        cx.desenha(program, pos, 0, 0, 0, 1, 0, -5, 0, 5, 5, 5)
+        cx.desenha(program, pos, 0, 0, 0, 1, 0, -5, 0, 1, 1, 1)
         pos += len(cx.vertices_list)
         cac.desenha(program, pos, -90, 1, 0, 0, 15, -5, 0, 0.1, 0.1, 0.1)
+        pos += len(cac.vertices_list)
+        nave.desenha(program, pos, 0, 0, 0, 1, 10, 10, 10, 2, 2, 2)
 
         #matrizes view e projection
         mat_view = matrix.view()
