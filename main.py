@@ -12,32 +12,28 @@ def main():
     #Instanciando as classes de apoio
     c = Configuracoes(1600, 1200)
     matrix = Matrizes(c)
-    t = Teclado(matrix)
     m = Models()
     
+    t = Teclado(matrix)
     #Iniciando algumas configurações, da janela e do programa
     window = c.janela()
     program = c.programa()
 
     #criando os objetos
-    arv = Objeto(matrix, m, 'vamove/aiqbun.obj', 'vamove/rocket1.png', 0)
-    cx = Objeto(matrix, m, 'vamove/joao.obj', 'vamove/min.png', 1)
-    cac = Objeto(matrix, m, 'cacto/cacto.obj', 'cacto/cacto.jpg', 2)
-    nave = Objeto(matrix, m, 'caixa/vacone.obj', 'caixa/bone.jpeg', 3)
+    minion = Objeto(matrix, m, 'minion/minion.obj', 'minion/minion.png', 0)
+    ceu = Objeto(matrix, m, 'ceu/esfera.obj', 'ceu/nightSky.jpg', 1)
+    chao = Objeto(matrix, m, 'chao/chao.obj', 'chao/chao.jpg', 2)
 
     #concatenando todos os vértices dos objetos a fim de passá-los para a gpu
-    # vertices = cx.vertices_list
-    vertices = np.concatenate((arv.vertices_list, cx.vertices_list))
-    vertices = np.concatenate((vertices, cac.vertices_list))
-    vertices = np.concatenate((vertices, nave.vertices_list))
+    vertices = np.concatenate((minion.vertices_list, ceu.vertices_list))
+    vertices = np.concatenate((vertices, chao.vertices_list))
     total_vertices = len(vertices)
     merged_vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
     merged_vertices['position'] = vertices
 
-    # texture = cx.textures_coord_list
-    texture = np.concatenate((arv.textures_coord_list, cx.textures_coord_list))
-    texture = np.concatenate((texture, cac.textures_coord_list))
-    texture = np.concatenate((texture, nave.textures_coord_list))
+    # texture = nave.textures_coord_list
+    texture = np.concatenate((minion.textures_coord_list, ceu.textures_coord_list))
+    texture = np.concatenate((texture, chao.textures_coord_list))
     total_texture = len(texture)
     merged_texture = np.zeros(total_texture, [("position", np.float32, 2)])
     merged_texture['position'] = texture
@@ -75,13 +71,13 @@ def main():
 
         #desenha os objetos de acordo com suas posições iniciais na GPU
         pos = 0
-        arv.desenha(program, pos, 0, 0, 0, 1, 0, 0, 0, 10, 10, 10)
-        pos += len(arv.vertices_list)
-        cx.desenha(program, pos, 0, 0, 0, 1, 0, -5, 0, 1, 1, 1)
-        pos += len(cx.vertices_list)
-        cac.desenha(program, pos, -90, 1, 0, 0, 15, -5, 0, 0.1, 0.1, 0.1)
-        pos += len(cac.vertices_list)
-        nave.desenha(program, pos, 0, 0, 0, 1, 10, 10, 10, 2, 2, 2)
+        minion.desenha(program, pos, 0, 0, 0, 1, 0, 0, 0, 0.1, 0.1, 0.1)
+        pos += len(minion.vertices_list)
+        ceu.desenha(program, pos, 0, 0, 0, 1, -580, -200, 100, 100, 100, 100)
+        pos += len(ceu.vertices_list)
+        chao.desenha(program, pos, 0, 0, 0, 1, 0, -10, 0, 1, 1, 1)
+        pos += len(chao.vertices_list)
+
 
         #matrizes view e projection
         mat_view = matrix.view()
