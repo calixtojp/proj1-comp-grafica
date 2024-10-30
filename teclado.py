@@ -32,10 +32,8 @@ class Teclado:
     def key_event(self, window,key,scancode,action,mods):
         if key == 66:
             inc_view_up += 0.1
-            #cameraUp    = glm.vec3(0.0+inc_view_up,  1.0+inc_view_up,  0.0+inc_view_up);
-        # if key == 78: inc_near += 0.1
-        # if key == 77: inc_far -= 5
                 
+        #Moviimentos da Camera
         cameraSpeed = 0.6
         if key == 87 and (action==1 or action==2): # tecla W
             self.matrix.cameraPos += cameraSpeed * self.matrix.cameraFront
@@ -49,10 +47,10 @@ class Teclado:
         if key == 68 and (action==1 or action==2): # tecla D
             self.matrix.cameraPos += glm.normalize(glm.cross(self.matrix.cameraFront, self.matrix.cameraUp)) * cameraSpeed
 
-        if key == 265 and (action==1 or action==2): # tecla Up
+        if key == 88 and (action==1 or action==2): # tecla X
             self.matrix.cameraPos += cameraSpeed * self.matrix.cameraUp
         
-        if key == 264 and (action==1 or action==2): # tecla Down
+        if key == 90 and (action==1 or action==2): # tecla Z
             self.matrix.cameraPos -= cameraSpeed * self.matrix.cameraUp
 
 
@@ -63,17 +61,12 @@ class Teclado:
                 self.polygonal_mode=True
 
         #=========== transformações nos objetos ===========
-        #transalção em X, Y e Z:
+        #transalção em X e Z:
         #No eixo X: tecla R aumenta e F diminui
         if key == 82 and (action==1 or action==2):
             self.translacao_x += 0.1
         if key == 70 and (action==1 or action==2):
             self.translacao_x -= 0.1
-        #No eixo Y: tecla T aumenta e G diminui
-        if key == 84 and (action==1 or action==2):
-            self.translacao_y += 0.1
-        if key == 71 and (action==1 or action==2):
-            self.translacao_y -= 0.1
         #No eixo Z: tecla Y aumenta e H diminui
         if key == 89 and (action==1 or action==2):
             self.translacao_z += 0.1

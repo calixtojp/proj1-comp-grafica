@@ -162,11 +162,11 @@ def main():
         pos += len(objetos["nave"].vertices_list)
 
         #Desenhando alien
-        objetos["alien"].desenha(program, pos, 0, 0, 0, 1, 0, 49.5, 0, 0.03, 0.03, 0.03)
+        objetos["alien"].desenha(program, pos, 0, 0, 0, 1, t.translacao_x, 49.5, t.translacao_z, 0.03, 0.03, 0.03)
         pos += len(objetos["alien"].vertices_list)
 
         #Desenhando cj
-        objetos["cj"].desenha(program, pos, 0, 0, 0, 1, t.translacao_x, t.translacao_y+44, t.translacao_z, 1, 1, 1)
+        objetos["cj"].desenha(program, pos, 45, 0, 0, 1, 0, 44, 0, 1, 1, 1)
         pos += len(objetos["cj"].vertices_list)
 
         # Configuração das matrizes view e projection
