@@ -23,99 +23,108 @@ class Teclado:
         self.translacao_z = 0
 
         #variáveis que definem os limites da movimentação da câmera dentro do cenário
-        self.plan_y = 0.8#define o plano do chão 
-        self.raio_domo = 110#define o raio do domo do skybox
+        self.plan_y = 0.8 #define o plano do chão 
+        self.raio_domo = 130 #define o raio do domo do skybox
         self.lim_max_cacto = 3.5
         self.lim_min_cacto = 0.5
 
 
     #função que verifica se a camera pode ir um passo para frente sem
     #sair do cenário limitado pelo chão e pelo domo
-    def pode_avancar(self, cameraSpeed):
-        #antes de tudo fazer a operação de translação
-        self.matrix.cameraPos += cameraSpeed * self.matrix.cameraFront
+    def pode_avancar(self, cameraSpeed, vetor, op):
 
-        #primeiro verificar o chão
-        if self.matrix.get_camera_pos_y() < self.plan_y:
-            self.matrix.cameraPos -= cameraSpeed * self.matrix.cameraFront
-            return False
         
-        #agora verificar o domo
+        #antes de tudo fazer a operação
+        if op == '+':
+            self.matrix.cameraPos += cameraSpeed * vetor
+        else:
+            self.matrix.cameraPos -= cameraSpeed * vetor
+
         novo_x = self.matrix.get_camera_pos_x()
         novo_y = self.matrix.get_camera_pos_y()
         novo_z = self.matrix.get_camera_pos_z()
+
+        print(self.matrix.cameraPos)
+        print(novo_x)
+        print(novo_y)
+        print(novo_z)
+
+        #primeiro verificar o chão
+        if self.matrix.get_camera_pos_y() < self.plan_y:
+            if op == '+':
+                self.matrix.cameraPos -= cameraSpeed * vetor
+            else:
+                self.matrix.cameraPos += cameraSpeed * vetor
+            return False
+        
+        
+        #agora verificar o domo
         distancia = math.sqrt(novo_x**2 + novo_y**2 + novo_z**2)
-        if distancia > self.raio_domo:
-            self.matrix.cameraPos -= cameraSpeed * self.matrix.cameraFront
+        if distancia > self.raio_domo:    
+            if op == '+':
+                self.matrix.cameraPos -= cameraSpeed * vetor
+            else:
+                self.matrix.cameraPos += cameraSpeed * vetor
             return False
         
         return True
 
 
     def key_event(self, window,key,scancode,action,mods):
-        if key == 66:
-            inc_view_up += 0.1
-                
-        #Moviimentos da Camera
+        #-----------------------------------Movimentos da Camera----------------------------------#
         cameraSpeed = 0.6
         if key == 87 and (action==1 or action==2): # tecla W
-            if self.pode_avancar(cameraSpeed): 
+            if self.pode_avancar(cameraSpeed, self.matrix.cameraFront, '+'): 
                 self.matrix.cameraPos += cameraSpeed * self.matrix.cameraFront
             
-        
         if key == 83 and (action==1 or action==2): # tecla S
-            if self.pode_avancar(cameraSpeed):
+            if self.pode_avancar(cameraSpeed, self.matrix.cameraFront, '-'):
                 self.matrix.cameraPos -= cameraSpeed * self.matrix.cameraFront
 
         if key == 65 and (action==1 or action==2): # tecla A
-            if self.pode_avancar(cameraSpeed):
+            if self.pode_avancar(cameraSpeed, glm.normalize(glm.cross(self.matrix.cameraFront, self.matrix.cameraUp)), '-'):
                 self.matrix.cameraPos -= glm.normalize(glm.cross(self.matrix.cameraFront, self.matrix.cameraUp)) * cameraSpeed
             
         if key == 68 and (action==1 or action==2): # tecla D
-            if self.pode_avancar(cameraSpeed):
+            if self.pode_avancar(cameraSpeed, glm.normalize(glm.cross(self.matrix.cameraFront, self.matrix.cameraUp)), '+'):
                 self.matrix.cameraPos += glm.normalize(glm.cross(self.matrix.cameraFront, self.matrix.cameraUp)) * cameraSpeed
 
-        #tecla espaco
-        if key == 32 and (action==1 or action==2):
-            if self.pode_avancar(cameraSpeed):
+        if key == 88 and (action==1 or action==2): # tecla X
+            if self.pode_avancar(cameraSpeed, self.matrix.cameraUp, '+'):
                 self.matrix.cameraPos += cameraSpeed * self.matrix.cameraUp
         
-        #teclao shift
-        if key == 340 and (action==1 or action==2):
-            if self.pode_avancar(cameraSpeed):
+        if key == 90 and (action==1 or action==2): # tecla Z
+            if self.pode_avancar(cameraSpeed, self.matrix.cameraUp, '-'):
                 self.matrix.cameraPos -= cameraSpeed * self.matrix.cameraUp
 
-
+        #----------------------------------Modo Poligono------------------------------------------#
         if key == 80 and action==1 and self.polygonal_mode==True: #tecla P
             self.polygonal_mode=False
         else:
             if key == 80 and action==1 and self.polygonal_mode==False:
                 self.polygonal_mode=True
 
-        #=========== transformações nos objetos ===========
-        #transalção em X e Z:
-        #No eixo X: tecla R aumenta e F diminui
-        if key == 82 and (action==1 or action==2):
+        #------------------------------Translações e Rotações do Alien-------------------------------#
+        if key == 265 and (action==1 or action==2): #Seta para Cima
             self.translacao_x += 0.1
-        if key == 70 and (action==1 or action==2):
+        if key == 264 and (action==1 or action==2): #Seta para Baixo
             self.translacao_x -= 0.1
-        #No eixo Z: tecla Y aumenta e H diminui
-        if key == 89 and (action==1 or action==2):
+        if key == 262 and (action==1 or action==2): #Seta para Direita
             self.translacao_z += 0.1
-        if key == 72 and (action==1 or action==2):
+        if key == 263 and (action==1 or action==2): #Seta para Esquerda
             self.translacao_z -= 0.1
+        if key == 61 and (action==1 or action==2): #Mais +
+            self.rotacao += 1
+        if key == 45 and (action==1 or action==2): #Menos -
+            self.rotacao -= 1
 
-        #escala (tecla M para aumentar e N para diminuir)
-        if key == 77 and (action==1 or action==2) and self.escala < self.lim_max_cacto:
+        #------------------------------------------Escalas dos Cactos------------------------------------------#
+        if key == 77 and (action==1 or action==2) and self.escala < self.lim_max_cacto: # tecla M
             self.escala += 0.02
-        if key == 78 and (action==1 or action==2) and self.escala > self.lim_min_cacto:
+        if key == 78 and (action==1 or action==2) and self.escala > self.lim_min_cacto: # tecla N
             self.escala -= 0.02
 
-        #rotação (tecla Z para aumentar e X para diminuir)
-        if key == 90 and (action==1 or action==2):
-            self.rotacao += 0.4
-        if key == 88 and (action==1 or action==2):
-            self.rotacao -= 0.4
+        
 
             
     def mouse_event(self, window, xpos, ypos):

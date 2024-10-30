@@ -158,11 +158,11 @@ def main():
         pos += len(objetos["chao"].vertices_list)
 
         # Desenhando nave
-        objetos["nave"].desenha(program, pos, t.rotacao, 0, 1, 0, 0, 32, 0, 0.7, 0.7, 0.7)
+        objetos["nave"].desenha(program, pos, 0, 0, 1, 0, 0, 32, 0, 0.7, 0.7, 0.7)
         pos += len(objetos["nave"].vertices_list)
 
         #Desenhando alien
-        objetos["alien"].desenha(program, pos, 0, 0, 0, 1, t.translacao_x, 49.5, t.translacao_z, 0.03, 0.03, 0.03)
+        objetos["alien"].desenha(program, pos, 135+t.rotacao, 0, 1, 0, t.translacao_x, 49.5, t.translacao_z, 0.03, 0.03, 0.03)
         pos += len(objetos["alien"].vertices_list)
 
         #Desenhando cj
