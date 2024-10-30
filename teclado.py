@@ -23,10 +23,33 @@ class Teclado:
         self.translacao_z = 0
 
         #variáveis que definem os limites da movimentação da câmera dentro do cenário
-        self.plan_y = 0#define o plano do chão 
-        self.raio_domo = 100#define o raio do domo do skybox
+        self.plan_y = 0.8#define o plano do chão 
+        self.raio_domo = 110#define o raio do domo do skybox
         self.lim_max_cacto = 3.5
         self.lim_min_cacto = 0.5
+
+
+    #função que verifica se a camera pode ir um passo para frente sem
+    #sair do cenário limitado pelo chão e pelo domo
+    def pode_avancar(self, cameraSpeed):
+        #antes de tudo fazer a operação de translação
+        self.matrix.cameraPos += cameraSpeed * self.matrix.cameraFront
+
+        #primeiro verificar o chão
+        if self.matrix.get_camera_pos_y() < self.plan_y:
+            self.matrix.cameraPos -= cameraSpeed * self.matrix.cameraFront
+            return False
+        
+        #agora verificar o domo
+        novo_x = self.matrix.get_camera_pos_x()
+        novo_y = self.matrix.get_camera_pos_y()
+        novo_z = self.matrix.get_camera_pos_z()
+        distancia = math.sqrt(novo_x**2 + novo_y**2 + novo_z**2)
+        if distancia > self.raio_domo:
+            self.matrix.cameraPos -= cameraSpeed * self.matrix.cameraFront
+            return False
+        
+        return True
 
 
     def key_event(self, window,key,scancode,action,mods):
@@ -36,22 +59,31 @@ class Teclado:
         #Moviimentos da Camera
         cameraSpeed = 0.6
         if key == 87 and (action==1 or action==2): # tecla W
-            self.matrix.cameraPos += cameraSpeed * self.matrix.cameraFront
+            if self.pode_avancar(cameraSpeed): 
+                self.matrix.cameraPos += cameraSpeed * self.matrix.cameraFront
+            
         
         if key == 83 and (action==1 or action==2): # tecla S
-            self.matrix.cameraPos -= cameraSpeed * self.matrix.cameraFront
+            if self.pode_avancar(cameraSpeed):
+                self.matrix.cameraPos -= cameraSpeed * self.matrix.cameraFront
 
         if key == 65 and (action==1 or action==2): # tecla A
-            self.matrix.cameraPos -= glm.normalize(glm.cross(self.matrix.cameraFront, self.matrix.cameraUp)) * cameraSpeed
+            if self.pode_avancar(cameraSpeed):
+                self.matrix.cameraPos -= glm.normalize(glm.cross(self.matrix.cameraFront, self.matrix.cameraUp)) * cameraSpeed
             
         if key == 68 and (action==1 or action==2): # tecla D
-            self.matrix.cameraPos += glm.normalize(glm.cross(self.matrix.cameraFront, self.matrix.cameraUp)) * cameraSpeed
+            if self.pode_avancar(cameraSpeed):
+                self.matrix.cameraPos += glm.normalize(glm.cross(self.matrix.cameraFront, self.matrix.cameraUp)) * cameraSpeed
 
-        if key == 88 and (action==1 or action==2): # tecla X
-            self.matrix.cameraPos += cameraSpeed * self.matrix.cameraUp
+        #tecla espaco
+        if key == 32 and (action==1 or action==2):
+            if self.pode_avancar(cameraSpeed):
+                self.matrix.cameraPos += cameraSpeed * self.matrix.cameraUp
         
-        if key == 90 and (action==1 or action==2): # tecla Z
-            self.matrix.cameraPos -= cameraSpeed * self.matrix.cameraUp
+        #teclao shift
+        if key == 340 and (action==1 or action==2):
+            if self.pode_avancar(cameraSpeed):
+                self.matrix.cameraPos -= cameraSpeed * self.matrix.cameraUp
 
 
         if key == 80 and action==1 and self.polygonal_mode==True: #tecla P
