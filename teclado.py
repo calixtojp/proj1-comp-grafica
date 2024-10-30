@@ -24,7 +24,7 @@ class Teclado:
 
         #variáveis que definem os limites da movimentação da câmera dentro do cenário
         self.plan_y = 0.8 #define o plano do chão 
-        self.raio_domo = 130 #define o raio do domo do skybox
+        self.raio_domo = 120 #define o raio do domo do skybox
         self.raio_cabine = 3 #define o raio da cabine do alien
         self.lim_max_cacto = 3.5
         self.lim_min_cacto = 0.5
