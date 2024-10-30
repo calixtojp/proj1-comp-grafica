@@ -6,6 +6,8 @@ from matrizes import Matrizes
 from teclado import Teclado
 from models import Models
 from objeto import Objeto
+import math
+
 
 def main():
     # Configurações iniciais
@@ -16,11 +18,13 @@ def main():
 
     # Parâmetros para objetos
     qtd_cactos = 5
-    espalhamento_cactos = 40.0
-    qtd_pedras = 10
-    espalhamento_pedras = 20.0
+    espalhamento_cactos = 80.0
+    qtd_pedras = 7
+    espalhamento_pedras = 60.0
     qtd_vacas = 3
-    espalhamento_vacas = 20.0
+    espalhamento_vacas = 40.0
+    qtd_minions = 6
+    raio_minions = 12.0
 
     # Inicializando a janela e o programa
     window = c.janela()
@@ -31,8 +35,12 @@ def main():
         "cactos": [Objeto(matrix, m, 'cacto/cacto.obj', 'cacto/cacto.jpg', 0) for _ in range(qtd_cactos)],
         "pedras": [Objeto(matrix, m, 'pedra/pedra.obj', 'pedra/pedra.jpg', 1) for _ in range(qtd_pedras)],
         "vacas": [Objeto(matrix, m, 'vaca/vaca.obj', 'vaca/vaca.jpeg', 2) for _ in range(qtd_vacas)],
-        "ceu": Objeto(matrix, m, 'ceu/esfera.obj', 'ceu/nightSky.jpg', 3),
-        "chao": Objeto(matrix, m, 'chao/chao.obj', 'chao/chao.jpg', 4)
+        "minions": [Objeto(matrix, m, 'minion/minion.obj', 'minion/minion.png', 3) for _ in range(qtd_minions)],
+        "ceu": Objeto(matrix, m, 'ceu/esfera.obj', 'ceu/nightSky.jpg', 4),
+        "chao": Objeto(matrix, m, 'chao/chao.obj', 'chao/chao.jpg', 5),
+        "nave": Objeto(matrix, m, 'nave/nave.obj', 'nave/nave.png', 6),
+        "alien": Objeto(matrix, m, 'alien/alien.obj', 'alien/alien.jpg', 7),
+        "cj": Objeto(matrix, m, 'cj/cj.obj', 'cj/cj.jpg', 8)
     }
 
     # Concatenando vértices e texturas
@@ -40,8 +48,14 @@ def main():
         [obj.vertices_list for obj in objetos["cactos"]] + 
         [obj.vertices_list for obj in objetos["pedras"]] + 
         [obj.vertices_list for obj in objetos["vacas"]] +
-        [objetos["ceu"].vertices_list, objetos["chao"].vertices_list]
+        [obj.vertices_list for obj in objetos["minions"]] +
+        [objetos["ceu"].vertices_list,
+        objetos["chao"].vertices_list,
+        objetos["nave"].vertices_list,
+        objetos["alien"].vertices_list,
+        objetos["cj"].vertices_list]
     )
+
     total_vertices = len(vertices)
     merged_vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
     merged_vertices['position'] = vertices
@@ -50,7 +64,12 @@ def main():
         [obj.textures_coord_list for obj in objetos["cactos"]] + 
         [obj.textures_coord_list for obj in objetos["pedras"]] + 
         [obj.textures_coord_list for obj in objetos["vacas"]] +
-        [objetos["ceu"].textures_coord_list, objetos["chao"].textures_coord_list]
+        [obj.textures_coord_list for obj in objetos["minions"]] +
+        [objetos["ceu"].textures_coord_list,
+        objetos["chao"].textures_coord_list,
+        objetos["nave"].textures_coord_list,
+        objetos["alien"].textures_coord_list,
+        objetos["cj"].textures_coord_list]
     )
     total_textures = len(textures)
     merged_texture = np.zeros(total_textures, [("position", np.float32, 2)])
@@ -66,7 +85,7 @@ def main():
 
     # Configurando posições iniciais e espalhamento para cada tipo de objeto
     pos_ini_cacto_x, pos_ini_cacto_z = 15.0, -5.0
-    pos_ini_pedra_x, pos_ini_pedra_z = 0.0, 0.0
+    pos_ini_pedra_x, pos_ini_pedra_z = 5, -4
     pos_ini_vaca_x, pos_ini_vaca_z = -4, 5
 
     cactos_posicoes = [(pos_ini_cacto_x, pos_ini_cacto_z)]
@@ -104,13 +123,13 @@ def main():
         pos = 0
         for i, cacto in enumerate(objetos["cactos"]):
             pos_x, pos_z = cactos_posicoes[i]
-            cacto.desenha(program, pos, -90, 1, 0, 0, pos_x, -1, pos_z, 0.1, 0.1, 0.03*t.escala)
+            cacto.desenha(program, pos, -90, 1, 0, 0, pos_x, 0, pos_z, 0.1, 0.1, 0.03*t.escala)
             pos += len(cacto.vertices_list)
 
         # Desenhando pedras
         for i, pedra in enumerate(objetos["pedras"]):
             pos_x, pos_z = pedras_posicoes[i]
-            pedra.desenha(program, pos, 0, 0, 0, 1, pos_x, -1, pos_z, 0.01, 0.01, 0.01)
+            pedra.desenha(program, pos, 0, 0, 0, 1, pos_x, -0.5, pos_z, 0.01, 0.01, 0.01)
             pos += len(pedra.vertices_list)
 
         # Desenhando vacas
@@ -119,12 +138,36 @@ def main():
             vaca.desenha(program, pos, 0, 0, 0, 1, pos_x, 0, pos_z, 1, 1, 1)
             pos += len(vaca.vertices_list)
 
-        # Desenhando ceu e chao
-        objetos["ceu"].desenha(program, pos, 0, 0, 0, 1, -580, -200, 100, 100, 100, 100)
+        # Desenhando minions
+        angulo_inicial = 0
+        incremento_angulo = 360 / qtd_minions
+        for i, minion in enumerate(objetos["minions"]):
+            angulo_rad = math.radians(angulo_inicial + i * incremento_angulo)
+            pos_x = raio_minions * math.cos(angulo_rad)
+            pos_z = raio_minions * math.sin(angulo_rad)
+            minion.desenha(program, pos, 0, 1, 0, 0, pos_x, 42, pos_z, 0.2, 0.2, 0.2)
+            pos += len(minion.vertices_list)
+
+
+        # Desenhando ceu 
+        objetos["ceu"].desenha(program, pos, 0, 0, 0, 1, -1200, -400, 200, 200, 200, 200)
         pos += len(objetos["ceu"].vertices_list)
 
-        objetos["chao"].desenha(program, pos, 0, 0, 0, 1, 0, -5, 0, 1, 0.5, 1)
+        # Desenhando chao
+        objetos["chao"].desenha(program, pos, 0, 0, 0, 1, 0, -5, 0, 2, 0.5, 2)
         pos += len(objetos["chao"].vertices_list)
+
+        # Desenhando nave
+        objetos["nave"].desenha(program, pos, t.rotacao, 0, 1, 0, 0, 32, 0, 0.7, 0.7, 0.7)
+        pos += len(objetos["nave"].vertices_list)
+
+        #Desenhando alien
+        objetos["alien"].desenha(program, pos, 0, 0, 0, 1, 0, 49.5, 0, 0.03, 0.03, 0.03)
+        pos += len(objetos["alien"].vertices_list)
+
+        #Desenhando cj
+        objetos["cj"].desenha(program, pos, 0, 0, 0, 1, t.translacao_x, t.translacao_y+44, t.translacao_z, 1, 1, 1)
+        pos += len(objetos["cj"].vertices_list)
 
         # Configuração das matrizes view e projection
         loc_view = glGetUniformLocation(program, "view")

@@ -9,7 +9,7 @@ import glm
 class Matrizes:
 
     def __init__(self, c):
-        self.cameraPos   = glm.vec3(0.0,  0.0,  1.0)
+        self.cameraPos   = glm.vec3(0.0,  10.0,  1.0)
         self.cameraFront = glm.vec3(0.0,  0.0, -1.0)
         self.cameraUp    = glm.vec3(0.0,  1.0,  0.0)
 
@@ -20,6 +20,16 @@ class Matrizes:
 
         self.c = c
    
+    # Funções get para os valores de posição da câmera como float
+    def get_camera_pos_x(self) -> float:
+        return float(self.cameraPos.x)
+
+    def get_camera_pos_y(self) -> float:
+        return float(self.cameraPos.y)
+
+    def get_camera_pos_z(self) -> float:
+        return float(self.cameraPos.z)
+    
     def get_matriz_rotacao_x(self, angulo):
         #gera uma matriz de rotação em x a partir de um dado ângulo
 

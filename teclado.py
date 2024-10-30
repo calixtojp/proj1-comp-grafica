@@ -17,10 +17,17 @@ class Teclado:
 
         #variáveis de transformações nos objetos
         self.escala = 1
-        self.rotacao = 0
+        self.rotacao = 1
         self.translacao_x = 0
         self.translacao_y = 0
         self.translacao_z = 0
+
+        #variáveis que definem os limites da movimentação da câmera dentro do cenário
+        self.plan_y = 0#define o plano do chão 
+        self.raio_domo = 100#define o raio do domo do skybox
+        self.lim_max_cacto = 3.5
+        self.lim_min_cacto = 0.5
+
 
     def key_event(self, window,key,scancode,action,mods):
         if key == 66:
@@ -29,7 +36,7 @@ class Teclado:
         # if key == 78: inc_near += 0.1
         # if key == 77: inc_far -= 5
                 
-        cameraSpeed = 0.3
+        cameraSpeed = 0.6
         if key == 87 and (action==1 or action==2): # tecla W
             self.matrix.cameraPos += cameraSpeed * self.matrix.cameraFront
         
@@ -47,6 +54,7 @@ class Teclado:
         
         if key == 264 and (action==1 or action==2): # tecla Down
             self.matrix.cameraPos -= cameraSpeed * self.matrix.cameraUp
+
 
         if key == 80 and action==1 and self.polygonal_mode==True: #tecla P
             self.polygonal_mode=False
@@ -73,16 +81,16 @@ class Teclado:
             self.translacao_z -= 0.1
 
         #escala (tecla M para aumentar e N para diminuir)
-        if key == 77 and (action==1 or action==2):
+        if key == 77 and (action==1 or action==2) and self.escala < self.lim_max_cacto:
             self.escala += 0.02
-        if key == 78 and (action==1 or action==2):
+        if key == 78 and (action==1 or action==2) and self.escala > self.lim_min_cacto:
             self.escala -= 0.02
 
         #rotação (tecla Z para aumentar e X para diminuir)
         if key == 90 and (action==1 or action==2):
-            self.rotacao += 0.01
+            self.rotacao += 0.4
         if key == 88 and (action==1 or action==2):
-            self.rotacao -= 0.01
+            self.rotacao -= 0.4
 
             
     def mouse_event(self, window, xpos, ypos):
