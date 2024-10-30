@@ -19,8 +19,8 @@ def main():
     espalhamento_cactos = 40.0
     qtd_pedras = 10
     espalhamento_pedras = 20.0
-    qtd_vacas = 3
-    espalhamento_vacas = 20.0
+    qtd_vacas = 2
+    espalhamento_vacas = 50.0
 
     # Inicializando a janela e o programa
     window = c.janela()
