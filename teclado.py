@@ -118,8 +118,6 @@ class Teclado:
             if distancia < self.raio_cabine:    
                 self.translacao_z -= 0.1
 
-
-
         if key == 61 and (action==1 or action==2): #Mais +
             self.rotacao += 1
         if key == 45 and (action==1 or action==2): #Menos -
@@ -130,8 +128,6 @@ class Teclado:
             self.escala += 0.02
         if key == 78 and (action==1 or action==2) and self.escala > self.lim_min_cacto: # tecla N
             self.escala -= 0.02
-
-        
 
             
     def mouse_event(self, window, xpos, ypos):

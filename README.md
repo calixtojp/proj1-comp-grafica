@@ -10,19 +10,22 @@ Objetos dentro da nave: minions, homem, alienígena chefe.
 Objetos fora da nave: pedra, cacto, crânio de vaca.
 
 A interatividade da cena é acontece quando se aperta os botões: 
-- **'a'**: para **rotacionar** o disco voador no sentido **horário** 
-- **'s'**: para **rotacionar** no **anti-horário**.
-- **'z'**: para **diminuir** o tamanho do cacto e 
-- **'x'**: para **aumentar**.
+- **'+'** e **'-'**: para **rotacionar** o alien.
+- **'Seta Cima'**: para mover o alien para frente.
+- **'Seta Baixo'**: para mover o alien para trás.
+- **'Seta Direita'**: para mover o alien para a direita.
+- **'Seta Esquerda'**: para mover o alien para a esquerda.
   
 - **'w'**: para **movimentar a câmera** para **frente**
 - **'s'**: para **movimentar a câmera** para **trás**
 - **'d'**: para **movimentar a câmera** para a **direita**
 - **'a'**: para **movimentar a câmera** para a **esquerda**
-- **'seta para cima'**: para **movimentar a câmera** para **cima**
-- **'seta para baixo'**: para **movimentar a câmera** para **baixo** 
+- **'x'**: para **movimentar a câmera** para **cima**
+- **'z'**: para **movimentar a câmera** para **baixo** 
 
 - **'p'**: para ativar/desativar a **visualização em malha**
+
+- **'m'** e **'n'**: para **escalar** os cactos.
  
 ## Dependências:
 
@@ -34,6 +37,3 @@ A interatividade da cena é acontece quando se aperta os botões:
 
 ## Como rodar:
 - !python3 main.py
-
-## Estrutura do código
-![Estrutura do código](https://github.com/calixtojp/proj1-comp-grafica/blob/main/estrutura.jpg)
