@@ -23,7 +23,7 @@ def main():
     espalhamento_pedras = 60.0
     qtd_vacas = 3
     espalhamento_vacas = 40.0
-    qtd_minions = 2
+    qtd_minions = 6
     raio_minions = 12.0
 
     # Inicializando a janela e o programa
@@ -140,13 +140,12 @@ def main():
 
         # Desenhando minions
         angulo_inicial = 0
-        incremento_rotacao = 360 / qtd_minions
-        incremento_angulo = 360 / 6
+        incremento_angulo = 360 / qtd_minions
         for i, minion in enumerate(objetos["minions"]):
             angulo_rad = math.radians(angulo_inicial + i * incremento_angulo)
             pos_x = raio_minions * math.cos(angulo_rad)
             pos_z = raio_minions * math.sin(angulo_rad)
-            minion.desenha(program, pos, -incremento_rotacao*(i)-90, 0, 1, 0, pos_x, 43, pos_z, 0.2, 0.2, 0.2)
+            minion.desenha(program, pos, -incremento_angulo*(i)-90, 0, 1, 0, pos_x, 43, pos_z, 0.2, 0.2, 0.2)
             pos += len(minion.vertices_list)
 
 
