@@ -109,6 +109,7 @@ def main():
         vacas_posicoes.append((pos_x, pos_z))
 
     # Loop principal que exibe a janela
+    rotacao_cj = 0
     while not glfw.window_should_close(window):
         glfw.poll_events()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -135,7 +136,7 @@ def main():
         # Desenhando vacas
         for i, vaca in enumerate(objetos["vacas"]):
             pos_x, pos_z = vacas_posicoes[i]
-            vaca.desenha(program, pos, 0, 0, 0, 1, pos_x, 0, pos_z, 1, 1, 1)
+            vaca.desenha(program, pos, 30, 0, 0, 1, pos_x, 1, pos_z, 1, 1, 1)
             pos += len(vaca.vertices_list)
 
         # Desenhando minions
@@ -166,8 +167,9 @@ def main():
         pos += len(objetos["alien"].vertices_list)
 
         #Desenhando cj
-        objetos["cj"].desenha(program, pos, 45, 0, 0, 1, 0, 44, 0, 1, 1, 1)
+        objetos["cj"].desenha(program, pos, rotacao_cj, 1, 1, 1, 0, 44, 0, 2, 2, 2)
         pos += len(objetos["cj"].vertices_list)
+        rotacao_cj = (rotacao_cj + 1) % 360
 
         # Configuração das matrizes view e projection
         loc_view = glGetUniformLocation(program, "view")

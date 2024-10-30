@@ -25,6 +25,7 @@ class Teclado:
         #variáveis que definem os limites da movimentação da câmera dentro do cenário
         self.plan_y = 0.8 #define o plano do chão 
         self.raio_domo = 130 #define o raio do domo do skybox
+        self.raio_cabine = 3 #define o raio da cabine do alien
         self.lim_max_cacto = 3.5
         self.lim_min_cacto = 0.5
 
@@ -43,11 +44,6 @@ class Teclado:
         novo_x = self.matrix.get_camera_pos_x()
         novo_y = self.matrix.get_camera_pos_y()
         novo_z = self.matrix.get_camera_pos_z()
-
-        print(self.matrix.cameraPos)
-        print(novo_x)
-        print(novo_y)
-        print(novo_z)
 
         #primeiro verificar o chão
         if self.matrix.get_camera_pos_y() < self.plan_y:
@@ -106,13 +102,24 @@ class Teclado:
 
         #------------------------------Translações e Rotações do Alien-------------------------------#
         if key == 265 and (action==1 or action==2): #Seta para Cima
-            self.translacao_x += 0.1
+            distancia = math.sqrt((self.translacao_x+0.1)**2 + (self.translacao_z)**2)
+            if distancia < self.raio_cabine:    
+                self.translacao_x += 0.1
         if key == 264 and (action==1 or action==2): #Seta para Baixo
-            self.translacao_x -= 0.1
+            distancia = math.sqrt((self.translacao_x-0.1)**2 + (self.translacao_z)**2)
+            if distancia < self.raio_cabine:    
+                self.translacao_x -= 0.1
         if key == 262 and (action==1 or action==2): #Seta para Direita
-            self.translacao_z += 0.1
+            distancia = math.sqrt(self.translacao_x**2 + (self.translacao_z+0.1)**2)
+            if distancia < self.raio_cabine:    
+                self.translacao_z += 0.1
         if key == 263 and (action==1 or action==2): #Seta para Esquerda
-            self.translacao_z -= 0.1
+            distancia = math.sqrt(self.translacao_x**2 + (self.translacao_z-0.1)**2)
+            if distancia < self.raio_cabine:    
+                self.translacao_z -= 0.1
+
+
+
         if key == 61 and (action==1 or action==2): #Mais +
             self.rotacao += 1
         if key == 45 and (action==1 or action==2): #Menos -
