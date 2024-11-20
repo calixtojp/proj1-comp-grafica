@@ -8,6 +8,7 @@ from models import Models
 from objeto import Objeto
 import math
 
+# só pra testa
 
 def main():
     # Configurações iniciais
