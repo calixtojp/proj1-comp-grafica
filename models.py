@@ -19,7 +19,9 @@ class Models:
         
 
     def load_model_from_file(self, filename):
+        """Loads a Wavefront OBJ file. """
         vertices = []
+        normals = [] # apareceu no código de iluminação
         texture_coords = []
         faces = []
 
@@ -36,6 +38,9 @@ class Models:
             if values[0] == 'v':
                 vertices.append(values[1:4])
 
+            ### recuperando vertices
+            if values[0] == 'vn':
+                normals.append(values[1:4])
 
             ### recuperando coordenadas de textura
             elif values[0] == 'vt':
@@ -47,20 +52,23 @@ class Models:
             elif values[0] == 'f':
                 face = []
                 face_texture = []
+                face_normals = []
                 for v in values[1:]:
                     w = v.split('/')
                     face.append(int(w[0]))
+                    face_normals.append(int(w[2]))
                     if len(w) >= 2 and len(w[1]) > 0:
                         face_texture.append(int(w[1]))
                     else:
                         face_texture.append(0)
 
-                faces.append((face, face_texture, material))
+                faces.append((face, face_texture, face_normals, material))
 
         model = {}
         model['vertices'] = vertices
         model['texture'] = texture_coords
         model['faces'] = faces
+        model['normals'] = normals 
 
         return model
 
