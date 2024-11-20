@@ -9,7 +9,7 @@ import glm
 class Matrizes:
 
     def __init__(self, c):
-        self.cameraPos   = glm.vec3(0.0,  10.0,  1.0)
+        self.cameraPos   = glm.vec3(0.0,  2.0,  15.0)
         self.cameraFront = glm.vec3(0.0,  0.0, -1.0)
         self.cameraUp    = glm.vec3(0.0,  1.0,  0.0)
 

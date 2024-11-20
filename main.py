@@ -137,6 +137,7 @@ def main():
 
     # Loop principal que exibe a janela
     rotacao_cj = 0
+    ang_luz = 0.1
     while not glfw.window_should_close(window):
         glfw.poll_events()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -203,8 +204,9 @@ def main():
         pos += len(objetos["caixa"].vertices_list)
 
         #Desenhando luz
-        objetos["luz"].desenha(program, pos, 0, 0, 0, 1.0, 0, 0, 3, 0.1, 0.1, 0.1, 1, 1, 1, 1000, "luz")
+        objetos["luz"].desenha(program, pos, 0, 0, 0, 1.0, math.cos(ang_luz)*0.5, math.sin(ang_luz)*0.5, 3.0, 0.1, 0.1, 0.1, 1, 1, 1, 1000, "luz")
         pos += len(objetos["luz"].vertices_list)
+        ang_luz += 0.01
 
 
         # Configuração das matrizes view e projection
@@ -213,6 +215,9 @@ def main():
 
         loc_projection = glGetUniformLocation(program, "projection")
         glUniformMatrix4fv(loc_projection, 1, GL_TRUE, matrix.projection())
+
+        loc_view_pos = glGetUniformLocation(program, "viewPos") # recuperando localizacao da variavel viewPos na GPU
+        glUniform3f(loc_view_pos, matrix.cameraPos[0], matrix.cameraPos[1], matrix.cameraPos[2]) ### posicao da camera/observador (x,y,z)
 
         glfw.swap_buffers(window)
 
