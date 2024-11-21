@@ -200,13 +200,27 @@ def main():
         # rotacao_cj = (rotacao_cj + 1) % 360
 
         #Desenhando caixa
-        objetos["caixa"].desenha(program, pos, 0, 0, 1, 0, 0, 0, 0, 1.0, 1.0, 1.0, 0.1, 0.5, 0.9, 32, "objeto")
+        # Configurando os parâmetros de rotação, translação, escala, luz e tipo
+        objetos["caixa"].rotacoes = {'angle': 0, 'r_x': 0, 'r_y': 1, 'r_z': 0}
+        objetos["caixa"].translacoes = {'t_x': 0, 't_y': 0, 't_z': 0}
+        objetos["caixa"].escalas = {'s_x': 1.0, 's_y': 1.0, 's_z': 1.0}
+        objetos["caixa"].iluminacao = {'ka': 0.1, 'kd': 0.5, 'ks': 0.9, 'ns': 32}
+        objetos["caixa"].tipo = "objeto"
+        # aplicando desenho:
+        objetos["caixa"].desenha(program, pos)
         pos += len(objetos["caixa"].vertices_list)
 
         #Desenhando luz
-        objetos["luz"].desenha(program, pos, 0, 0, 0, 1.0, math.cos(ang_luz)*0.5, math.sin(ang_luz)*0.5, 3.0, 0.1, 0.1, 0.1, 1, 1, 1, 1000, "luz")
+        # Configurando os parâmetros de rotação, translação, escala, luz e tipo para o objeto "luz"
+        objetos["luz"].rotacoes = {'angle': 0, 'r_x': 0, 'r_y': 0, 'r_z': 1.0}
+        objetos["luz"].translacoes = {'t_x': math.cos(ang_luz)*0.5, 't_y': math.sin(ang_luz)*0.5, 't_z': 3.0}
+        objetos["luz"].escalas = {'s_x': 0.1, 's_y': 0.1, 's_z': 0.1}
+        objetos["luz"].iluminacao = {'ka': 1, 'kd': 1, 'ks': 1, 'ns': 1000}
+        objetos["luz"].tipo = "emissor"
+        # aplicando desenho:
+        objetos["luz"].desenha(program, pos)
         pos += len(objetos["luz"].vertices_list)
-        ang_luz += 0.01
+        ang_luz += 0.01 # dar o efeito de que a luz tá rodando
 
 
         # Configuração das matrizes view e projection
