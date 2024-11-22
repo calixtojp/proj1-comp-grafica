@@ -65,8 +65,7 @@ def main():
     #     objetos["luz"].vertices_list]
     # )
     vertices = np.concatenate(
-        [objetos["caixa"].vertices_list] +
-        [objetos["luz"].vertices_list]
+        [obj.vertices_list for key in objetos for obj in (objetos[key] if isinstance(objetos[key], list) else [objetos[key]])]
     )
     total_vertices = len(vertices)
     merged_vertices = np.zeros(total_vertices, [("position", np.float32, 3)])
@@ -86,16 +85,14 @@ def main():
     #     objetos["luz"].textures_coord_list]
     # )
     textures = np.concatenate(
-        [objetos["caixa"].textures_coord_list] +
-        [objetos["luz"].textures_coord_list]
+        [obj.textures_coord_list for key in objetos for obj in (objetos[key] if isinstance(objetos[key], list) else [objetos[key]])]
     )
     total_textures = len(textures)
     merged_texture = np.zeros(total_textures, [("position", np.float32, 2)])
     merged_texture['position'] = textures
 
     normals = np.concatenate(
-        [objetos["caixa"].normals_list] + 
-        [objetos["luz"].normals_list]
+        [obj.normals_list for key in objetos for obj in (objetos[key] if isinstance(objetos[key], list) else [objetos[key]])]
     )
     total_normals = len(normals)
     merged_normal = np.zeros(total_normals, [("position", np.float32, 3)])
