@@ -47,7 +47,8 @@ def main():
     # }
     objetos = {
         "caixa": Objeto(matrix, m, 'caixa/caixa2.obj', 'caixa/caixa_madeira.jpg', 0),
-        "luz": Objeto(matrix, m,'luz/luz.obj', 'luz/luz.png', 1)
+        "luz": Objeto(matrix, m,'luz/luz.obj', 'luz/luz.png', 1),
+        "chao": Objeto(matrix, m, 'chao/chao.obj', 'chao/chao.jpg', 2)
     }
 
     # Concatenando vértices e texturas
@@ -179,10 +180,6 @@ def main():
         # objetos["ceu"].desenha(program, pos, 0, 0, 0, 1, -1200, -400, 200, 200, 200, 200)
         # pos += len(objetos["ceu"].vertices_list)
 
-        # # Desenhando chao
-        # objetos["chao"].desenha(program, pos, 0, 0, 0, 1, 0, -5, 0, 2, 0.5, 2)
-        # pos += len(objetos["chao"].vertices_list)
-
         # # Desenhando nave
         # objetos["nave"].desenha(program, pos, 0, 0, 1, 0, 0, 32, 0, 0.7, 0.7, 0.7)
         # pos += len(objetos["nave"].vertices_list)
@@ -199,7 +196,7 @@ def main():
         #Desenhando caixa
         # Configurando os parâmetros de rotação, translação, escala, luz e tipo
         objetos["caixa"].rotacoes = {'angle': 0, 'r_x': 0, 'r_y': 1, 'r_z': 0}
-        objetos["caixa"].translacoes = {'t_x': 0, 't_y': 0, 't_z': 0}
+        objetos["caixa"].translacoes = {'t_x': 0, 't_y': 10, 't_z': 0}
         objetos["caixa"].escalas = {'s_x': 1.0, 's_y': 1.0, 's_z': 1.0}
         objetos["caixa"].iluminacao = {'ka': 0.1, 'kd': 0.5, 'ks': 0.9, 'ns': 32}
         objetos["caixa"].tipo = "objeto"
@@ -210,7 +207,7 @@ def main():
         #Desenhando luz
         # Configurando os parâmetros de rotação, translação, escala, luz e tipo para o objeto "luz"
         objetos["luz"].rotacoes = {'angle': 0, 'r_x': 0, 'r_y': 0, 'r_z': 1.0}
-        objetos["luz"].translacoes = {'t_x': math.cos(ang_luz)*0.5, 't_y': math.sin(ang_luz)*0.5, 't_z': 3.0}
+        objetos["luz"].translacoes = {'t_x': math.cos(ang_luz)*1, 't_y': math.sin(ang_luz)*1 + 10, 't_z': 3.0}
         objetos["luz"].escalas = {'s_x': 0.1, 's_y': 0.1, 's_z': 0.1}
         objetos["luz"].iluminacao = {'ka': 1, 'kd': 1, 'ks': 1, 'ns': 1000}
         objetos["luz"].tipo = "emissor"
@@ -218,6 +215,17 @@ def main():
         objetos["luz"].desenha(program, pos)
         pos += len(objetos["luz"].vertices_list)
         ang_luz += 0.01 # dar o efeito de que a luz tá rodando
+
+        # Desenhando chão
+        # Configurando os parâmetros de rotação, translação, escala, luz e tipo
+        objetos["chao"].rotacoes = {'angle': 0, 'r_x': 0, 'r_y': 1, 'r_z': 0}
+        objetos["chao"].translacoes = {'t_x': 0, 't_y': 0, 't_z': 0}
+        objetos["chao"].escalas = {'s_x': 1.0, 's_y': 1.0, 's_z': 1.0}
+        objetos["chao"].iluminacao = {'ka': 0.1, 'kd': 0.5, 'ks': 0.9, 'ns': 32}
+        objetos["chao"].tipo = "objeto"
+        # aplicando desenho:
+        objetos["chao"].desenha(program, pos)
+        pos += len(objetos["chao"].vertices_list)
 
 
         # Configuração das matrizes view e projection
