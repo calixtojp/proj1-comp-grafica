@@ -1,18 +1,14 @@
 from OpenGL.GL import *
 from glfw.GLFW import *
-
 from glfw import _GLFWwindow as GLFWwindow
 from PIL import Image
-
-import pywavefront
-
 import glm
-
-from shader_m import Shader
-from camera import Camera, Camera_Movement
-import vamola
-
 import platform, ctypes, os
+
+from camera import Camera, Camera_Movement
+from shader_m import Shader
+import vamola
+from objeto import Objeto
 
 # the relative path where the textures are located
 IMAGE_RESOURCE_PATH = "./texturas/"
@@ -78,52 +74,14 @@ def main() -> int:
     # set up vertex data (and buffer(s)) and configure vertex attributes
     # ------------------------------------------------------------------
 
-    minion_vertices = vamola.ler_obj('minion/minion.obj')
-    caixa_vertices = vamola.ler_obj('cacto/cacto.obj')
-
-    print(len(minion_vertices), end="\n----------------------------------\n\n")
-    print(len(caixa_vertices), end="\n----------------------------------\n\n")
-    
-    total_vertices = minion_vertices + caixa_vertices
-
-    print(len(total_vertices), end="\n----------------------------------\n\n")
-
-
-    # Convert the list to a glm.array
-    vertices = glm.array(glm.float32, *total_vertices)
-
-    # positions all containers
-    position = glm.vec3( 0.0,  0.0,  0.0)
+    minion = Objeto('minion/minion.obj')
+    cacto = Objeto('cacto/cacto.obj')
 
     # positions of the point lights
     pointLightPositions = [
         glm.vec3( 10.7,  0.2,  2.0),
         glm.vec3( -10.3, -3.3, -4.0)
     ]
-
-    # first, configure the cube's VAO (and VBO)
-    cubeVAO = glGenVertexArrays(1)
-    VBO = glGenBuffers(1)
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO)
-    glBufferData(GL_ARRAY_BUFFER, vertices.nbytes, vertices.ptr, GL_STATIC_DRAW)
-
-    glBindVertexArray(cubeVAO)
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * glm.sizeof(glm.float32), None)
-    glEnableVertexAttribArray(0)
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * glm.sizeof(glm.float32), ctypes.c_void_p(3 * glm.sizeof(glm.float32)))
-    glEnableVertexAttribArray(1)
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * glm.sizeof(glm.float32), ctypes.c_void_p(6 * glm.sizeof(glm.float32)))
-    glEnableVertexAttribArray(2)
-
-    # second, configure the light's VAO (VBO stays the same the vertices are the same for the light object which is also a 3D cube)
-    lightCubeVAO = glGenVertexArrays(1)
-    glBindVertexArray(lightCubeVAO)
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO)
-    # note that we update the lamp's position attribute's stride to reflect the updated buffer data
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * glm.sizeof(glm.float32), None)
-    glEnableVertexAttribArray(0)
 
     # load textures (we now use a utility function to keep the code more organized)
     # -----------------------------------------------------------------------------
@@ -217,20 +175,26 @@ def main() -> int:
         glActiveTexture(GL_TEXTURE1)
         glBindTexture(GL_TEXTURE_2D, specularMap)
 
-        # render containers
-        glBindVertexArray(cubeVAO)
-
-        pos = 0
-
+        #----------------------------------------------DESENHAR---------------------------------------#
         # calculate the model matrix for each object and pass it to shader before drawing
-        model = glm.mat4(0.1)
-        model = glm.translate(model, position)
+        model = glm.mat4(1)
+        # positions all containers
+        model = glm.translate(model, glm.vec3( 0.0,  0.0,  0.0))
         angle = -90
         model = glm.rotate(model, glm.radians(angle), glm.vec3(1.0, 0.3, 0.5))
         lightingShader.setMat4("model", model)
 
-        glDrawArrays(GL_TRIANGLES, pos, len(minion_vertices))
-        pos += len(minion_vertices)
+        glBindVertexArray(minion.vao)
+        glDrawArrays(GL_TRIANGLES, 0, minion.len)
+
+        #O OUTRO   
+        model = glm.mat4(0.1)
+        model = glm.translate(model, glm.vec3( 1.0,  1.0,  1.0))
+        angle = -90
+        model = glm.rotate(model, glm.radians(angle), glm.vec3(1.0, 0.3, 0.5))
+        lightingShader.setMat4("model", model)
+        glBindVertexArray(cacto.vao)
+        glDrawArrays(GL_TRIANGLES, 0, cacto.len)
 
         # also draw the lamp object(s)
         lightCubeShader.use()
@@ -238,15 +202,12 @@ def main() -> int:
         lightCubeShader.setMat4("view", view)
 
         # we now draw as many light bulbs as we have point lights.
-        glBindVertexArray(lightCubeVAO)
         for i in range(2):
-            model = glm.mat4(5.0)
+            model = glm.mat4(1.0)
             model = glm.translate(model, pointLightPositions[i])
-            model = glm.scale(model, glm.vec3(0.2)) # Make it a smaller cube
+            model = glm.scale(model, glm.vec3(0.1)) # Make it a smaller cube
             lightCubeShader.setMat4("model", model)
-            glDrawArrays(GL_TRIANGLES, pos, len(caixa_vertices))
-            pos += len(caixa_vertices)
-
+            glDrawArrays(GL_TRIANGLES, 0, 288)
         # glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         # -------------------------------------------------------------------------------
         glfwSwapBuffers(window)
@@ -254,9 +215,6 @@ def main() -> int:
 
     # optional: de-allocate all resources once they've outlived their purpose:
     # ------------------------------------------------------------------------
-    glDeleteVertexArrays(1, (cubeVAO,))
-    glDeleteVertexArrays(1, (lightCubeVAO,))
-    glDeleteBuffers(1, (VBO,))
 
     # glfw: terminate, clearing all previously allocated GLFW resources.
     # ------------------------------------------------------------------

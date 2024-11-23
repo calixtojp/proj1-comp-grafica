@@ -1,4 +1,6 @@
 
+import glm
+
 # abre o arquivo obj para leitura
 def ler_obj(caminho):
     # Load the OBJ file
@@ -79,4 +81,4 @@ def ler_obj(caminho):
             # Combine into one array (position + normal + texture coordinate)
             final_vertices.extend(position + normal + tex_coord)
 
-    return final_vertices
+    return glm.array(glm.float32, *final_vertices)
