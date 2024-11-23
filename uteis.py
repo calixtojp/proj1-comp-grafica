@@ -33,7 +33,6 @@ def config_inicial():
 
     return window
 
-
 # abre o arquivo obj para leitura
 def ler_obj(caminho):
     # Load the OBJ file
@@ -117,15 +116,8 @@ def ler_obj(caminho):
     return glm.array(glm.float32, *final_vertices)
 
 
-# utility function for loading a 2D texture from file
-# ---------------------------------------------------
-
-# the relative path where the textures are located
 IMAGE_RESOURCE_PATH = "./texturas/"
-
-# function that loads and automatically flips an image vertically
 LOAD_IMAGE = lambda name: Image.open(os.path.join(IMAGE_RESOURCE_PATH, name)).transpose(Image.FLIP_TOP_BOTTOM)
-
 def loadTexture(path: str) -> int:
 
     textureID = glGenTextures(1)

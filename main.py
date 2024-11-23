@@ -15,19 +15,19 @@ from luzes import Luz
 def main() -> int:
 
     window = ut.config_inicial()
-
     luz = Luz()
 
+    caixa0 = Objeto('caixa.obj','caixa.jpg','caixa.jpg', trans = luz.pos[0])
+    caixa1 = Objeto('caixa.obj','caixa.jpg','caixa.jpg', trans = luz.pos[1])
     minion = Objeto('minion.obj', 'minion.png', 'minion.png')
     cacto = Objeto('cacto.obj', 'cacto.jpg', 'cacto.jpg', tam=0.1)
-
-    luz.configurar()
     
     while (not glfwWindowShouldClose(window)):
         
         it.preProc()
         it.processInput(window)
 
+        luz.preProcObj()
         luz.aplicar()
         
         glClearColor(0.1, 0.1, 0.1, 1.0)
@@ -45,24 +45,14 @@ def main() -> int:
         cacto.desenhar(luz.lightingShader)
         
         #-------------------------------------------LAMPADAS-----------------------------------------#
-        # also draw the lamp object(s)
-        luz.lightCubeShader.use()
-        luz.lightCubeShader.setMat4("projection", projection)
-        luz.lightCubeShader.setMat4("view", view)
+        luz.preProcLampada(projection, view)
+        caixa0.desenhar(luz.lightCubeShader)
+        caixa1.desenhar(luz.lightCubeShader)        
 
-        # we now draw as many light bulbs as we have point lights.
-        for i in range(2):
-            model = glm.mat4(1.0)
-            model = glm.translate(model, luz.pos[i])
-            model = glm.scale(model, glm.vec3(0.1)) # Make it a smaller cube
-            luz.lightCubeShader.setMat4("model", model)
-            glDrawArrays(GL_TRIANGLES, 0, 288)
         # glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        # -------------------------------------------------------------------------------
         glfwSwapBuffers(window)
         glfwPollEvents()
 
-    # glfw: terminate, clearing all previously allocated GLFW resources.
     glfwTerminate()
     return 0
 

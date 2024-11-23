@@ -12,11 +12,8 @@ class Luz:
     def __init__(self):
         self.lightingShader = Shader("shaders/6.multiple_lights.vs", "shaders/6.multiple_lights.fs")
         self.lightCubeShader = Shader("shaders/6.light_cube.vs", "shaders/6.light_cube.fs")
-    
 
-    def configurar(self):
         # shader configuration
-        # --------------------
         self.lightingShader.use()
         self.lightingShader.setInt("material.diffuse", 0)
         self.lightingShader.setInt("material.specular", 1)
@@ -25,12 +22,20 @@ class Luz:
         model = glm.mat4(1.0)
         self.lightingShader.setMat4("model", model)
 
+        self.pos = [glm.vec3( 10.7,  0.2,  2.0), glm.vec3( -10.3, -3.3, -4.0)]
 
-    def aplicar(self):
+    def preProcObj(self):
         # be sure to activate shader when setting uniforms/drawing objects
         self.lightingShader.use()
         self.lightingShader.setVec3("viewPos", it.camera.Position)
         self.lightingShader.setFloat("material.shininess", 32.0)
+    
+    def preProcLampada(self, projection, view):
+        self.lightCubeShader.use()
+        self.lightCubeShader.setMat4("projection", projection)
+        self.lightCubeShader.setMat4("view", view)
+    
+    def aplicar(self):
 
         #   Here we set all the uniforms for the 5/6 types of lights we have. We have to set them manually and index 
         #   the proper PointLight struct in the array to set each uniform variable. This can be done more code-friendly
@@ -40,8 +45,6 @@ class Luz:
         s = 1
         d = 1
         a = 1
-
-        self.pos = [glm.vec3( 10.7,  0.2,  2.0), glm.vec3( -10.3, -3.3, -4.0)]
 
         # directional light
         self.lightingShader.setVec3("dirLight.direction", -0.2, -1.0, -0.3)
