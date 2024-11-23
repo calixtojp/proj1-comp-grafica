@@ -75,7 +75,7 @@ def main() -> int:
     # ------------------------------------------------------------------
 
     minion = Objeto('minion/minion.obj')
-    cacto = Objeto('cacto/cacto.obj')
+    cacto = Objeto('cacto/cacto.obj', tam=0.1)
 
     # positions of the point lights
     pointLightPositions = [
@@ -176,23 +176,13 @@ def main() -> int:
         glBindTexture(GL_TEXTURE_2D, specularMap)
 
         #----------------------------------------------DESENHAR---------------------------------------#
-        # calculate the model matrix for each object and pass it to shader before drawing
-        model = glm.mat4(1)
-        # positions all containers
-        model = glm.translate(model, glm.vec3( 0.0,  0.0,  0.0))
-        angle = -90
-        model = glm.rotate(model, glm.radians(angle), glm.vec3(1.0, 0.3, 0.5))
-        lightingShader.setMat4("model", model)
-
+        #minion
+        lightingShader.setMat4("model", minion.model)
         glBindVertexArray(minion.vao)
         glDrawArrays(GL_TRIANGLES, 0, minion.len)
 
-        #O OUTRO   
-        model = glm.mat4(0.1)
-        model = glm.translate(model, glm.vec3( 1.0,  1.0,  1.0))
-        angle = -90
-        model = glm.rotate(model, glm.radians(angle), glm.vec3(1.0, 0.3, 0.5))
-        lightingShader.setMat4("model", model)
+        #cacto
+        lightingShader.setMat4("model", cacto.model)
         glBindVertexArray(cacto.vao)
         glDrawArrays(GL_TRIANGLES, 0, cacto.len)
 
@@ -213,11 +203,7 @@ def main() -> int:
         glfwSwapBuffers(window)
         glfwPollEvents()
 
-    # optional: de-allocate all resources once they've outlived their purpose:
-    # ------------------------------------------------------------------------
-
     # glfw: terminate, clearing all previously allocated GLFW resources.
-    # ------------------------------------------------------------------
     glfwTerminate()
     return 0
 
