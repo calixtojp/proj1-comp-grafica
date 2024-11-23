@@ -10,12 +10,6 @@ from shader_m import Shader
 import vamola
 from objeto import Objeto
 
-# the relative path where the textures are located
-IMAGE_RESOURCE_PATH = "./texturas/"
-
-# function that loads and automatically flips an image vertically
-LOAD_IMAGE = lambda name: Image.open(os.path.join(IMAGE_RESOURCE_PATH, name)).transpose(Image.FLIP_TOP_BOTTOM)
-
 # settings
 SCR_WIDTH = 800
 SCR_HEIGHT = 600
@@ -69,13 +63,13 @@ def main() -> int:
 
     # build and compile our shader zprogram
     # ------------------------------------
-    lightingShader = Shader("6.multiple_lights.vs", "6.multiple_lights.fs")
-    lightCubeShader = Shader("6.light_cube.vs", "6.light_cube.fs")
+    lightingShader = Shader("shaders/6.multiple_lights.vs", "shaders/6.multiple_lights.fs")
+    lightCubeShader = Shader("shaders/6.light_cube.vs", "shaders/6.light_cube.fs")
     # set up vertex data (and buffer(s)) and configure vertex attributes
     # ------------------------------------------------------------------
 
-    minion = Objeto('minion/minion.obj')
-    cacto = Objeto('cacto/cacto.obj', tam=0.1)
+    minion = Objeto('minion.obj', 'minion.png', 'minion.png')
+    cacto = Objeto('cacto.obj', 'cacto.jpg', 'cacto.jpg', tam=0.1)
 
     # positions of the point lights
     pointLightPositions = [
@@ -83,17 +77,11 @@ def main() -> int:
         glm.vec3( -10.3, -3.3, -4.0)
     ]
 
-    # load textures (we now use a utility function to keep the code more organized)
-    # -----------------------------------------------------------------------------
-    diffuseMap = loadTexture("minion.png")
-    specularMap = loadTexture("container2_specular.png")
-
     # shader configuration
     # --------------------
     lightingShader.use()
     lightingShader.setInt("material.diffuse", 0)
     lightingShader.setInt("material.specular", 1)
-
 
     # render loop
     # -----------
@@ -168,20 +156,30 @@ def main() -> int:
         model = glm.mat4(1.0)
         lightingShader.setMat4("model", model)
 
-        # bind diffuse map
-        glActiveTexture(GL_TEXTURE0)
-        glBindTexture(GL_TEXTURE_2D, diffuseMap)
-        # bind specular map
-        glActiveTexture(GL_TEXTURE1)
-        glBindTexture(GL_TEXTURE_2D, specularMap)
 
         #----------------------------------------------DESENHAR---------------------------------------#
-        #minion
+        #MINION
+        # bind diffuse map
+        glActiveTexture(GL_TEXTURE0)
+        glBindTexture(GL_TEXTURE_2D, minion.diffuse)
+
+        # bind specular map
+        glActiveTexture(GL_TEXTURE1)
+        glBindTexture(GL_TEXTURE_2D, minion.specular)
+
         lightingShader.setMat4("model", minion.model)
         glBindVertexArray(minion.vao)
         glDrawArrays(GL_TRIANGLES, 0, minion.len)
 
         #cacto
+        # bind diffuse map
+        glActiveTexture(GL_TEXTURE0)
+        glBindTexture(GL_TEXTURE_2D, cacto.diffuse)
+
+        # bind specular map
+        glActiveTexture(GL_TEXTURE1)
+        glBindTexture(GL_TEXTURE_2D, cacto.specular)
+
         lightingShader.setMat4("model", cacto.model)
         glBindVertexArray(cacto.vao)
         glDrawArrays(GL_TRIANGLES, 0, cacto.len)
@@ -255,37 +253,5 @@ def mouse_callback(window: GLFWwindow, xpos: float, ypos: float) -> None:
 def scroll_callback(window: GLFWwindow, xoffset: float, yoffset: float) -> None:
 
     camera.ProcessMouseScroll(yoffset)
-
-# utility function for loading a 2D texture from file
-# ---------------------------------------------------
-def loadTexture(path: str) -> int:
-
-    textureID = glGenTextures(1)
-    
-    try:
-        img = LOAD_IMAGE(path)
-
-        nrComponents = len(img.getbands())
-
-        format = GL_RED if nrComponents == 1 else \
-                 GL_RGB if nrComponents == 3 else \
-                 GL_RGBA 
-
-        glBindTexture(GL_TEXTURE_2D, textureID)
-        glTexImage2D(GL_TEXTURE_2D, 0, format, img.width, img.height, 0, format, GL_UNSIGNED_BYTE, img.tobytes())
-        glGenerateMipmap(GL_TEXTURE_2D)
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-
-        img.close()
-
-    except:
-
-        print("Texture failed to load at path: " + path)
-
-    return textureID
 
 main()

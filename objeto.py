@@ -10,9 +10,9 @@ import vamola
 import platform, ctypes, os
 
 class Objeto:
-    def __init__(self, caminho, tam=1, trans=[0.0,0.0,0.0], angle=0, rot=[1.0, 0.0, 0.0]):
+    def __init__(self, caminho_obj, caminho_dif, caminho_spec, tam=1, trans=[0.0,0.0,0.0], angle=0, rot=[1.0, 0.0, 0.0]):
         #ler .obj
-        vertices = vamola.ler_obj(caminho)
+        vertices = vamola.ler_obj(f"objetos/{caminho_obj}")
 
         self.len = len(vertices)
 
@@ -35,3 +35,7 @@ class Objeto:
         model_temp = glm.mat4(tam)
         model_temp = glm.translate(model_temp, glm.vec3( trans[0],  trans[1],  trans[2]))
         self.model = glm.rotate(model_temp, glm.radians(angle), glm.vec3(rot[0], rot[1], rot[2]))
+
+        #Texturas
+        self.diffuse = vamola.loadTexture(caminho_dif)
+        self.specular = vamola.loadTexture(caminho_spec)

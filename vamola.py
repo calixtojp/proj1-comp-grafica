@@ -1,5 +1,10 @@
 
+from OpenGL.GL import *
+from glfw.GLFW import *
+from glfw import _GLFWwindow as GLFWwindow
+from PIL import Image
 import glm
+import platform, ctypes, os
 
 # abre o arquivo obj para leitura
 def ler_obj(caminho):
@@ -82,3 +87,39 @@ def ler_obj(caminho):
             final_vertices.extend(position + normal + tex_coord)
 
     return glm.array(glm.float32, *final_vertices)
+
+
+# utility function for loading a 2D texture from file
+# ---------------------------------------------------
+
+# the relative path where the textures are located
+IMAGE_RESOURCE_PATH = "./texturas/"
+
+# function that loads and automatically flips an image vertically
+LOAD_IMAGE = lambda name: Image.open(os.path.join(IMAGE_RESOURCE_PATH, name)).transpose(Image.FLIP_TOP_BOTTOM)
+
+def loadTexture(path: str) -> int:
+
+    textureID = glGenTextures(1)
+    
+
+    img = LOAD_IMAGE(path)
+
+    nrComponents = len(img.getbands())
+
+    format = GL_RED if nrComponents == 1 else \
+                GL_RGB if nrComponents == 3 else \
+                GL_RGBA 
+
+    glBindTexture(GL_TEXTURE_2D, textureID)
+    glTexImage2D(GL_TEXTURE_2D, 0, format, img.width, img.height, 0, format, GL_UNSIGNED_BYTE, img.tobytes())
+    glGenerateMipmap(GL_TEXTURE_2D)
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+
+    img.close()
+
+    return textureID
