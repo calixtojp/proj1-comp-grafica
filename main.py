@@ -35,7 +35,7 @@ def main() -> int:
         return -1
 
     glfwMakeContextCurrent(window)
-    glfwSetFramebufferSizeCallback(window, ut.framebuffer_size_callback)
+    glfwSetFramebufferSizeCallback(window, it.framebuffer_size_callback)
     glfwSetCursorPosCallback(window, it.mouse_callback)
     glfwSetScrollCallback(window, it.scroll_callback)
 

@@ -61,3 +61,11 @@ def mouse_callback(window: GLFWwindow, xpos: float, ypos: float) -> None:
 def scroll_callback(window: GLFWwindow, xoffset: float, yoffset: float) -> None:
 
     camera.ProcessMouseScroll(yoffset)
+
+# glfw: whenever the window size changed (by OS or user resize) this callback function executes
+# ---------------------------------------------------------------------------------------------
+def framebuffer_size_callback(window: GLFWwindow, width: int, height: int) -> None:
+
+    # make sure the viewport matches the new window dimensions note that width and 
+    # height will be significantly larger than specified on retina displays.
+    glViewport(0, 0, width, height)
