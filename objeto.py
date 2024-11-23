@@ -39,3 +39,15 @@ class Objeto:
         #Texturas
         self.diffuse = vamola.loadTexture(caminho_dif)
         self.specular = vamola.loadTexture(caminho_spec)
+
+    def desenhar(self, lightingShader):
+        glActiveTexture(GL_TEXTURE0)
+        glBindTexture(GL_TEXTURE_2D, self.diffuse)
+
+        # bind specular map
+        glActiveTexture(GL_TEXTURE1)
+        glBindTexture(GL_TEXTURE_2D, self.specular)
+
+        lightingShader.setMat4("model", self.model)
+        glBindVertexArray(self.vao)
+        glDrawArrays(GL_TRIANGLES, 0, self.len)

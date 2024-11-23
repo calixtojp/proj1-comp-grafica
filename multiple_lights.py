@@ -158,31 +158,11 @@ def main() -> int:
 
 
         #----------------------------------------------DESENHAR---------------------------------------#
-        #MINION
-        # bind diffuse map
-        glActiveTexture(GL_TEXTURE0)
-        glBindTexture(GL_TEXTURE_2D, minion.diffuse)
+        minion.desenhar(lightingShader)
+        cacto.desenhar(lightingShader)
+        
 
-        # bind specular map
-        glActiveTexture(GL_TEXTURE1)
-        glBindTexture(GL_TEXTURE_2D, minion.specular)
-
-        lightingShader.setMat4("model", minion.model)
-        glBindVertexArray(minion.vao)
-        glDrawArrays(GL_TRIANGLES, 0, minion.len)
-
-        #cacto
-        # bind diffuse map
-        glActiveTexture(GL_TEXTURE0)
-        glBindTexture(GL_TEXTURE_2D, cacto.diffuse)
-
-        # bind specular map
-        glActiveTexture(GL_TEXTURE1)
-        glBindTexture(GL_TEXTURE_2D, cacto.specular)
-
-        lightingShader.setMat4("model", cacto.model)
-        glBindVertexArray(cacto.vao)
-        glDrawArrays(GL_TRIANGLES, 0, cacto.len)
+        #-------------------------------------------LAMPADAS-----------------------------------------#
 
         # also draw the lamp object(s)
         lightCubeShader.use()
