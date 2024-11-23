@@ -5,6 +5,34 @@ from glfw import _GLFWwindow as GLFWwindow
 from PIL import Image
 import glm
 import platform, ctypes, os
+import interacoes as it
+
+def config_inicial():
+    glfwInit()
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3)
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3)
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE)
+
+    if (platform.system() == "Darwin"): # APPLE
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE)
+
+    window = glfwCreateWindow(it.SCR_WIDTH, it.SCR_HEIGHT, "LearnOpenGL", None, None)
+    if (window == None):
+
+        print("Failed to create GLFW window")
+        glfwTerminate()
+
+    glfwMakeContextCurrent(window)
+    glfwSetFramebufferSizeCallback(window, it.framebuffer_size_callback)
+    glfwSetCursorPosCallback(window, it.mouse_callback)
+    glfwSetScrollCallback(window, it.scroll_callback)
+
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED)
+
+    glEnable(GL_DEPTH_TEST)
+
+    return window
+
 
 # abre o arquivo obj para leitura
 def ler_obj(caminho):

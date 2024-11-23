@@ -20,6 +20,15 @@ firstMouse = True
 deltaTime = 0.0
 lastFrame = 0.0
 
+
+#prepara pra usar a processInput()
+def preProc():
+    global deltaTime, lastFrame
+
+    currentFrame = glfwGetTime()
+    deltaTime = currentFrame - lastFrame
+    lastFrame = currentFrame
+
 # process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 # ---------------------------------------------------------------------------------------------------------
 def processInput(window: GLFWwindow) -> None:
