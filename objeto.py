@@ -6,13 +6,13 @@ import pywavefront
 import glm
 from shader_m import Shader
 from camera import Camera, Camera_Movement
-import vamola
+import uteis as ut
 import platform, ctypes, os
 
 class Objeto:
     def __init__(self, caminho_obj, caminho_dif, caminho_spec, tam=1, trans=[0.0,0.0,0.0], angle=0, rot=[1.0, 0.0, 0.0]):
         #ler .obj
-        vertices = vamola.ler_obj(f"objetos/{caminho_obj}")
+        vertices = ut.ler_obj(f"objetos/{caminho_obj}")
 
         self.len = len(vertices)
 
@@ -37,8 +37,8 @@ class Objeto:
         self.model = glm.rotate(model_temp, glm.radians(angle), glm.vec3(rot[0], rot[1], rot[2]))
 
         #Texturas
-        self.diffuse = vamola.loadTexture(caminho_dif)
-        self.specular = vamola.loadTexture(caminho_spec)
+        self.diffuse = ut.loadTexture(caminho_dif)
+        self.specular = ut.loadTexture(caminho_spec)
 
     def desenhar(self, lightingShader):
         glActiveTexture(GL_TEXTURE0)

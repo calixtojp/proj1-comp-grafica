@@ -7,29 +7,14 @@ import platform, ctypes, os
 
 from camera import Camera, Camera_Movement
 from shader_m import Shader
-import vamola
+import uteis as ut
+import interacoes as it
 from objeto import Objeto
-
-# settings
-SCR_WIDTH = 800
-SCR_HEIGHT = 600
-
-# camera
-camera = Camera(glm.vec3(0.0, 0.0, 3.0))
-lastX = SCR_WIDTH / 2.0
-lastY = SCR_HEIGHT / 2.0
-firstMouse = True
-
-# timing
-deltaTime = 0.0
-lastFrame = 0.0
 
 # lighting
 lightPos = glm.vec3(1.2, 1.0, 2.0)
 
 def main() -> int:
-    global deltaTime, lastFrame
-
     # glfw: initialize and configure
     # ------------------------------
     glfwInit()
@@ -42,7 +27,7 @@ def main() -> int:
 
     # glfw window creation
     # --------------------
-    window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", None, None)
+    window = glfwCreateWindow(it.SCR_WIDTH, it.SCR_HEIGHT, "LearnOpenGL", None, None)
     if (window == None):
 
         print("Failed to create GLFW window")
@@ -50,9 +35,9 @@ def main() -> int:
         return -1
 
     glfwMakeContextCurrent(window)
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback)
-    glfwSetCursorPosCallback(window, mouse_callback)
-    glfwSetScrollCallback(window, scroll_callback)
+    glfwSetFramebufferSizeCallback(window, ut.framebuffer_size_callback)
+    glfwSetCursorPosCallback(window, it.mouse_callback)
+    glfwSetScrollCallback(window, it.scroll_callback)
 
     # tell GLFW to capture our mouse
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED)
@@ -90,12 +75,12 @@ def main() -> int:
         # per-frame time logic
         # --------------------
         currentFrame = glfwGetTime()
-        deltaTime = currentFrame - lastFrame
-        lastFrame = currentFrame
+        it.deltaTime = currentFrame - it.lastFrame
+        it.lastFrame = currentFrame
 
         # input
         # -----
-        processInput(window)
+        it.processInput(window)
 
         # render
         # ------
@@ -104,7 +89,7 @@ def main() -> int:
 
         # be sure to activate shader when setting uniforms/drawing objects
         lightingShader.use()
-        lightingShader.setVec3("viewPos", camera.Position)
+        lightingShader.setVec3("viewPos", it.camera.Position)
         lightingShader.setFloat("material.shininess", 32.0)
 
         
@@ -113,33 +98,37 @@ def main() -> int:
         #   by defining light types as classes and set their values in there, or by using a more efficient uniform approach
         #   by using 'Uniform buffer objects', but that is something we'll discuss in the 'Advanced GLSL' tutorial.
            
+        s = 1
+        d = 1
+        a = 1
+
         # directional light
         lightingShader.setVec3("dirLight.direction", -0.2, -1.0, -0.3)
-        lightingShader.setVec3("dirLight.ambient", 0.05, 0.05, 0.05)
-        lightingShader.setVec3("dirLight.diffuse", 0.4, 0.4, 0.4)
-        lightingShader.setVec3("dirLight.specular", 0.5, 0.5, 0.5)
+        lightingShader.setVec3("dirLight.ambient", a*0.05, a*0.05, a*0.05)
+        lightingShader.setVec3("dirLight.diffuse", d*0.4, d*0.4, d*0.4)
+        lightingShader.setVec3("dirLight.specular", s*0.5, s*0.5, s*0.5)
         # point light 1
         lightingShader.setVec3("pointLights[0].position", pointLightPositions[0])
-        lightingShader.setVec3("pointLights[0].ambient", 0.05, 0.05, 0.05)
-        lightingShader.setVec3("pointLights[0].diffuse", 0.8, 0.8, 0.8)
-        lightingShader.setVec3("pointLights[0].specular", 1.0, 1.0, 1.0)
+        lightingShader.setVec3("pointLights[0].ambient", a*0.05, a*0.05, a*0.05)
+        lightingShader.setVec3("pointLights[0].diffuse", d*0.8, d*0.8, d*0.8)
+        lightingShader.setVec3("pointLights[0].specular", s*1.0, s*1.0, s*1.0)
         lightingShader.setFloat("pointLights[0].constant", 1.0)
         lightingShader.setFloat("pointLights[0].linear", 0.09)
         lightingShader.setFloat("pointLights[0].quadratic", 0.032)
         # point light 2
         lightingShader.setVec3("pointLights[1].position", pointLightPositions[1])
-        lightingShader.setVec3("pointLights[1].ambient", 0.05, 0.05, 0.05)
-        lightingShader.setVec3("pointLights[1].diffuse", 0.8, 0.8, 0.8)
-        lightingShader.setVec3("pointLights[1].specular", 1.0, 1.0, 1.0)
+        lightingShader.setVec3("pointLights[1].ambient", a*0.05, a*0.05, a*0.05)
+        lightingShader.setVec3("pointLights[1].diffuse", d*0.8, d*0.8, d*0.8)
+        lightingShader.setVec3("pointLights[1].specular", s*1.0, s*1.0, s*1.0)
         lightingShader.setFloat("pointLights[1].constant", 1.0)
         lightingShader.setFloat("pointLights[1].linear", 0.09)
         lightingShader.setFloat("pointLights[1].quadratic", 0.032)
         # spotLight
-        lightingShader.setVec3("spotLight.position", camera.Position)
-        lightingShader.setVec3("spotLight.direction", camera.Front)
-        lightingShader.setVec3("spotLight.ambient", 0.0, 0.0, 0.0)
-        lightingShader.setVec3("spotLight.diffuse", 1.0, 1.0, 1.0)
-        lightingShader.setVec3("spotLight.specular", 1.0, 1.0, 1.0)
+        lightingShader.setVec3("spotLight.position", it.camera.Position)
+        lightingShader.setVec3("spotLight.direction", it.camera.Front)
+        lightingShader.setVec3("spotLight.ambient", a*0.0, a*0.0, a*0.0)
+        lightingShader.setVec3("spotLight.diffuse", d*1.0, d*1.0, d*1.0)
+        lightingShader.setVec3("spotLight.specular", s*1.0, s*1.0, s*1.0)
         lightingShader.setFloat("spotLight.constant", 1.0)
         lightingShader.setFloat("spotLight.linear", 0.09)
         lightingShader.setFloat("spotLight.quadratic", 0.032)
@@ -147,8 +136,8 @@ def main() -> int:
         lightingShader.setFloat("spotLight.outerCutOff", glm.cos(glm.radians(15.0)))     
 
         # view/projection transformations
-        projection = glm.perspective(glm.radians(camera.Zoom), SCR_WIDTH / SCR_HEIGHT, 0.1, 100.0)
-        view = camera.GetViewMatrix()
+        projection = glm.perspective(glm.radians(it.camera.Zoom), it.SCR_WIDTH / it.SCR_HEIGHT, 0.1, 100.0)
+        view = it.camera.GetViewMatrix()
         lightingShader.setMat4("projection", projection)
         lightingShader.setMat4("view", view)
 
@@ -161,9 +150,7 @@ def main() -> int:
         minion.desenhar(lightingShader)
         cacto.desenhar(lightingShader)
         
-
         #-------------------------------------------LAMPADAS-----------------------------------------#
-
         # also draw the lamp object(s)
         lightCubeShader.use()
         lightCubeShader.setMat4("projection", projection)
@@ -184,54 +171,5 @@ def main() -> int:
     # glfw: terminate, clearing all previously allocated GLFW resources.
     glfwTerminate()
     return 0
-
-# process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-# ---------------------------------------------------------------------------------------------------------
-def processInput(window: GLFWwindow) -> None:
-
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS):
-        glfwSetWindowShouldClose(window, True)
-
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS):
-        camera.ProcessKeyboard(Camera_Movement.FORWARD, deltaTime)
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS):
-        camera.ProcessKeyboard(Camera_Movement.BACKWARD, deltaTime)
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS):
-        camera.ProcessKeyboard(Camera_Movement.LEFT, deltaTime)
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS):
-        camera.ProcessKeyboard(Camera_Movement.RIGHT, deltaTime)
-
-# glfw: whenever the window size changed (by OS or user resize) this callback function executes
-# ---------------------------------------------------------------------------------------------
-def framebuffer_size_callback(window: GLFWwindow, width: int, height: int) -> None:
-
-    # make sure the viewport matches the new window dimensions note that width and 
-    # height will be significantly larger than specified on retina displays.
-    glViewport(0, 0, width, height)
-
-# glfw: whenever the mouse moves, this callback is called
-# -------------------------------------------------------
-def mouse_callback(window: GLFWwindow, xpos: float, ypos: float) -> None:
-    global lastX, lastY, firstMouse
-
-    if (firstMouse):
-
-        lastX = xpos
-        lastY = ypos
-        firstMouse = False
-
-    xoffset = xpos - lastX
-    yoffset = lastY - ypos # reversed since y-coordinates go from bottom to top
-
-    lastX = xpos
-    lastY = ypos
-
-    camera.ProcessMouseMovement(xoffset, yoffset)
-
-# glfw: whenever the mouse scroll wheel scrolls, this callback is called
-# ----------------------------------------------------------------------
-def scroll_callback(window: GLFWwindow, xoffset: float, yoffset: float) -> None:
-
-    camera.ProcessMouseScroll(yoffset)
 
 main()
