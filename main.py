@@ -21,6 +21,7 @@ def main() -> int:
     caixa1 = Objeto('caixa.obj','caixa.jpg','caixa.jpg', trans = luz.pos[1])
     minion = Objeto('minion.obj', 'minion.png', 'minion.png')
     cacto = Objeto('cacto.obj', 'cacto.jpg', 'cacto.jpg', tam=0.1)
+    ceu = Objeto('ceu_novo.obj', 'cacto.jpg', 'cacto.jpg', tam=50)
     
     while (not glfwWindowShouldClose(window)):
         
@@ -43,11 +44,13 @@ def main() -> int:
         #----------------------------------------------DESENHAR---------------------------------------#
         minion.desenhar(luz.lightingShader)
         cacto.desenhar(luz.lightingShader)
+        ceu.desenhar(luz.lightCubeShader)
         
         #-------------------------------------------LAMPADAS-----------------------------------------#
         luz.preProcLampada(projection, view)
         caixa0.desenhar(luz.lightCubeShader)
         caixa1.desenhar(luz.lightCubeShader)        
+        
 
         # glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         glfwSwapBuffers(window)
