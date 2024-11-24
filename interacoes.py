@@ -7,8 +7,8 @@ import glm
 import platform, ctypes, os
 
 # settings
-SCR_WIDTH = 800
-SCR_HEIGHT = 600
+SCR_WIDTH = 1200
+SCR_HEIGHT = 900
 
 # camera
 camera = Camera(glm.vec3(0.0, 0.0, 3.0))

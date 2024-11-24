@@ -10,7 +10,7 @@ import uteis as ut
 import platform, ctypes, os
 
 class Objeto:
-    def __init__(self, caminho_obj, caminho_dif, caminho_spec, tam=1, trans=[0.0,0.0,0.0], angle=0, rot=[1.0, 0.0, 0.0]):
+    def __init__(self, caminho_obj, caminho_dif, caminho_spec, tam=1, trans=[0.0,0.0,0.0], angle=0, rot=[1.0, 0.0, 0.0], scale=[1.0, 1.0, 1.0]):
         #ler .obj
         vertices = ut.ler_obj(f"objetos/{caminho_obj}")
 
@@ -34,6 +34,7 @@ class Objeto:
         #Criar matriz Model
         model_temp = glm.mat4(tam)
         model_temp = glm.translate(model_temp, glm.vec3( trans[0],  trans[1],  trans[2]))
+        model_temp = glm.scale(model_temp, glm.vec3(scale[0], scale[1], scale[2]))
         self.model = glm.rotate(model_temp, glm.radians(angle), glm.vec3(rot[0], rot[1], rot[2]))
 
         #Texturas

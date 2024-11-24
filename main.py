@@ -18,10 +18,9 @@ def main() -> int:
     luz = Luz()
 
     caixa0 = Objeto('caixa.obj','caixa.jpg','caixa.jpg', trans = luz.pos[0])
-    caixa1 = Objeto('caixa.obj','caixa.jpg','caixa.jpg', trans = luz.pos[1])
-    minion = Objeto('minion.obj', 'minion.png', 'minion.png')
-    cacto = Objeto('cacto.obj', 'cacto.jpg', 'cacto.jpg', tam=0.1)
-    ceu = Objeto('ceu_novo.obj', 'cacto.jpg', 'cacto.jpg', tam=50)
+    caixa1 = Objeto('caixa.obj','caixa.jpg','caixa.jpg', tam=10,trans = luz.pos[1])
+    chao = Objeto('chao.obj','chao.jpg','chao.jpg', trans = [0, -10, 0], scale=[1, 0.7, 1])
+    ceu = Objeto('esfera2.obj', 'nightSky.jpg', 'nightSky.jpg', tam=100)
     
     while (not glfwWindowShouldClose(window)):
         
@@ -42,10 +41,9 @@ def main() -> int:
 
 
         #----------------------------------------------DESENHAR---------------------------------------#
-        minion.desenhar(luz.lightingShader)
-        cacto.desenhar(luz.lightingShader)
+        chao.desenhar(luz.lightCubeShader)
         ceu.desenhar(luz.lightCubeShader)
-        
+
         #-------------------------------------------LAMPADAS-----------------------------------------#
         luz.preProcLampada(projection, view)
         caixa0.desenhar(luz.lightCubeShader)
