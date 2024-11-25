@@ -51,7 +51,7 @@ def main() -> int:
         chao.desenhar(luz.lightCubeShader)
         ceu.desenhar(luz.lightCubeShader)
 
-        luz.configurar_iluminacao(ambient_=10)
+        luz.configurar_iluminacao(ambient_=5)
         nave.desenhar(luz.lightCubeShader)
         luz.configurar_iluminacao(ambient_=1)
 
