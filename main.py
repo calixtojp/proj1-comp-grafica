@@ -63,7 +63,6 @@ def main() -> int:
         pedra.desenhar(luz.lightCubeShader)
         luz.configurar_iluminacao(specular_=1)#volto o specular da pedra depois de desenhar
 
-
         #-------------------------------------------LAMPADAS-----------------------------------------#
         luz.preProcLampada(projection, view)
         cilindroNaveEx.desenhar(luz.lightCubeShader)
