@@ -23,7 +23,7 @@ class Luz:
         model = glm.mat4(1.0)
         self.lightingShader.setMat4("model", model)
 
-        self.pos = [glm.vec3( 10.7,  0.2,  2.0), glm.vec3( -10.3, -3.3, -4.0)]
+        self.pos = [glm.vec3( 0,  33,  0), glm.vec3( 0, 35, 0), glm.vec3( 0, 0, 0)]
 
         self.ambient = ambient_
         self.diffuse = diffuse_
@@ -68,6 +68,14 @@ class Luz:
         self.lightingShader.setFloat("pointLights[1].constant", 1.0)
         self.lightingShader.setFloat("pointLights[1].linear", 0.09)
         self.lightingShader.setFloat("pointLights[1].quadratic", 0.032)
+        # point light 3
+        self.lightingShader.setVec3("pointLights[2].position", self.pos[2])
+        self.lightingShader.setVec3("pointLights[2].ambient", self.ambient*0.05, self.ambient*0.05, self.ambient*0.05)
+        self.lightingShader.setVec3("pointLights[2].diffuse", self.diffuse*0.8, self.diffuse*0.8, self.diffuse*0.8)
+        self.lightingShader.setVec3("pointLights[2].specular", self.specular*1.0, self.specular*1.0, self.specular*1.0)
+        self.lightingShader.setFloat("pointLights[2].constant", 1.0)
+        self.lightingShader.setFloat("pointLights[2].linear", 0.09)
+        self.lightingShader.setFloat("pointLights[2].quadratic", 0.032)
         # spotLight
         self.lightingShader.setVec3("spotLight.position", it.camera.Position)
         self.lightingShader.setVec3("spotLight.direction", it.camera.Front)

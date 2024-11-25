@@ -20,6 +20,9 @@ firstMouse = True
 deltaTime = 0.0
 lastFrame = 0.0
 
+#posicionamento de objetos
+minionPos = [0, 40, 0]
+
 
 #prepara pra usar a processInput()
 def preProc():
