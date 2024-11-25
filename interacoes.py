@@ -21,7 +21,19 @@ deltaTime = 0.0
 lastFrame = 0.0
 
 #posicionamento de objetos
-minionPos = [0, 40, 0]
+delta_x = 0
+delta_y = 0
+delta_z = 0
+
+toggle_sl = 1
+toggle_pl1 = 1
+toggle_pl2 = 1
+toggle_pl3 = 1
+toggle_dir = 1
+
+spec = 1
+dif = 1
+amb = 1
 
 
 #prepara pra usar a processInput()
@@ -35,7 +47,9 @@ def preProc():
 # process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 # ---------------------------------------------------------------------------------------------------------
 def processInput(window: GLFWwindow) -> None:
-    global camera
+    global camera, toggle_dir, toggle_pl1, toggle_pl2, toggle_pl3, toggle_sl, spec, dif, amb
+
+    key_processed = False 
 
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS):
         glfwSetWindowShouldClose(window, True)
@@ -48,6 +62,45 @@ def processInput(window: GLFWwindow) -> None:
         camera.ProcessKeyboard(Camera_Movement.LEFT, deltaTime)
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS):
         camera.ProcessKeyboard(Camera_Movement.RIGHT, deltaTime)
+    if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS):
+        amb -= 0.2 
+    if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS):
+        amb += 0.2
+    if(glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS):
+        dif -= 0.2 
+    if(glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS):
+        dif += 0.2
+    if(glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS):
+        spec -= 0.2
+    if(glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS):
+        spec += 0.2
+    if(glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS):
+        if(toggle_dir == 0):
+            toggle_dir = 1
+        else:
+            toggle_dir = 0
+    if(glfwGetKey(window, GLFW_KEY_F2) == GLFW_PRESS):
+        if(toggle_pl1 == 0):
+            toggle_pl1 = 1
+        else:
+            toggle_pl1 = 0
+    if(glfwGetKey(window, GLFW_KEY_F3) == GLFW_PRESS):
+        if(toggle_pl2 == 0):
+            toggle_pl2 = 1
+        else:
+            toggle_pl2 = 0
+    if(glfwGetKey(window, GLFW_KEY_F4) == GLFW_PRESS):
+        if(toggle_pl3 == 0):
+            toggle_pl3 = 1
+        else:
+            toggle_pl3 = 0
+    if glfwGetKey(window, GLFW_KEY_F5) == GLFW_PRESS:
+        if not key_processed:
+            toggle_sl = 1 if toggle_sl == 0 else 0
+            key_processed = True
+    elif glfwGetKey(window, GLFW_KEY_F5) == GLFW_RELEASE:
+        key_processed = False
+
 
 # glfw: whenever the mouse moves, this callback is called
 # -------------------------------------------------------
