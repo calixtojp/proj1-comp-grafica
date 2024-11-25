@@ -23,7 +23,7 @@ class Luz:
         model = glm.mat4(1.0)
         self.lightingShader.setMat4("model", model)
 
-        self.pos = [glm.vec3( 0,  33,  0), glm.vec3( 0, 35, 0), glm.vec3( 0, 0, 0)]
+        self.pos = [glm.vec3( 0,  33,  0), glm.vec3( 0, 35, 0), glm.vec3( 2.05, 45.7, 0.5)]
 
         self.ambient = ambient_
         self.diffuse = diffuse_
@@ -49,44 +49,44 @@ class Luz:
 
         # directional light
         self.lightingShader.setVec3("dirLight.direction", -0.2, -1.0, -0.3)
-        self.lightingShader.setVec3("dirLight.ambient", self.ambient*0.05, self.ambient*0.05, self.ambient*0.05)
-        self.lightingShader.setVec3("dirLight.diffuse", self.diffuse*0.4, self.diffuse*0.4, self.diffuse*0.4)
-        self.lightingShader.setVec3("dirLight.specular", self.specular*0.5, self.specular*0.5, self.specular*0.5)
+        self.lightingShader.setVec3("dirLight.ambient", it.toggle_dir*self.ambient*it.amb*0.05, it.toggle_dir*self.ambient*it.amb*0.05, it.toggle_dir*self.ambient*it.amb*0.05)
+        self.lightingShader.setVec3("dirLight.diffuse", it.toggle_dir*self.diffuse*it.dif*0.4, it.toggle_dir*self.diffuse*it.dif*0.4, it.toggle_dir*self.diffuse*it.dif*0.4)
+        self.lightingShader.setVec3("dirLight.specular", it.toggle_dir*self.specular*it.spec*0.5, it.toggle_dir*self.specular*it.spec*0.5, it.toggle_dir*self.specular*it.spec*0.5)
         # point light 1
         self.lightingShader.setVec3("pointLights[0].position", self.pos[0])
-        self.lightingShader.setVec3("pointLights[0].ambient", self.ambient*0.05, self.ambient*0.05, self.ambient*0.05)
-        self.lightingShader.setVec3("pointLights[0].diffuse", self.diffuse*0.8, self.diffuse*0.8, self.diffuse*0.8)
-        self.lightingShader.setVec3("pointLights[0].specular", self.specular*1.0, self.specular*1.0, self.specular*1.0)
-        self.lightingShader.setFloat("pointLights[0].constant", 1.0)
-        self.lightingShader.setFloat("pointLights[0].linear", 0.09)
-        self.lightingShader.setFloat("pointLights[0].quadratic", 0.032)
+        self.lightingShader.setVec3("pointLights[0].ambient", it.toggle_pl1*self.ambient*it.amb*0.05, it.toggle_pl1*self.ambient*it.amb*0.05, it.toggle_pl1*self.ambient*it.amb*0.05)
+        self.lightingShader.setVec3("pointLights[0].diffuse", it.toggle_pl1*self.diffuse*it.dif*0.8, it.toggle_pl1*self.diffuse*it.dif*0.8, it.toggle_pl1*self.diffuse*it.dif*0.8)
+        self.lightingShader.setVec3("pointLights[0].specular", it.toggle_pl1*self.specular*it.spec*1.0, it.toggle_pl1*self.specular*it.spec*1.0, it.toggle_pl1*self.specular*it.spec*1.0)
+        self.lightingShader.setFloat("pointLights[0].constant", it.toggle_pl1*1.0)
+        self.lightingShader.setFloat("pointLights[0].linear", it.toggle_pl1*0.09)
+        self.lightingShader.setFloat("pointLights[0].quadratic", it.toggle_pl1*0.032)
         # point light 2
         self.lightingShader.setVec3("pointLights[1].position", self.pos[1])
-        self.lightingShader.setVec3("pointLights[1].ambient", self.ambient*0.05, self.ambient*0.05, self.ambient*0.05)
-        self.lightingShader.setVec3("pointLights[1].diffuse", self.diffuse*0.8, self.diffuse*0.8, self.diffuse*0.8)
-        self.lightingShader.setVec3("pointLights[1].specular", self.specular*1.0, self.specular*1.0, self.specular*1.0)
-        self.lightingShader.setFloat("pointLights[1].constant", 1.0)
-        self.lightingShader.setFloat("pointLights[1].linear", 0.09)
-        self.lightingShader.setFloat("pointLights[1].quadratic", 0.032)
+        self.lightingShader.setVec3("pointLights[1].ambient", it.toggle_pl2*self.ambient*it.amb*0.05, it.toggle_pl2*self.ambient*it.amb*0.05, it.toggle_pl2*self.ambient*it.amb*0.05)
+        self.lightingShader.setVec3("pointLights[1].diffuse", it.toggle_pl2*self.diffuse*it.dif*0.8, it.toggle_pl2*self.diffuse*it.dif*0.8, it.toggle_pl2*self.diffuse*it.dif*0.8)
+        self.lightingShader.setVec3("pointLights[1].specular", it.toggle_pl2*self.specular*it.spec*1.0, it.toggle_pl2*self.specular*it.spec*1.0, it.toggle_pl2*self.specular*it.spec*1.0)
+        self.lightingShader.setFloat("pointLights[1].constant", it.toggle_pl2*1.0)
+        self.lightingShader.setFloat("pointLights[1].linear", it.toggle_pl2*0.09)
+        self.lightingShader.setFloat("pointLights[1].quadratic", it.toggle_pl2*0.032)
         # point light 3
         self.lightingShader.setVec3("pointLights[2].position", self.pos[2])
-        self.lightingShader.setVec3("pointLights[2].ambient", self.ambient*0.05, self.ambient*0.05, self.ambient*0.05)
-        self.lightingShader.setVec3("pointLights[2].diffuse", self.diffuse*0.8, self.diffuse*0.8, self.diffuse*0.8)
-        self.lightingShader.setVec3("pointLights[2].specular", self.specular*1.0, self.specular*1.0, self.specular*1.0)
-        self.lightingShader.setFloat("pointLights[2].constant", 1.0)
-        self.lightingShader.setFloat("pointLights[2].linear", 0.09)
-        self.lightingShader.setFloat("pointLights[2].quadratic", 0.032)
+        self.lightingShader.setVec3("pointLights[2].ambient", it.toggle_pl3*self.ambient*it.amb*0.2, it.toggle_pl3*self.ambient*it.amb*0.0, it.toggle_pl3*self.ambient*it.amb*0.00)
+        self.lightingShader.setVec3("pointLights[2].diffuse", it.toggle_pl3*self.diffuse*it.dif*1.0, it.toggle_pl3*self.diffuse*it.dif*0.2, it.toggle_pl3*self.diffuse*it.dif*0.0)
+        self.lightingShader.setVec3("pointLights[2].specular", it.toggle_pl3*self.specular*it.spec*0.8, it.toggle_pl3*self.specular*it.spec*0.4, it.toggle_pl3*self.specular*it.spec*0.2)
+        self.lightingShader.setFloat("pointLights[2].constant", it.toggle_pl3*1.0)
+        self.lightingShader.setFloat("pointLights[2].linear", it.toggle_pl3*0.09)
+        self.lightingShader.setFloat("pointLights[2].quadratic", it.toggle_pl3*0.032)
         # spotLight
         self.lightingShader.setVec3("spotLight.position", glm.vec3(0,30,0))
         self.lightingShader.setVec3("spotLight.direction", glm.vec3(0,-1,0))
-        self.lightingShader.setVec3("spotLight.ambient", self.ambient*0.0, self.ambient*0.2, self.ambient*0.0)
-        self.lightingShader.setVec3("spotLight.diffuse", self.diffuse*1.05, self.diffuse*1.46, self.diffuse*1.07)
-        self.lightingShader.setVec3("spotLight.specular", self.specular*0.1, self.specular*0.4, self.specular*0.1)
-        self.lightingShader.setFloat("spotLight.constant", 1.0)
-        self.lightingShader.setFloat("spotLight.linear", 0.01)
-        self.lightingShader.setFloat("spotLight.quadratic", 0.002)
-        self.lightingShader.setFloat("spotLight.cutOff", glm.cos(glm.radians(40)))
-        self.lightingShader.setFloat("spotLight.outerCutOff", glm.cos(glm.radians(45)))     
+        self.lightingShader.setVec3("spotLight.ambient", it.toggle_sl*self.ambient*it.amb*0.0, it.toggle_sl*self.ambient*it.amb*0.2, it.toggle_sl*self.ambient*it.amb*0.0)
+        self.lightingShader.setVec3("spotLight.diffuse", it.toggle_sl*self.diffuse*it.dif*1.05, it.toggle_sl*self.diffuse*it.dif*1.46, it.toggle_sl*self.diffuse*it.dif*1.07)
+        self.lightingShader.setVec3("spotLight.specular", it.toggle_sl*self.specular*it.spec*0.1, it.toggle_sl*self.specular*it.spec*0.4, it.toggle_sl*self.specular*it.spec*0.1)
+        self.lightingShader.setFloat("spotLight.constant", it.toggle_sl*1.0)
+        self.lightingShader.setFloat("spotLight.linear", it.toggle_sl*0.01)
+        self.lightingShader.setFloat("spotLight.quadratic", it.toggle_sl*0.002)
+        self.lightingShader.setFloat("spotLight.cutOff", it.toggle_sl*glm.cos(glm.radians(40)))
+        self.lightingShader.setFloat("spotLight.outerCutOff", it.toggle_sl*glm.cos(glm.radians(45)))     
 
     def configurar_iluminacao(self, ambient_=1, diffuse_=1, specular_=1):
         self.ambient = ambient_

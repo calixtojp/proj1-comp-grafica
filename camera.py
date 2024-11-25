@@ -14,7 +14,7 @@ class Camera_Movement(Enum):
 # Default camera values
 YAW         = -90.0
 PITCH       =  0.0
-SPEED       =  5
+SPEED       =  20
 SENSITIVITY =  0.1
 ZOOM        =  45.0
 

@@ -21,13 +21,11 @@ def main() -> int:
     nave = Objeto('nave.obj', 'nave_diffuse.png', 'nave_spec.png', tam=0.6, trans=[0, 45, 0])
     vaca = Objeto('vaca.obj', 'vaca.jpeg', 'vaca.jpeg', tam=0.3, trans=[0, -10.5, 0],angle=50,rot=[1, 0, 1])
     cacto = Objeto('cacto.obj', 'cacto.jpg','cacto.jpg', tam=0.08,trans=[100, -60, 40], angle=-90, rot=[1, 0, 0], scale=[1, 0.7, 1])
-    minion = Objeto('minion.obj', 'minion.png', 'minion.png', tam=0.7,trans=interacoes.minionPos)
-    tochaPos = interacoes.minionPos
-    tochaPos[1] += 5
-    tocha = Objeto('tocha.obj', 'tocha.jpeg', 'tocha.jpeg', tam=0.25, trans=tochaPos)
+    minion = Objeto('minion.obj', 'minion.png', 'minion.png',trans=[0, 44.5, 0], scale=[0.7, 0.7, 0.7])
+    tocha = Objeto('tocha.obj', 'tocha.jpeg', 'tocha.jpeg', trans=[2, 44, 0.5], scale=[0.1, 0.1, 0.1])
     cilindroNaveEx = Objeto('cilindro.obj', 'chao.jpg', 'chao.jpg', trans=luz.pos[0], scale=[60, 0.2, 60])
     cilindroNaveIn = Objeto('cilindro.obj', 'chao.jpg', 'chao.jpg', trans=luz.pos[1], scale=[60, 1, 60])
-    cilindroTocha = Objeto('cilindro.obj', 'chao.jpg', 'chao.jpg', trans=luz.pos[2], scale=[10, 1, 10])
+    cilindroTocha = Objeto('cilindro.obj', 'chao.jpg', 'chao.jpg', trans=luz.pos[2], scale=[2, 1, 2])
     pedra = Objeto('pedra.obj', 'pedra.jpg', 'pedra.jpg', tam=0.01,trans=[600, -430, 600])
     
 
