@@ -77,16 +77,16 @@ class Luz:
         self.lightingShader.setFloat("pointLights[2].linear", 0.09)
         self.lightingShader.setFloat("pointLights[2].quadratic", 0.032)
         # spotLight
-        self.lightingShader.setVec3("spotLight.position", it.camera.Position)
-        self.lightingShader.setVec3("spotLight.direction", it.camera.Front)
-        self.lightingShader.setVec3("spotLight.ambient", self.ambient*0.0, self.ambient*0.0, self.ambient*0.0)
-        self.lightingShader.setVec3("spotLight.diffuse", self.diffuse*1.0, self.diffuse*1.0, self.diffuse*1.0)
-        self.lightingShader.setVec3("spotLight.specular", self.specular*1.0, self.specular*1.0, self.specular*1.0)
+        self.lightingShader.setVec3("spotLight.position", glm.vec3(0,30,0))
+        self.lightingShader.setVec3("spotLight.direction", glm.vec3(0,-1,0))
+        self.lightingShader.setVec3("spotLight.ambient", self.ambient*0.0, self.ambient*0.2, self.ambient*0.0)
+        self.lightingShader.setVec3("spotLight.diffuse", self.diffuse*0.05, self.diffuse*0.46, self.diffuse*0.07)
+        self.lightingShader.setVec3("spotLight.specular", self.specular*0.1, self.specular*0.4, self.specular*0.1)
         self.lightingShader.setFloat("spotLight.constant", 1.0)
-        self.lightingShader.setFloat("spotLight.linear", 0.09)
-        self.lightingShader.setFloat("spotLight.quadratic", 0.032)
-        self.lightingShader.setFloat("spotLight.cutOff", glm.cos(glm.radians(12.5)))
-        self.lightingShader.setFloat("spotLight.outerCutOff", glm.cos(glm.radians(15.0)))     
+        self.lightingShader.setFloat("spotLight.linear", 0.01)
+        self.lightingShader.setFloat("spotLight.quadratic", 0.002)
+        self.lightingShader.setFloat("spotLight.cutOff", glm.cos(glm.radians(40)))
+        self.lightingShader.setFloat("spotLight.outerCutOff", glm.cos(glm.radians(45)))     
 
     def configurar_iluminacao(self, ambient_=1, diffuse_=1, specular_=1):
         self.ambient = ambient_

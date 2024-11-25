@@ -22,11 +22,14 @@ def main() -> int:
     vaca = Objeto('vaca.obj', 'vaca.jpeg', 'vaca.jpeg', tam=0.3, trans=[0, -10.5, 0],angle=50,rot=[1, 0, 1])
     cacto = Objeto('cacto.obj', 'cacto.jpg','cacto.jpg', tam=0.08,trans=[100, -60, 40], angle=-90, rot=[1, 0, 0], scale=[1, 0.7, 1])
     minion = Objeto('minion.obj', 'minion.png', 'minion.png', tam=0.7,trans=interacoes.minionPos)
-    tocha = Objeto('tocha.obj', 'tocha.jpeg', 'tocha.jpeg', tam=0.25)
+    tochaPos = interacoes.minionPos
+    tochaPos[1] += 5
+    tocha = Objeto('tocha.obj', 'tocha.jpeg', 'tocha.jpeg', tam=0.25, trans=tochaPos)
     cilindroNaveEx = Objeto('cilindro.obj', 'chao.jpg', 'chao.jpg', trans=luz.pos[0], scale=[60, 0.2, 60])
     cilindroNaveIn = Objeto('cilindro.obj', 'chao.jpg', 'chao.jpg', trans=luz.pos[1], scale=[60, 1, 60])
     cilindroTocha = Objeto('cilindro.obj', 'chao.jpg', 'chao.jpg', trans=luz.pos[2], scale=[10, 1, 10])
     pedra = Objeto('pedra.obj', 'pedra.jpg', 'pedra.jpg', tam=0.01,trans=[600, -430, 600])
+    
 
     while (not glfwWindowShouldClose(window)):
         interacoes.preProc()
@@ -47,7 +50,11 @@ def main() -> int:
         #----------------------------------------------DESENHAR---------------------------------------#
         chao.desenhar(luz.lightCubeShader)
         ceu.desenhar(luz.lightCubeShader)
+
+        luz.configurar_iluminacao(ambient_=10)
         nave.desenhar(luz.lightCubeShader)
+        luz.configurar_iluminacao(ambient_=1)
+
         vaca.desenhar(luz.lightCubeShader)
         cacto.desenhar(luz.lightCubeShader)
         minion.desenhar(luz.lightCubeShader)

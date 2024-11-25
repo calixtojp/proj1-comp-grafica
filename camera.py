@@ -28,6 +28,11 @@ class Camera:
             
             self.Position = glm.vec3(posX, posY, posZ)
             self.WorldUp = glm.vec3(upX, upY, upZ)
+
+            
+
+            
+
             self.Yaw = yaw
             self.Pitch = pitch
 
@@ -50,7 +55,7 @@ class Camera:
         else:
             raise TypeError("Invalid argument count for Camera()")
 
-        self.Front = glm.vec3(0.0, 0.0, -1.0)
+        self.Front = glm.vec3(   -0.0072651,    -0.999848,   -0.0158684 )
         self.Up = glm.vec3()
         self.Right = glm.vec3()
         self.MovementSpeed = SPEED
@@ -109,6 +114,7 @@ class Camera:
         front.y = glm.sin(glm.radians(self.Pitch))
         front.z = glm.sin(glm.radians(self.Yaw)) * glm.cos(glm.radians(self.Pitch))
         self.Front = glm.normalize(front)
+
         # also re-calculate the Right and Up vector
         self.Right = glm.normalize(glm.cross(self.Front, self.WorldUp))  # normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
         self.Up    = glm.normalize(glm.cross(self.Right, self.Front))
