@@ -25,7 +25,9 @@ class Luz:
 
         self.pos = [glm.vec3( 10.7,  0.2,  2.0), glm.vec3( -10.3, -3.3, -4.0)]
 
-
+        self.ambient = ambient_
+        self.diffuse = diffuse_
+        self.specular = specular_
 
     def preProcObj(self):
         # be sure to activate shader when setting uniforms/drawing objects
@@ -38,11 +40,9 @@ class Luz:
         self.lightCubeShader.setMat4("projection", projection)
         self.lightCubeShader.setMat4("view", view)
     
-    def aplicar(self, ambient_=1, diffuse_=1, specular_=1):
+    def aplicar(self):
 
-        self.ambient = ambient_
-        self.diffuse = diffuse_
-        self.specular = specular_
+
 
         #   Here we set all the uniforms for the 5/6 types of lights we have. We have to set them manually and index 
         #   the proper PointLight struct in the array to set each uniform variable. This can be done more code-friendly
@@ -84,8 +84,12 @@ class Luz:
         self.lightingShader.setFloat("spotLight.outerCutOff", glm.cos(glm.radians(15.0)))     
 
     def configurar_iluminacao(self, ambient_=1, diffuse_=1, specular_=1):
+        self.ambient = ambient_
+        self.diffuse = diffuse_
+        self.specular = specular_
+
         self.preProcObj()
-        self.aplicar(specular_=100)
+        self.aplicar()
 
         # view/projection transformations
         projection = glm.perspective(glm.radians(it.camera.Zoom), it.SCR_WIDTH / it.SCR_HEIGHT, 0.1, 100.0)
