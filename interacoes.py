@@ -31,10 +31,16 @@ toggle_pl2 = 1
 toggle_pl3 = 1
 toggle_dir = 1
 
+toggle_ex = 1
+toggle_in = 1 
+
 spec = 1
 dif = 1
 amb = 1
 
+# Defina as alturas dos planos de recorte
+clip_plane_y_min = -1.0
+clip_plane_y_max = 1.0
 
 #prepara pra usar a processInput()
 def preProc():

@@ -65,9 +65,9 @@ def main() -> int:
 
         #-------------------------------------------LAMPADAS-----------------------------------------#
         luz.preProcLampada(projection, view)
-        cilindroNaveEx.desenhar(luz.lightCubeShader)
-        cilindroNaveIn.desenhar(luz.lightCubeShader)           
-        cilindroTocha.desenhar(luz.lightCubeShader)
+        # cilindroNaveEx.desenhar(luz.lightCubeShader)
+        # cilindroNaveIn.desenhar(luz.lightCubeShader)           
+        # cilindroTocha.desenhar(luz.lightCubeShader)
 
         # glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         glfwSwapBuffers(window)
