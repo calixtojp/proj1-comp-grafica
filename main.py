@@ -20,7 +20,8 @@ def main() -> int:
     caixa0 = Objeto('caixa.obj','caixa.jpg','caixa.jpg', trans = luz.pos[0])
     caixa1 = Objeto('caixa.obj','caixa.jpg','caixa.jpg', tam=10,trans = luz.pos[1])
     chao = Objeto('chao.obj','chao.jpg','chao.jpg', trans = [0, -10, 0], scale=[1, 0.7, 1])
-    ceu = Objeto('esfera2.obj', 'nightSky.jpg', 'nightSky.jpg', tam=100)
+    ceu = Objeto('esfera2.obj', 'nightSky.jpg', 'nightSky.jpg', tam=10)
+
     
     while (not glfwWindowShouldClose(window)):
         
