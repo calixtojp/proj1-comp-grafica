@@ -72,7 +72,7 @@ class Luz:
         self.lightingShader.setVec3("spotLight.position", glm.vec3(0,30,0))
         self.lightingShader.setVec3("spotLight.direction", glm.vec3(0,-1,0))
         self.lightingShader.setVec3("spotLight.ambient", self.ambient*0.0, self.ambient*0.2, self.ambient*0.0)
-        self.lightingShader.setVec3("spotLight.diffuse", self.diffuse*0.05, self.diffuse*0.46, self.diffuse*0.07)
+        self.lightingShader.setVec3("spotLight.diffuse", self.diffuse*1.05, self.diffuse*1.46, self.diffuse*1.07)
         self.lightingShader.setVec3("spotLight.specular", self.specular*0.1, self.specular*0.4, self.specular*0.1)
         self.lightingShader.setFloat("spotLight.constant", 1.0)
         self.lightingShader.setFloat("spotLight.linear", 0.01)
