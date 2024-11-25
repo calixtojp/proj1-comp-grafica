@@ -26,6 +26,7 @@ def main() -> int:
     minion = Objeto('minion.obj', 'minion.png', 'minion.png', tam=0.7,trans=[0, 40, 0])
     tocha = Objeto('tocha.obj', 'tocha.jpeg', 'tocha.jpeg', tam=0.25)
     pedra = Objeto('pedra.obj', 'pedra.jpg', 'pedra.jpg', tam=0.01,trans=[600, -430, 600])
+    
     while (not glfwWindowShouldClose(window)):
         interacoes.preProc()
         interacoes.processInput(window)
