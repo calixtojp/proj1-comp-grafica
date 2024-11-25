@@ -45,18 +45,7 @@ class Objeto:
         self.specular = ut.loadTexture(caminho_spec)
 
     def desenhar(self, lightingShader, spec=1, novo=False):
-        if novo:
-            luz = Luz(specular_=spec)
-            luz.preProcObj()
-            luz.aplicar()
 
-            # view/projection transformations
-            projection = glm.perspective(glm.radians(interacoes.camera.Zoom), interacoes.SCR_WIDTH / interacoes.SCR_HEIGHT, 0.1, 100.0)
-            view = interacoes.camera.GetViewMatrix()
-            luz.lightingShader.setMat4("projection", projection)
-            luz.lightingShader.setMat4("view", view)
-
-        #-------------------------------------------
         glActiveTexture(GL_TEXTURE0)
         glBindTexture(GL_TEXTURE_2D, self.diffuse)
 
@@ -64,10 +53,7 @@ class Objeto:
         glActiveTexture(GL_TEXTURE1)
         glBindTexture(GL_TEXTURE_2D, self.specular)
 
-        if novo:
-            luz.lightingShader.setMat4("model", self.model)
-        else:
-            lightingShader.setMat4("model", self.model)
+        lightingShader.setMat4("model", self.model)
 
         glBindVertexArray(self.vao)
         glDrawArrays(GL_TRIANGLES, 0, self.len)

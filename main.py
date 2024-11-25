@@ -51,23 +51,16 @@ def main() -> int:
         vaca.desenhar(luz.lightCubeShader)
         cacto.desenhar(luz.lightCubeShader)
 
-        #teste pra desenhar a pedra com specular maior
-        # luz2.preProcObj()
-        # luz2.aplicar()
+        #teste pra desenhar a pedra com specular maior ---------------------------------
+        luz.configurar_iluminacao(specular_=100)
+        pedra.desenhar(luz.lightCubeShader)
+        luz.configurar_iluminacao(specular_=1)
 
-        # # view/projection transformations
-        # projection = glm.perspective(glm.radians(interacoes.camera.Zoom), interacoes.SCR_WIDTH / interacoes.SCR_HEIGHT, 0.1, 100.0)
-        # view = interacoes.camera.GetViewMatrix()
-        # luz2.lightingShader.setMat4("projection", projection)
-        # luz2.lightingShader.setMat4("view", view)
-
-        # pedra.desenhar(luz2.lightCubeShader)
-        pedra.desenhar(luz.lightCubeShader,spec=100, novo=True)
 
         #-------------------------------------------LAMPADAS-----------------------------------------#
         luz.preProcLampada(projection, view)
         caixa0.desenhar(luz.lightCubeShader)
-        caixa1.desenhar(luz.lightCubeShader)        
+        caixa1.desenhar(luz.lightCubeShader)             
         
 
         # glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
