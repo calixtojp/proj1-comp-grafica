@@ -8,6 +8,9 @@ from shader_m import Shader
 from camera import Camera, Camera_Movement
 import uteis as ut
 import platform, ctypes, os
+from luzes import Luz
+import interacoes
+
 
 class Objeto:
     def __init__(self, caminho_obj, caminho_dif, caminho_spec, tam=1, trans=[0.0,0.0,0.0], angle=0, rot=[1.0, 0.0, 0.0], scale=[1.0, 1.0, 1.0]):
@@ -41,7 +44,19 @@ class Objeto:
         self.diffuse = ut.loadTexture(caminho_dif)
         self.specular = ut.loadTexture(caminho_spec)
 
-    def desenhar(self, lightingShader):
+    def desenhar(self, lightingShader, spec=1, novo=False):
+        if novo:
+            luz = Luz(specular_=spec)
+            luz.preProcObj()
+            luz.aplicar()
+
+            # view/projection transformations
+            projection = glm.perspective(glm.radians(interacoes.camera.Zoom), interacoes.SCR_WIDTH / interacoes.SCR_HEIGHT, 0.1, 100.0)
+            view = interacoes.camera.GetViewMatrix()
+            luz.lightingShader.setMat4("projection", projection)
+            luz.lightingShader.setMat4("view", view)
+
+        #-------------------------------------------
         glActiveTexture(GL_TEXTURE0)
         glBindTexture(GL_TEXTURE_2D, self.diffuse)
 
@@ -49,6 +64,10 @@ class Objeto:
         glActiveTexture(GL_TEXTURE1)
         glBindTexture(GL_TEXTURE_2D, self.specular)
 
-        lightingShader.setMat4("model", self.model)
+        if novo:
+            luz.lightingShader.setMat4("model", self.model)
+        else:
+            lightingShader.setMat4("model", self.model)
+
         glBindVertexArray(self.vao)
         glDrawArrays(GL_TRIANGLES, 0, self.len)

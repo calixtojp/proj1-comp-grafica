@@ -34,7 +34,7 @@ def main() -> int:
 
         luz.preProcObj()
         luz.aplicar()
-        
+
         glClearColor(0.1, 0.1, 0.1, 1.0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
@@ -44,14 +44,25 @@ def main() -> int:
         luz.lightingShader.setMat4("projection", projection)
         luz.lightingShader.setMat4("view", view)
 
-
         #----------------------------------------------DESENHAR---------------------------------------#
         chao.desenhar(luz.lightCubeShader)
         ceu.desenhar(luz.lightCubeShader)
         nave.desenhar(luz.lightCubeShader)
         vaca.desenhar(luz.lightCubeShader)
         cacto.desenhar(luz.lightCubeShader)
-        pedra.desenhar(luz.lightCubeShader)
+
+        #teste pra desenhar a pedra com specular maior
+        # luz2.preProcObj()
+        # luz2.aplicar()
+
+        # # view/projection transformations
+        # projection = glm.perspective(glm.radians(interacoes.camera.Zoom), interacoes.SCR_WIDTH / interacoes.SCR_HEIGHT, 0.1, 100.0)
+        # view = interacoes.camera.GetViewMatrix()
+        # luz2.lightingShader.setMat4("projection", projection)
+        # luz2.lightingShader.setMat4("view", view)
+
+        # pedra.desenhar(luz2.lightCubeShader)
+        pedra.desenhar(luz.lightCubeShader,spec=100, novo=True)
 
         #-------------------------------------------LAMPADAS-----------------------------------------#
         luz.preProcLampada(projection, view)
