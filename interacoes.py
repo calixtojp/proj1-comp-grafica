@@ -74,29 +74,56 @@ def processInput(window: GLFWwindow) -> None:
         spec -= 0.2
     if(glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS):
         spec += 0.2
-    if(glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS):
-        if(toggle_dir == 0):
-            toggle_dir = 1
-        else:
-            toggle_dir = 0
-    if(glfwGetKey(window, GLFW_KEY_F2) == GLFW_PRESS):
-        if(toggle_pl1 == 0):
-            toggle_pl1 = 1
-        else:
-            toggle_pl1 = 0
-    if(glfwGetKey(window, GLFW_KEY_F3) == GLFW_PRESS):
-        if(toggle_pl2 == 0):
-            toggle_pl2 = 1
-        else:
-            toggle_pl2 = 0
-    if(glfwGetKey(window, GLFW_KEY_F4) == GLFW_PRESS):
-        if(toggle_pl3 == 0):
-            toggle_pl3 = 1
-        else:
-            toggle_pl3 = 0
+
+    if glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS:
+        if not key_processed:
+            if(toggle_dir == 0):
+                toggle_dir = 1
+            else:
+                toggle_dir = 0
+            key_processed = True
+    elif glfwGetKey(window, GLFW_KEY_F1) == GLFW_RELEASE:
+        key_processed = False
+
+    if glfwGetKey(window, GLFW_KEY_F2) == GLFW_PRESS:
+        if not key_processed:
+            if(toggle_pl1 == 0):
+                toggle_pl1 = 1
+            else:
+                toggle_pl1 = 0
+            key_processed = True
+    elif glfwGetKey(window, GLFW_KEY_F2) == GLFW_RELEASE:
+        key_processed = False
+
+
+    if glfwGetKey(window, GLFW_KEY_F3) == GLFW_PRESS:
+        if not key_processed:
+            if(toggle_pl2 == 0):
+                toggle_pl2 = 1
+            else:
+                toggle_pl2 = 0
+            key_processed = True
+    elif glfwGetKey(window, GLFW_KEY_F3) == GLFW_RELEASE:
+        key_processed = False
+
+
+    if glfwGetKey(window, GLFW_KEY_F4) == GLFW_PRESS:
+        if not key_processed:
+            if(toggle_pl3 == 0):
+                toggle_pl3 = 1
+            else:
+                toggle_pl3 = 0
+            key_processed = True
+    elif glfwGetKey(window, GLFW_KEY_F4) == GLFW_RELEASE:
+        key_processed = False
+
+
     if glfwGetKey(window, GLFW_KEY_F5) == GLFW_PRESS:
         if not key_processed:
-            toggle_sl = 1 if toggle_sl == 0 else 0
+            if(toggle_sl == 0):
+                toggle_sl = 1
+            else:
+                toggle_sl = 0
             key_processed = True
     elif glfwGetKey(window, GLFW_KEY_F5) == GLFW_RELEASE:
         key_processed = False
