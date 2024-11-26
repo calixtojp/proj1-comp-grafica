@@ -101,7 +101,7 @@ class Luz:
         self.aplicar()
 
         # view/projection transformations
-        projection = glm.perspective(glm.radians(it.camera.Zoom), it.SCR_WIDTH / it.SCR_HEIGHT, 0.1, 100.0)
+        projection = glm.perspective(glm.radians(it.camera.Zoom), it.SCR_WIDTH / it.SCR_HEIGHT, 0.1, 1000.0)
         view = it.camera.GetViewMatrix()
         self.lightingShader.setMat4("projection", projection)
         self.lightingShader.setMat4("view", view)
