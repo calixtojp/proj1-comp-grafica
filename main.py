@@ -8,7 +8,7 @@ import platform, ctypes, os
 from camera import Camera, Camera_Movement
 from shader_m import Shader
 import uteis
-import interacoes
+import interacoes as it
 from objeto import Objeto
 from luzes import Luz
 
@@ -18,7 +18,7 @@ def main() -> int:
 
     chao = Objeto('chao.obj','chao.jpg','chao.jpg',tam=1, trans = [0, -10, 0], scale=[1, 0.7, 1])
     ceu = Objeto('esfera2.obj', 'nightSky.jpg', 'nightSky.jpg', tam=10)
-    nave = Objeto('nave.obj', 'nave_diffuse.png', 'nave_spec.png', tam=0.6, trans=[0, 45, 0])
+    nave = Objeto('nave.obj', 'nave_diffuse.png', 'nave_spec.png', trans=[it.nave_x, it.nave_y, it.nave_z], scale=[0.8,0.8,0.8])
     vaca = Objeto('vaca.obj', 'vaca.jpeg', 'vaca.jpeg', tam=0.3, trans=[0, -10.5, 0],angle=50,rot=[1, 0, 1])
     cacto = Objeto('cacto.obj', 'cacto.jpg','cacto.jpg', tam=0.08,trans=[100, -60, 40], angle=-90, rot=[1, 0, 0], scale=[1, 0.7, 1])
     minion = Objeto('minion.obj', 'minion.png', 'minion.png',trans=[0, 44.5, 0], scale=[0.7, 0.7, 0.7])
@@ -30,8 +30,8 @@ def main() -> int:
     
 
     while (not glfwWindowShouldClose(window)):
-        interacoes.preProc()
-        interacoes.processInput(window)
+        it.preProc()
+        it.processInput(window)
 
         luz.preProcObj()
         luz.aplicar()
@@ -40,22 +40,41 @@ def main() -> int:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         # view/projection transformations
-        projection = glm.perspective(glm.radians(interacoes.camera.Zoom), interacoes.SCR_WIDTH / interacoes.SCR_HEIGHT, 0.1, 100.0)
-        view = interacoes.camera.GetViewMatrix()
+        projection = glm.perspective(glm.radians(it.camera.Zoom), it.SCR_WIDTH / it.SCR_HEIGHT, 0.1, 100.0)
+        view = it.camera.GetViewMatrix()
         luz.lightingShader.setMat4("projection", projection)
         luz.lightingShader.setMat4("view", view)
 
         #----------------------------------------------DESENHAR---------------------------------------#
+
+        #usar como referênca a posição da nave para fazer os desenhos
+        pos_nave = [it.nave_x, it.nave_y, it.nave_z]
+
+        #modificar a posição das luzes
+        luz.pos = [
+                glm.vec3(it.nave_x,  it.nave_y+9,  it.nave_z),
+                glm.vec3(it.nave_x, it.nave_y+13, it.nave_z),
+                glm.vec3(it.nave_x+2.05, it.nave_y+23, it.nave_z+0.5)
+            ]
+        
         chao.desenhar(luz.lightCubeShader)
         ceu.desenhar(luz.lightCubeShader)
 
+        #nave
         luz.configurar_iluminacao(ambient_=5)
+        nave.trans = pos_nave
         nave.desenhar(luz.lightCubeShader)
         luz.configurar_iluminacao(ambient_=1)
 
         vaca.desenhar(luz.lightCubeShader)
         cacto.desenhar(luz.lightCubeShader)
+
+        #minion
+        minion.trans = [it.nave_x, it.nave_y+22.5, it.nave_z]
         minion.desenhar(luz.lightCubeShader)
+        
+        #tocha
+        tocha.trans = [luz.pos[2].x, luz.pos[2].y-1.7, luz.pos[2].z]
         tocha.desenhar(luz.lightCubeShader)
 
         #teste pra desenhar a pedra com specular menor ---------------------------------
@@ -65,9 +84,15 @@ def main() -> int:
 
         #-------------------------------------------LAMPADAS-----------------------------------------#
         luz.preProcLampada(projection, view)
-        # cilindroNaveEx.desenhar(luz.lightCubeShader)
-        # cilindroNaveIn.desenhar(luz.lightCubeShader)           
-        # cilindroTocha.desenhar(luz.lightCubeShader)
+        cilindroNaveEx.trans = [luz.pos[0].x, luz.pos[0].y, luz.pos[0].z]
+        cilindroNaveEx.desenhar(luz.lightCubeShader)
+
+        cilindroNaveIn.trans = [luz.pos[1].x, luz.pos[1].y, luz.pos[1].z]
+        cilindroNaveIn.desenhar(luz.lightCubeShader)
+
+        cilindroTocha.trans = [luz.pos[2].x, luz.pos[2].y, luz.pos[2].z]
+        cilindroTocha.desenhar(luz.lightCubeShader)
+       
 
         # glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         glfwSwapBuffers(window)

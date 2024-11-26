@@ -23,6 +23,12 @@ class Objeto:
         self.vao = glGenVertexArrays(1)
         self.vbo = glGenBuffers(1)
 
+        self.tam = tam
+        self.trans = trans
+        self.angle = angle
+        self.rot = rot
+        self.scale = scale
+
         glBindVertexArray(self.vao)
         glBindBuffer(GL_ARRAY_BUFFER, self.vbo)
         glBufferData(GL_ARRAY_BUFFER, vertices.nbytes, vertices.ptr, GL_STATIC_DRAW)
@@ -35,16 +41,22 @@ class Objeto:
         glEnableVertexAttribArray(2)
 
         #Criar matriz Model
-        model_temp = glm.mat4(tam)
-        model_temp = glm.translate(model_temp, glm.vec3( trans[0],  trans[1],  trans[2]))
-        model_temp = glm.scale(model_temp, glm.vec3(scale[0], scale[1], scale[2]))
-        self.model = glm.rotate(model_temp, glm.radians(angle), glm.vec3(rot[0], rot[1], rot[2]))
+        model_temp = glm.mat4(self.tam)
+        model_temp = glm.translate(model_temp, glm.vec3( self.trans[0],  self.trans[1],  self.trans[2]))
+        model_temp = glm.scale(model_temp, glm.vec3(self.scale[0], self.scale[1], self.scale[2]))
+        self.model = glm.rotate(model_temp, glm.radians(self.angle), glm.vec3(self.rot[0], self.rot[1], self.rot[2]))
 
         #Texturas
         self.diffuse = ut.loadTexture(caminho_dif)
         self.specular = ut.loadTexture(caminho_spec)
 
     def desenhar(self, lightingShader, spec=1, novo=False):
+
+        #Atualizar matriz Model
+        model_temp = glm.mat4(self.tam)
+        model_temp = glm.translate(model_temp, glm.vec3( self.trans[0],  self.trans[1],  self.trans[2]))
+        model_temp = glm.scale(model_temp, glm.vec3(self.scale[0], self.scale[1], self.scale[2]))
+        self.model = glm.rotate(model_temp, glm.radians(self.angle), glm.vec3(self.rot[0], self.rot[1], self.rot[2]))
 
         glActiveTexture(GL_TEXTURE0)
         glBindTexture(GL_TEXTURE_2D, self.diffuse)

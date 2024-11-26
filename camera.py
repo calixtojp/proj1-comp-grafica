@@ -18,9 +18,6 @@ SPEED       =  20
 SENSITIVITY =  0.1
 ZOOM        =  45.0
 
-#multiplicadores para desligar a luz interna/externa dependendo da posição atual
-toggle_ex = 1
-toggle_in = 1 
 
 
 # An abstract camera class that processes input and calculates the corresponding Euler Angles, Vectors and Matrices for use in OpenGL
@@ -69,14 +66,7 @@ class Camera:
         return glm.lookAt(self.Position, self.Position + self.Front, self.Up)
 
 
-    def esta_no_externo(self):
-        print(f"pos_atual:x:{self.Position.x}|y:{self.Position.y}Z:{self.Position.z}")
-        if self.Position.y > 15:
-            toggle_ex = 0
-            toggle_in = 1
-            return False 
-        
-        return True
+
 
     # processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
     def ProcessKeyboard(self, direction: Camera_Movement, deltaTime: float) -> None:

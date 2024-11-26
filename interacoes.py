@@ -21,9 +21,9 @@ deltaTime = 0.0
 lastFrame = 0.0
 
 #posicionamento de objetos
-delta_x = 0
-delta_y = 0
-delta_z = 0
+nave_x = 0
+nave_y = 45
+nave_z = 0
 
 toggle_sl = 1
 toggle_pl1 = 1
@@ -38,9 +38,9 @@ spec = 1
 dif = 1
 amb = 1
 
-# Defina as alturas dos planos de recorte
-clip_plane_y_min = -1.0
-clip_plane_y_max = 1.0
+#multiplicadores para desligar a luz interna/externa dependendo da posição atual
+toggle_ex = 1
+toggle_in = 1 
 
 #prepara pra usar a processInput()
 def preProc():
@@ -50,10 +50,34 @@ def preProc():
     deltaTime = currentFrame - lastFrame
     lastFrame = currentFrame
 
+#O ambiente interno será definido por dois planos y=30 e y=50 e
+#pela posição relativa da câmera em relação à nave, considerando a
+#distância do observador em relação à posição em x e y do centro da nave.
+def esta_amb_interno():
+    global camera
+    print(f"pos(x:{camera.Position.x}|y:{camera.Position.y}|z:{camera.Position.z})")
+    distancia = glm.sqrt((camera.Position.x - nave_x)**2 + (camera.Position.z - nave_z)**2)
+    if camera.Position.y > 50 and camera.Position.y < 70 and distancia < 28:
+        print("dentro")
+        return True
+    else:
+        print("fora")
+        return False
+
+
+def modifica_luzes_relativas():
+    global toggle_ex, toggle_in
+    if esta_amb_interno():
+        toggle_ex = 0
+        toggle_in = 1
+    else:
+        toggle_ex = 1
+        toggle_in = 0
+        
 # process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 # ---------------------------------------------------------------------------------------------------------
 def processInput(window: GLFWwindow) -> None:
-    global camera, toggle_dir, toggle_pl1, toggle_pl2, toggle_pl3, toggle_sl, spec, dif, amb
+    global camera, toggle_dir, toggle_pl1, toggle_pl2, toggle_pl3, toggle_sl, spec, dif, amb, nave_z, nave_x
 
     key_processed = False 
 
@@ -62,12 +86,16 @@ def processInput(window: GLFWwindow) -> None:
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS):
         camera.ProcessKeyboard(Camera_Movement.FORWARD, deltaTime)
+        modifica_luzes_relativas()
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS):
         camera.ProcessKeyboard(Camera_Movement.BACKWARD, deltaTime)
+        modifica_luzes_relativas()
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS):
         camera.ProcessKeyboard(Camera_Movement.LEFT, deltaTime)
+        modifica_luzes_relativas()
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS):
         camera.ProcessKeyboard(Camera_Movement.RIGHT, deltaTime)
+        modifica_luzes_relativas()
     if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS):
         amb -= 0.2 
     if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS):
@@ -80,29 +108,70 @@ def processInput(window: GLFWwindow) -> None:
         spec -= 0.2
     if(glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS):
         spec += 0.2
-    if(glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS):
-        if(toggle_dir == 0):
-            toggle_dir = 1
-        else:
-            toggle_dir = 0
-    if(glfwGetKey(window, GLFW_KEY_F2) == GLFW_PRESS):
-        if(toggle_pl1 == 0):
-            toggle_pl1 = 1
-        else:
-            toggle_pl1 = 0
-    if(glfwGetKey(window, GLFW_KEY_F3) == GLFW_PRESS):
-        if(toggle_pl2 == 0):
-            toggle_pl2 = 1
-        else:
-            toggle_pl2 = 0
-    if(glfwGetKey(window, GLFW_KEY_F4) == GLFW_PRESS):
-        if(toggle_pl3 == 0):
-            toggle_pl3 = 1
-        else:
-            toggle_pl3 = 0
+
+    nave_speed = 0.8
+    if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS):
+        print("up")
+        nave_x += nave_speed
+    if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS):
+        print("down")
+        nave_x -= nave_speed
+    if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS):
+        print("right")
+        nave_z += nave_speed
+    if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS):
+        print("left")
+        nave_z -= nave_speed
+
+    if glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS:
+        if not key_processed:
+            if(toggle_dir == 0):
+                toggle_dir = 1
+            else:
+                toggle_dir = 0
+            key_processed = True
+    elif glfwGetKey(window, GLFW_KEY_F1) == GLFW_RELEASE:
+        key_processed = False
+
+    if glfwGetKey(window, GLFW_KEY_F2) == GLFW_PRESS:
+        if not key_processed:
+            if(toggle_pl1 == 0):
+                toggle_pl1 = 1
+            else:
+                toggle_pl1 = 0
+            key_processed = True
+    elif glfwGetKey(window, GLFW_KEY_F2) == GLFW_RELEASE:
+        key_processed = False
+
+
+    if glfwGetKey(window, GLFW_KEY_F3) == GLFW_PRESS:
+        if not key_processed:
+            if(toggle_pl2 == 0):
+                toggle_pl2 = 1
+            else:
+                toggle_pl2 = 0
+            key_processed = True
+    elif glfwGetKey(window, GLFW_KEY_F3) == GLFW_RELEASE:
+        key_processed = False
+
+
+    if glfwGetKey(window, GLFW_KEY_F4) == GLFW_PRESS:
+        if not key_processed:
+            if(toggle_pl3 == 0):
+                toggle_pl3 = 1
+            else:
+                toggle_pl3 = 0
+            key_processed = True
+    elif glfwGetKey(window, GLFW_KEY_F4) == GLFW_RELEASE:
+        key_processed = False
+
+
     if glfwGetKey(window, GLFW_KEY_F5) == GLFW_PRESS:
         if not key_processed:
-            toggle_sl = 1 if toggle_sl == 0 else 0
+            if(toggle_sl == 0):
+                toggle_sl = 1
+            else:
+                toggle_sl = 0
             key_processed = True
     elif glfwGetKey(window, GLFW_KEY_F5) == GLFW_RELEASE:
         key_processed = False
