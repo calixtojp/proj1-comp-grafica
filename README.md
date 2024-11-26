@@ -1,3 +1,7 @@
+Lucas de Souza Brandão 13695021
+João Pedro Soares de Azevedo Calixto 13732011
+
+
 F1: apaga/acende1 luz ambiente
 F2: apaga/acende1 luz de baixo da nave
 F3: apaga/acende1 luz de dentro da nave
