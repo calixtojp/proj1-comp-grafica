@@ -5,6 +5,7 @@ from PIL import Image
 from camera import Camera, Camera_Movement
 import glm
 import platform, ctypes, os
+import math
 
 # settings
 SCR_WIDTH = 1200
@@ -42,6 +43,7 @@ amb = 1
 toggle_ex = 1
 toggle_in = 1 
 
+
 #prepara pra usar a processInput()
 def preProc():
     global deltaTime, lastFrame
@@ -50,18 +52,16 @@ def preProc():
     deltaTime = currentFrame - lastFrame
     lastFrame = currentFrame
 
-#O ambiente interno será definido por dois planos y=30 e y=50 e
+#O ambiente interno será definido por dois planos y=50 e y=70 e
 #pela posição relativa da câmera em relação à nave, considerando a
 #distância do observador em relação à posição em x e y do centro da nave.
 def esta_amb_interno():
     global camera
-    print(f"pos(x:{camera.Position.x}|y:{camera.Position.y}|z:{camera.Position.z})")
+    # print(f"pos(x:{camera.Position.x}|y:{camera.Position.y}|z:{camera.Position.z})")
     distancia = glm.sqrt((camera.Position.x - nave_x)**2 + (camera.Position.z - nave_z)**2)
     if camera.Position.y > 50 and camera.Position.y < 70 and distancia < 28:
-        print("dentro")
         return True
     else:
-        print("fora")
         return False
 
 
@@ -111,16 +111,12 @@ def processInput(window: GLFWwindow) -> None:
 
     nave_speed = 0.8
     if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS):
-        print("up")
         nave_x += nave_speed
     if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS):
-        print("down")
         nave_x -= nave_speed
     if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS):
-        print("right")
         nave_z += nave_speed
     if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS):
-        print("left")
         nave_z -= nave_speed
 
     if glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS:

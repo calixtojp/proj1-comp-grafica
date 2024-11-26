@@ -3,6 +3,7 @@ from enum import Enum
 from OpenGL.GL import *
 
 import glm
+import math
 
 # Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
 class Camera_Movement(Enum):
@@ -18,7 +19,8 @@ SPEED       =  20
 SENSITIVITY =  0.1
 ZOOM        =  45.0
 
-
+plan_y = 0.8#define o plano do chão 
+raio_domo = 110#define o raio do domo do skybox
 
 # An abstract camera class that processes input and calculates the corresponding Euler Angles, Vectors and Matrices for use in OpenGL
 class Camera:
@@ -118,3 +120,28 @@ class Camera:
         # also re-calculate the Right and Up vector
         self.Right = glm.normalize(glm.cross(self.Front, self.WorldUp))  # normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
         self.Up    = glm.normalize(glm.cross(self.Right, self.Front))
+
+
+    #função que verifica se a camera pode ir um passo para frente sem
+    #sair do cenário limitado pelo chão e pelo domo
+    def pode_avancar(self):
+        global camera, plan_y, raio_domo
+        #antes de tudo fazer a operação de translação
+        self.Position += SPEED * self.Front
+
+        #primeiro verificar o chão
+        if self.Position.y < plan_y:
+            self.Position -= SPEED * self.Front
+            return False
+        
+        #agora verificar o domo
+        novo_x = self.Position.x
+        novo_y = self.Position.y
+        novo_z = self.Position.z
+        distancia = math.sqrt(novo_x**2 + novo_y**2 + novo_z**2)
+        if distancia > raio_domo:
+            self.Position -= SPEED * self.Front
+            print(f"distancia:{distancia}")
+            return False
+        
+        return True

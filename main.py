@@ -84,11 +84,6 @@ def main() -> int:
 
         #-------------------------------------------LAMPADAS-----------------------------------------#
         luz.preProcLampada(projection, view)
-        cilindroNaveEx.trans = [luz.pos[0].x, luz.pos[0].y, luz.pos[0].z]
-        cilindroNaveEx.desenhar(luz.lightCubeShader)
-
-        cilindroNaveIn.trans = [luz.pos[1].x, luz.pos[1].y, luz.pos[1].z]
-        cilindroNaveIn.desenhar(luz.lightCubeShader)
 
         cilindroTocha.trans = [luz.pos[2].x, luz.pos[2].y, luz.pos[2].z]
         cilindroTocha.desenhar(luz.lightCubeShader)
