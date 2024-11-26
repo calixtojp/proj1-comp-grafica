@@ -23,7 +23,6 @@ def main() -> int:
     cacto = Objeto('cacto.obj', 'cacto.jpg','cacto.jpg', tam=0.08,trans=[100, -60, 40], angle=-90, rot=[1, 0, 0], scale=[1, 0.7, 1])
     minion = Objeto('minion.obj', 'minion.png', 'minion.png',trans=[0, 44.5, 0], scale=[0.7, 0.7, 0.7])
     tocha = Objeto('tocha.obj', 'tocha.jpeg', 'tocha.jpeg', trans=[2, 44, 0.5], scale=[0.1, 0.1, 0.1])
-    cilindroTocha = Objeto('cilindro.obj', 'chao.jpg', 'chao.jpg', trans=luz.pos[2], scale=[2, 1, 2])
     pedra = Objeto('pedra.obj', 'pedra.jpg', 'pedra.jpg', tam=0.01,trans=[600, -430, 600])
     cj2 = Objeto('cj2.obj', 'cj2.png', 'cj2.png', trans=[0, 8, 0], scale=[3, 3, 3])
     
@@ -81,11 +80,7 @@ def main() -> int:
         cj2.desenhar(luz.lightCubeShader)
 
         #-------------------------------------------LAMPADAS-----------------------------------------#
-        luz.preProcLampada(projection, view)
-
-        cilindroTocha.trans = [luz.pos[2].x, luz.pos[2].y, luz.pos[2].z]
-        cilindroTocha.desenhar(luz.lightCubeShader)
-       
+        luz.preProcLampada(projection, view)       
 
         # glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         glfwSwapBuffers(window)
