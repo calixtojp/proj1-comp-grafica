@@ -23,8 +23,6 @@ def main() -> int:
     cacto = Objeto('cacto.obj', 'cacto.jpg','cacto.jpg', tam=0.08,trans=[100, -60, 40], angle=-90, rot=[1, 0, 0], scale=[1, 0.7, 1])
     minion = Objeto('minion.obj', 'minion.png', 'minion.png',trans=[0, 44.5, 0], scale=[0.7, 0.7, 0.7])
     tocha = Objeto('tocha.obj', 'tocha.jpeg', 'tocha.jpeg', trans=[2, 44, 0.5], scale=[0.1, 0.1, 0.1])
-    cilindroNaveEx = Objeto('cilindro.obj', 'chao.jpg', 'chao.jpg', trans=luz.pos[0], scale=[60, 0.2, 60])
-    cilindroNaveIn = Objeto('cilindro.obj', 'chao.jpg', 'chao.jpg', trans=luz.pos[1], scale=[60, 1, 60])
     cilindroTocha = Objeto('cilindro.obj', 'chao.jpg', 'chao.jpg', trans=luz.pos[2], scale=[2, 1, 2])
     pedra = Objeto('pedra.obj', 'pedra.jpg', 'pedra.jpg', tam=0.01,trans=[600, -430, 600])
     cj2 = Objeto('cj2.obj', 'cj2.png', 'cj2.png', trans=[0, 8, 0], scale=[3, 3, 3])
@@ -61,24 +59,20 @@ def main() -> int:
         chao.desenhar(luz.lightCubeShader)
         ceu.desenhar(luz.lightCubeShader)
 
-        #nave
         luz.configurar_iluminacao(ambient_=5)
         nave.trans = pos_nave
         nave.desenhar(luz.lightCubeShader)
-        luz.configurar_iluminacao(ambient_=1)
 
+        luz.configurar_iluminacao(ambient_=1)
         vaca.desenhar(luz.lightCubeShader)
         cacto.desenhar(luz.lightCubeShader)
 
-        #minion
         minion.trans = [it.nave_x, it.nave_y+22.5, it.nave_z]
         minion.desenhar(luz.lightCubeShader)
         
-        #tocha
         tocha.trans = [luz.pos[2].x, luz.pos[2].y-1.7, luz.pos[2].z]
         tocha.desenhar(luz.lightCubeShader)
 
-        #teste pra desenhar a pedra com specular menor ---------------------------------
         luz.configurar_iluminacao(specular_=0.01)#diminuo o specular da pedra antes de desenhar
         pedra.desenhar(luz.lightCubeShader)
         luz.configurar_iluminacao(specular_=1)#volto o specular da pedra depois de desenhar

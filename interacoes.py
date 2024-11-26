@@ -41,7 +41,8 @@ amb = 1
 
 #multiplicadores para desligar a luz interna/externa dependendo da posição atual
 toggle_ex = 1
-toggle_in = 1 
+toggle_in_baixo = 1 
+toggle_in_cima = 1 
 
 
 #prepara pra usar a processInput()
@@ -55,24 +56,37 @@ def preProc():
 #O ambiente interno será definido por dois planos y=50 e y=70 e
 #pela posição relativa da câmera em relação à nave, considerando a
 #distância do observador em relação à posição em x e y do centro da nave.
-def esta_amb_interno():
+def esta_amb_interno_baixo():
     global camera
-    # print(f"pos(x:{camera.Position.x}|y:{camera.Position.y}|z:{camera.Position.z})")
     distancia = glm.sqrt((camera.Position.x - nave_x)**2 + (camera.Position.z - nave_z)**2)
-    if camera.Position.y > 50 and camera.Position.y < 70 and distancia < 28:
+    if camera.Position.y > 55 and camera.Position.y < 65 and distancia < 28:
+        return True
+    else:
+        return False
+    
+def esta_amb_interno_cima():
+    global camera
+    distancia = glm.sqrt((camera.Position.x - nave_x)**2 + (camera.Position.z - nave_z)**2)
+    if camera.Position.y > 65 and camera.Position.y < 73 and distancia < 12:
         return True
     else:
         return False
 
 
 def modifica_luzes_relativas():
-    global toggle_ex, toggle_in
-    if esta_amb_interno():
+    global toggle_ex, toggle_in_baixo, toggle_in_cima
+    if esta_amb_interno_baixo():
         toggle_ex = 0
-        toggle_in = 1
+        toggle_in_baixo = 1
+        toggle_in_cima = 0
+    elif esta_amb_interno_cima():
+        toggle_ex = 0
+        toggle_in_baixo = 0
+        toggle_in_cima = 1
     else:
         toggle_ex = 1
-        toggle_in = 0
+        toggle_in_baixo = 0
+        toggle_in_cima = 0
         
 # process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 # ---------------------------------------------------------------------------------------------------------
